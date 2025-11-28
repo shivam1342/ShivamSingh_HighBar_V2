@@ -1,0 +1,53 @@
+[
+  {
+    "campaign": "m n | athleisure cooling",
+    "adset": "Adset-1 Retarget",
+    "current_issue": "Low CTR: 0.00%",
+    "creative_variations": [
+      {
+        "variation_id": "fallback_1",
+        "creative_type": "UGC",
+        "headline": "Try our best-selling product",
+        "message": "Join thousands of satisfied customers",
+        "cta": "Shop Now",
+        "rationale": "Generic recommendation - requires manual refinement",
+        "expected_improvement": "Unknown - test required"
+      }
+    ],
+    "testing_strategy": "A/B test with $50/day budget"
+  },
+  {
+    "campaign": "Men-Athleisure Cooli-g",
+    "adset": "Adset-3 Broad",
+    "current_issue": "Low CTR: 2.56%",
+    "creative_variations": [
+      {
+        "variation_id": "fallback_1",
+        "creative_type": "UGC",
+        "headline": "Try our best-selling product",
+        "message": "Join thousands of satisfied customers",
+        "cta": "Shop Now",
+        "rationale": "Generic recommendation - requires manual refinement",
+        "expected_improvement": "Unknown - test required"
+      }
+    ],
+    "testing_strategy": "A/B test with $50/day budget"
+  },
+  {
+    "campaign": "women Summer Inv-sible",
+    "adset": "Adset-5 LAL1",
+    "current_issue": "Low CTR: 1.16%",
+    "creative_variations": [
+      {
+        "variation_id": "fallback_1",
+        "creative_type": "UGC",
+        "headline": "Try our best-selling product",
+        "message": "Join thousands of satisfied customers",
+        "cta": "Shop Now",
+        "rationale": "Generic recommendation - requires manual refinement",
+        "expected_improvement": "Unknown - test required"
+      }
+    ],
+    "testing_strategy": "A/B test with $50/day budget"
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "insight_1",
+    "category": "roas_decline",
+    "hypothesis": "ROAS decline is driven by underperforming adsets with low or zero revenue",
+    "evidence": [
+      "Top underperformers have zero revenue despite significant spend (e.g., 'm n | athleisure cooling' adset spent $142.11 with 0 revenue)",
+      "Multiple adsets have zero ROAS, indicating a potential issue with ad targeting or creative assets",
+      "Adsets with low CTR (e.g., 'women Summer Inv-sible' adset with 0.0116% CTR) also tend to have low or zero revenue"
+    ],
+    "confidence": 0.8,
+    "reasoning": "The presence of multiple adsets with zero revenue suggests that the targeting or ad creative may not be resonating with the audience, leading to a decline in overall ROAS",
+    "recommendation": "Pause or re-optimize underperforming adsets, and consider refreshing ad creative to improve targeting and engagement",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.8,
+        "evidence_strength": 0.6
+      }
+    }
+  },
+  {
+    "id": "insight_2",
+    "category": "creative_fatigue",
+    "hypothesis": "Creative fatigue may be contributing to the ROAS decline, particularly for Video ad creative",
+    "evidence": [
+      "Video ad creative has the lowest ROAS (5.35) among all creative types",
+      "Video ad creative has a lower CTR (0.0118%) compared to other creative types (e.g., Image: 0.0131%, UGC: 0.0134%)",
+      "The fact that Video ad spend is the highest ($753,236.78) while having the lowest ROAS suggests potential creative fatigue"
+    ],
+    "confidence": 0.7,
+    "reasoning": "The lower ROAS and CTR for Video ad creative, combined with its high spend, suggests that the audience may be experiencing creative fatigue, leading to decreased engagement and revenue",
+    "recommendation": "Refresh Video ad creative assets, and consider allocating more budget to higher-performing creative types (e.g., Image, UGC)",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.7,
+        "evidence_strength": 0.6
+      }
+    }
+  },
+  {
+    "id": "insight_3",
+    "category": "audience_saturation",
+    "hypothesis": "Audience saturation may be contributing to the ROAS decline, particularly for Retargeting adsets",
+    "evidence": [
+      "Retargeting adsets have low or zero revenue despite significant spend (e.g., 'MEN SIGNATURE SOT' adset spent $375.57 with 0 revenue)",
+      "Retargeting adsets tend to have lower CTR (e.g., 'm n | athleisure cooling' adset with 0% CTR) and lower ROAS",
+      "The fact that Retargeting adsets are targeting a smaller audience may lead to faster saturation and decreased effectiveness"
+    ],
+    "confidence": 0.6,
+    "reasoning": "The presence of multiple Retargeting adsets with low or zero revenue suggests that the audience may be experiencing saturation, leading to decreased engagement and revenue",
+    "recommendation": "Consider expanding targeting to new audiences (e.g., LAL) or refreshing ad creative to improve engagement and reduce saturation",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.6,
+        "evidence_strength": 0.6
+      }
+    }
+  }
+]

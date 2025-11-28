@@ -50,14 +50,14 @@ data:
        │
        v
 ┌──────────────────────────────────────────────────────────────┐
-│                    PLANNER AGENT                              │
+│                    PLANNER AGENT                             │
 │  • Decomposes query into structured subtasks                 │
 │  • Returns: JSON list of analysis tasks                      │
 └──────────────────────────┬───────────────────────────────────┘
                            │
                            v
 ┌──────────────────────────────────────────────────────────────┐
-│                     DATA AGENT                                │
+│                     DATA AGENT                               │
 │  • Loads CSV dataset (pandas)                                │
 │  • Executes each subtask (trend analysis, segmentation, etc) │
 │  • Returns: Quantitative analysis results                    │
@@ -65,15 +65,15 @@ data:
                            │
                            v
 ┌──────────────────────────────────────────────────────────────┐
-│                   INSIGHT AGENT                               │
+│                   INSIGHT AGENT                              │
 │  • Generates hypotheses explaining performance patterns      │
-│  • Uses LLM with Think → Analyze → Conclude structure       │
+│  • Uses LLM with Think → Analyze → Conclude structure        │
 │  • Returns: insights.json with confidence scores             │
 └──────────────────────────┬───────────────────────────────────┘
                            │
                            v
 ┌──────────────────────────────────────────────────────────────┐
-│                  EVALUATOR AGENT                              │
+│                  EVALUATOR AGENT                             │
 │  • Validates insights quantitatively                         │
 │  • Checks: evidence count, confidence threshold, grounding   │
 │  • Triggers retry if quality too low                         │
@@ -82,7 +82,7 @@ data:
                            │
                            v
 ┌──────────────────────────────────────────────────────────────┐
-│              CREATIVE GENERATOR AGENT                         │
+│              CREATIVE GENERATOR AGENT                        │
 │  • Analyzes top/bottom performing creatives                  │
 │  • Generates new message variations for low-CTR campaigns    │
 │  • Returns: creatives.json with testing recommendations      │
@@ -214,6 +214,17 @@ Human-readable markdown report with executive summary, detailed insights, and cr
 
 ### 4. `logs/execution.jsonl`
 JSON Lines format execution log for full traceability.
+
+## 📋 Sample Output
+
+See the **`samples/`** folder for real output examples from the query *"Why is ROAS declining?"*:
+
+- **[samples/insights.json](samples/insights.json)** - 2 validated insights with confidence scores (0.85, 0.75)
+- **[samples/creatives.json](samples/creatives.json)** - 3 creative recommendations for underperforming campaigns
+- **[samples/report.md](samples/report.md)** - Full markdown report with executive summary
+- **[samples/execution.jsonl](samples/execution.jsonl)** - Complete execution trace with timing data
+
+These outputs were generated in **~7 seconds** using Groq API (llama-3.3-70b-versatile).
 
 ## ⚙️ Configuration
 
