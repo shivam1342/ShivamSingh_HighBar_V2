@@ -320,4 +320,4 @@ For questions about this submission, please refer to the assignment submission f
 
 ---
 
-**Built with:** Python 3.10 | pandas | Ollama (Mistral) | Pure multi-agent orchestration (no frameworks)
+**Built with:** Python 3.10 | pandas | Ollama (Mistral)/ Groc AI | Pure multi-agent orchestration (no frameworks)
