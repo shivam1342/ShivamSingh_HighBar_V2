@@ -1,0 +1,57 @@
+# Kasparro Agentic FB Analyst Configuration
+
+# Python & Reproducibility
+python_version: "3.10"
+random_seed: 42
+
+# LLM Configuration
+llm:
+  # OPTION 1: Groq (FASTEST, FREE, RECOMMENDED)
+  # Get free API key from: https://console.groq.com/keys
+  provider: "groq"
+  model: "llama-3.3-70b-versatile"  # Latest: llama-3.3-70b-versatile, mixtral-8x7b-32768
+  api_key: ""  # Or set environment variable: LLM_API_KEY
+  temperature: 0.5
+  max_tokens: 1500
+  
+  # OPTION 2: Ollama (Local, Slow)
+  # provider: "ollama"
+  # model: "mistral"
+  # base_url: "http://localhost:11434"
+  # temperature: 0.7
+  # max_tokens: 1000
+  
+  # OPTION 3: Hugging Face (Free, Medium Speed)
+  # Get free API key from: https://huggingface.co/settings/tokens
+  # provider: "huggingface"
+  # model: "mistralai/Mistral-7B-Instruct-v0.2"
+  # api_key: ""
+  # temperature: 0.7
+  # max_tokens: 1000
+
+# Data Configuration
+data:
+  csv_path: "synthetic_fb_ads_undergarments.csv"
+  use_sample: false
+  sample_size: 1000
+
+# Agent Thresholds
+thresholds:
+  confidence_min: 0.6
+  roas_change_threshold: 0.15
+  ctr_low_threshold: 0.01
+  min_spend_for_analysis: 100
+
+# Output Configuration
+outputs:
+  reports_dir: "reports"
+  logs_dir: "logs"
+  insights_file: "reports/insights.json"
+  creatives_file: "reports/creatives.json"
+  report_file: "reports/report.md"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "json"
+  file: "logs/execution.jsonl"
