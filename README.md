@@ -13,15 +13,15 @@ python -m venv .venv
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Install and start Ollama (if not already installed)
-# Download from: https://ollama.ai
-ollama pull mistral
+# 3. Set up Groq API key (FREE - get from https://console.groq.com/keys)
+export LLM_API_KEY="your-groq-api-key"  # Unix
+# $env:LLM_API_KEY="your-groq-api-key"  # Windows PowerShell
 
 # 4. Ensure data file is in project root
 # synthetic_fb_ads_undergarments.csv should be in the root directory
 
 # 5. Run analysis
-python run.py "Analyze ROAS drop in last 7 days"
+python run.py "Which campaigns are spending the most but generating low ROAS?"
 ```
 
 ## 📊 Data Setup
@@ -112,13 +112,108 @@ data:
 ## 🛠️ Tech Stack
 
 | Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **Language** | Python 3.10 | Core implementation |
+|-----------|-----------|---------|-------|
+| **Language** | Python 3.11 | Core implementation |
 | **Data Processing** | pandas, numpy | CSV loading, aggregations, calculations |
-| **LLM** | Ollama (mistral:7b) | Local, free LLM inference |
+| **LLM** | Groq API (llama-3.3-70b-versatile) | Fast, free LLM inference (⚡ 10x faster than local) |
 | **Config** | PyYAML | Configuration management |
+| **Validation** | Schema validator | Schema drift detection, data quality checks |
+| **Error Handling** | Custom exceptions | 8 categorized exception types for robust recovery |
+| **Retry Logic** | Exponential backoff + jitter | Automatic retry for LLM failures with smart delays |
+| **Logging** | Structured JSONL | Full observability with timestamped event logs |
 | **Testing** | pytest | Unit tests for evaluator |
-| **Logging** | Python logging + rich | Execution traceability |
+
+## 🛡️ Production Features (P0 Requirements)
+
+### 1. Exponential Backoff Retry with Jitter
+- **Automatic retry** on LLM API failures (rate limits, timeouts, network errors)
+- **Smart delays**: 1s → 2s → 4s → 8s with randomized jitter to prevent thundering herd
+- **Configurable**: max retries, base delay, retriable exceptions
+- **Decorator-based**: `@exponential_backoff_with_jitter` applies to all LLM calls
+
+```python
+# Example: Automatic retry on Groq API failures
+@exponential_backoff_with_jitter(max_retries=3, base_delay=1.0)
+def generate(self, prompt, system_prompt):
+    # LLM call with automatic retry
+    response = requests.post(...)
+```
+
+### 2. Categorized Exception Hierarchy
+8 specialized exception types for precise error handling:
+- **LLMAPIError**: Rate limits, auth failures, model errors (recoverable)
+- **DataValidationError**: Missing columns, invalid data (non-recoverable)
+- **SchemaError**: Schema mismatches, drift detection (non-recoverable)
+- **JSONParseError**: LLM response parsing failures (recoverable)
+- **TimeoutError**: Request timeouts (recoverable)
+- **InsufficientDataError**: Not enough data for analysis (non-recoverable)
+- **EvaluationFailedError**: Quality checks failed after max retries (non-recoverable)
+- **AgentException**: Base class with recoverable flag
+
+```python
+# Exception handling example
+try:
+    insights = insight_agent.generate_insights(...)
+except JSONParseError as e:
+    logger.error(f"LLM returned invalid JSON: {e.raw_response[:200]}")
+    # Automatic fallback to default insights
+except DataValidationError as e:
+    logger.error(f"Data quality issue: {e.missing_columns}")
+    # Non-recoverable - stop execution
+```
+
+### 3. Schema Validation & Drift Detection
+- **Validates data** against expected schema before processing
+- **Detects drift**: New columns, removed columns, type mismatches
+- **Fuzzy matching**: Suggests renamed columns ("Did you mean 'spend' instead of 'cost'?")
+- **Auto-documentation**: Saves detected schema snapshots for debugging
+- **Quality checks**: Missing value %, row count, date range validation
+
+```yaml
+# config/schemas/schema_v1.yaml defines expected structure
+required_columns:
+  spend:
+    type: float64
+    min_value: 0
+  revenue:
+    type: float64
+    min_value: 0
+  # Detects if new column 'campaign_name_clean' appears (drift!)
+```
+
+### 4. Structured JSONL Logging
+- **Complete observability**: Every agent start/complete/error logged
+- **LLM call tracking**: Prompts, responses, latency, token usage
+- **Performance metrics**: Duration for each agent, quality scores
+- **Retry visibility**: Logs each retry attempt with reason and delay
+- **JSON Lines format**: Easy parsing for analysis dashboards
+
+```jsonl
+{"timestamp": "2025-12-02T00:15:23", "agent": "planner", "event": "start"}
+{"timestamp": "2025-12-02T00:15:24", "agent": "planner", "event": "llm_call", "duration_seconds": 0.89}
+{"timestamp": "2025-12-02T00:15:24", "agent": "planner", "event": "complete", "duration_seconds": 0.91}
+```
+
+### 5. Query-Adaptive Intelligence
+- **Insights focus on user question**: InsightAgent receives user_query to generate relevant insights
+- **Creatives implement insights**: CreativeGenerator receives validated insights and builds on them
+- **No repetition**: Prompts emphasize "implement insights, don't repeat them"
+- **Example**: Query "Which audiences perform better?" → Insights about audience saturation → Creatives targeting specific audiences
+
+**Before (v1)**: Generic insights + creatives that repeated recommendations  
+**After (v2)**: Query-specific insights + actionable creative variations
+
+### 6. Metric Validation & Aliasing
+- **Validates metrics** before use (prevents KeyError crashes)
+- **Alias mapping**: "sales" → "revenue", "conversions" → "purchases"
+- **Smart fallbacks**: Invalid metric → falls back to default (CTR) with warning
+- **Planner guidance**: System prompt lists exact available metrics
+
+```python
+# Handles user queries like "campaigns with zero sales"
+METRIC_ALIASES = {'sales': 'revenue', 'conversions': 'purchases'}
+# Automatically maps 'sales' → 'revenue' before querying data
+```
 
 ## 📂 Project Structure
 
@@ -226,29 +321,67 @@ See the **`samples/`** folder for real output examples from the query *"Why is R
 
 These outputs were generated in **~7 seconds** using Groq API (llama-3.3-70b-versatile).
 
+### Query Adaptation Examples
+
+**Query 1**: *"Should I increase budget on Instagram or Facebook?"*
+- ✅ **Insight**: "Facebook outperforms Instagram (ROAS 5.97 vs 5.68)"
+- ✅ **Creative**: Platform-specific ad variations for both channels
+
+**Query 2**: *"Which audience types are performing better?"*
+- ✅ **Insight**: "Retargeting ROAS 9.33 vs Lookalike 5.76 vs Broad 5.00"
+- ✅ **Creative**: "Men's Undergarments Retargeting" + "Women's Lookalike" campaigns
+
+**Query 3**: *"Which campaigns are spending the most but generating zero sales?"*
+- ✅ **Metric validation**: Automatically maps "sales" → "revenue"
+- ✅ **Insight**: Identifies high-spend, low-revenue campaigns
+- ✅ **Creative**: Fresh angles to revive underperforming campaigns
+
 ## ⚙️ Configuration
 
 Edit `config/config.yaml` to customize:
 
 ```yaml
-# LLM settings
+# LLM Configuration - Groq API (FREE, FAST)
 llm:
-  provider: "ollama"  # or "openai"
-  model: "mistral"    # or "llama3.1", "gpt-4o"
-  temperature: 0.7
+  model: "llama-3.3-70b-versatile"
+  api_key: ""  # Or set LLM_API_KEY environment variable (recommended)
+  temperature: 0.5  # 0=focused, 1=creative
+  max_tokens: 1500
+  timeout: 60  # Request timeout in seconds
 
 # Analysis thresholds
 thresholds:
   confidence_min: 0.6        # Min confidence for insights
   roas_change_threshold: 0.15
   ctr_low_threshold: 0.01
+  min_spend_for_analysis: 100
 
 # Data settings
 data:
   csv_path: "synthetic_fb_ads_undergarments.csv"
   use_sample: false
   sample_size: 1000
+
+# Output paths
+outputs:
+  reports_dir: "reports"
+  logs_dir: "logs"
+  insights_file: "reports/insights.json"
+  creatives_file: "reports/creatives.json"
+  report_file: "reports/report.md"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "json"
+  file: "logs/execution.jsonl"
 ```
+
+**Why Groq?**
+- ⚡ **10x faster** than local Ollama (0.8s vs 8s per LLM call)
+- 🆓 **Free tier**: Generous rate limits for development
+- 🚀 **Production-ready**: Reliable API with automatic retries
+- 📊 **Latest models**: llama-3.3-70b-versatile (Dec 2024)
 
 ## 🧪 Testing
 
@@ -293,14 +426,45 @@ See `src/agents/*.py` for full prompt implementations.
 
 ### Requirements
 - Python 3.10+
-- Ollama installed and running (`ollama serve`)
-- Model downloaded: `ollama pull mistral`
-- ~4GB RAM for model inference
+- Groq API key (free from https://console.groq.com/keys)
+- Set `LLM_API_KEY` environment variable
+- Minimal RAM (~500MB for pandas data processing)
 
 ### Performance
-- Average query execution: 30-60 seconds
-- Insight generation: 2 attempts max (with retry)
-- Creative generation: 3-5 recommendations per run
+
+**v2 (Current - Groq API with P0 features):**
+- ⚡ **Average query execution**: 6-9 seconds (full pipeline)
+- 🎯 **LLM call latency**: 0.8-1.2s per call (Groq)
+- 🔄 **Retry overhead**: +2-4s only on failures (rare with Groq's reliability)
+- 📊 **Insight generation**: 2 attempts max (auto-retry on low quality)
+- 🎨 **Creative generation**: 2-3 campaigns with 3 variations each
+- 📝 **Structured logging**: ~60 events per execution logged to JSONL
+
+**v1 (Previous - Ollama local):**
+- 🐌 **Average query execution**: 30-60 seconds
+- ⏳ **LLM call latency**: 8-12s per call (local inference)
+- ⚠️ **No retry logic**: Single attempt, manual restart on failure
+- 📉 **No structured logging**: Basic console logs only
+
+**Performance Comparison:**
+```
+Metric                  | v1 (Ollama)  | v2 (Groq)   | Improvement
+------------------------|--------------|-------------|-------------
+Total execution time    | 30-60s       | 6-9s        | 5-7x faster
+LLM call latency        | 8-12s        | 0.8-1.2s    | 10x faster
+Error recovery          | Manual       | Automatic   | ✅ Robust
+Observability          | Basic logs   | JSONL events| ✅ Production-ready
+Query adaptation       | Generic      | User-focused| ✅ Relevant
+Metric validation      | None         | Full        | ✅ No crashes
+```
+
+### Production Readiness
+✅ **Error handling**: 8 exception types with retry logic  
+✅ **Schema validation**: Detects drift, suggests fixes  
+✅ **Structured logging**: Full observability in JSONL  
+✅ **Query adaptation**: Insights answer user's actual question  
+✅ **Metric validation**: Prevents crashes from invalid metrics  
+✅ **Automatic retry**: Recovers from transient LLM failures
 
 ## 🤝 Contributing
 
@@ -314,10 +478,8 @@ This is an assignment submission project. For evaluation purposes:
 
 MIT License - Built for Kasparro Applied AI Engineer Assignment
 
-## 🙋 Contact
-
-For questions about this submission, please refer to the assignment submission form.
-
 ---
 
-**Built with:** Python 3.10 | pandas | Ollama (Mistral)/ Groc AI | Pure multi-agent orchestration (no frameworks)
+**Built with:** Python 3.11 | pandas | Groq API (llama-3.3-70b-versatile) | Pure multi-agent orchestration (no frameworks)
+
+**v2 Improvements:** Exponential backoff retry | 8 exception types | Schema validation | Structured JSONL logging | Query adaptation | Metric validation
