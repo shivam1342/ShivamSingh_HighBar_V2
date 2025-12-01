@@ -1,0 +1,98 @@
+[
+  {
+    "id": "insight_1",
+    "category": "audience_saturation",
+    "hypothesis": "The campaigns are spending the most money but generating zero sales due to audience saturation and lack of effective targeting.",
+    "evidence": [
+      "Analysis 1 shows that the top underperforming campaigns have a high number of impressions but low or zero spend, indicating that the ads are not being shown to the right audience.",
+      "Analysis 2 shows that the spend on Facebook and Instagram is high, but the ROAS is low, indicating that the targeting may not be effective."
+    ],
+    "confidence": 0.7,
+    "reasoning": "The data suggests that the campaigns are not effectively targeting the right audience, leading to a high number of impressions but low or zero sales.",
+    "recommendation": "Review and adjust the targeting options for the campaigns to ensure that they are reaching the right audience. Consider using lookalike audiences or interest-based targeting to expand the reach.",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.7,
+        "evidence_strength": 0.4
+      }
+    }
+  },
+  {
+    "id": "insight_2",
+    "category": "creative_fatigue",
+    "hypothesis": "The campaigns are spending the most money but generating zero sales due to creative fatigue and lack of engaging ad content.",
+    "evidence": [
+      "Analysis 3 shows that the spend on different creative types is high, but the ROAS is low, indicating that the ad content may not be engaging enough.",
+      "Analysis 1 shows that the top underperforming campaigns have a low CTR, indicating that the ad content is not resonating with the audience."
+    ],
+    "confidence": 0.6,
+    "reasoning": "The data suggests that the ad content may be suffering from creative fatigue, leading to a low CTR and ROAS.",
+    "recommendation": "Refresh the ad content and creatives to make them more engaging and relevant to the target audience. Consider using user-generated content or social proof to increase engagement.",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.6,
+        "evidence_strength": 0.4
+      }
+    }
+  },
+  {
+    "id": "insight_3",
+    "category": "budget_allocation",
+    "hypothesis": "The campaigns are spending the most money but generating zero sales due to inefficient budget allocation and lack of optimization.",
+    "evidence": [
+      "Analysis 4 shows that the spend is increasing over time, but the ROAS is not improving, indicating that the budget allocation may not be optimized.",
+      "Analysis 2 shows that the spend on Facebook and Instagram is high, but the ROAS is low, indicating that the budget allocation may not be effective."
+    ],
+    "confidence": 0.8,
+    "reasoning": "The data suggests that the budget allocation may not be optimized, leading to inefficient spend and low ROAS.",
+    "recommendation": "Review and adjust the budget allocation to ensure that it is optimized for ROAS and revenue. Consider using automated bidding strategies or budget allocation tools to optimize the spend.",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.8,
+        "evidence_strength": 0.4
+      }
+    }
+  }
+]

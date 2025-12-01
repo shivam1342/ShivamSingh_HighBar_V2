@@ -6,17 +6,37 @@ import numpy as np
 from typing import Dict, Any, Optional
 import logging
 
+from src.utils.schema_validator import SchemaValidator
+from src.utils.exceptions import DataValidationError, SchemaError
+
 logger = logging.getLogger(__name__)
 
 
 class DataLoader:
     """Load and preprocess Facebook Ads dataset"""
     
-    def __init__(self, csv_path: str, use_sample: bool = False, sample_size: int = 1000):
+    def __init__(
+        self, 
+        csv_path: str, 
+        use_sample: bool = False, 
+        sample_size: int = 1000,
+        schema_path: str = "config/schemas/schema_v1.yaml",
+        validate_schema: bool = True
+    ):
         self.csv_path = csv_path
         self.use_sample = use_sample
         self.sample_size = sample_size
         self.df: Optional[pd.DataFrame] = None
+        self.validate_schema = validate_schema
+        
+        # Initialize schema validator
+        if validate_schema:
+            try:
+                self.schema_validator = SchemaValidator(schema_path)
+                logger.info("Schema validator initialized")
+            except Exception as e:
+                logger.warning(f"Schema validator initialization failed: {e}. Proceeding without validation.")
+                self.validate_schema = False
         
     def load(self) -> pd.DataFrame:
         """Load CSV and perform basic preprocessing"""
@@ -27,6 +47,38 @@ class DataLoader:
             # Basic preprocessing
             self._preprocess()
             
+            # SCHEMA VALIDATION - Check before processing
+            if self.validate_schema:
+                try:
+                    validation_report = self.schema_validator.validate(self.df)
+                    logger.info("✅ Schema validation passed")
+                    
+                    # Log warnings if any
+                    if validation_report.get("warnings"):
+                        for warning in validation_report["warnings"]:
+                            logger.warning(f"Schema warning: {warning}")
+                    
+                    # Log drift if detected
+                    if validation_report.get("drift_detected"):
+                        drift = validation_report["drift_detected"]
+                        logger.warning(f"⚠️ Schema drift detected: {drift}")
+                        
+                        # Save detected schema for documentation
+                        self.schema_validator.save_detected_schema(self.df)
+                
+                except (SchemaError, DataValidationError) as e:
+                    logger.error(f"❌ Schema validation failed: {e}")
+                    
+                    # Save detected schema for debugging
+                    if hasattr(self, 'schema_validator'):
+                        try:
+                            schema_path = self.schema_validator.save_detected_schema(self.df)
+                            logger.info(f"Actual schema saved to {schema_path} for debugging")
+                        except Exception as save_error:
+                            logger.error(f"Failed to save detected schema: {save_error}")
+                    
+                    raise
+            
             # Sample if needed
             if self.use_sample and len(self.df) > self.sample_size:
                 logger.info(f"Sampling {self.sample_size} rows")
@@ -35,6 +87,12 @@ class DataLoader:
             logger.info(f"Loaded {len(self.df)} rows, {len(self.df.columns)} columns")
             return self.df
             
+        except FileNotFoundError as e:
+            logger.error(f"CSV file not found: {self.csv_path}")
+            raise FileNotFoundError(f"Data file not found: {self.csv_path}. Please ensure the CSV exists.")
+        except pd.errors.EmptyDataError as e:
+            logger.error(f"CSV file is empty: {self.csv_path}")
+            raise DataValidationError(f"CSV file is empty: {self.csv_path}", invalid_rows=0)
         except Exception as e:
             logger.error(f"Failed to load data: {e}")
             raise

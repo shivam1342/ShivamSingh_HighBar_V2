@@ -1,0 +1,110 @@
+[
+  {
+    "campaign": "MEN_Signa ure_Soft",
+    "adset": "Adset-4 LAL2",
+    "current_issue": "Audience saturation and lack of effective targeting",
+    "insight_addressed": "audience_saturation",
+    "creative_variations": [
+      {
+        "variation_id": "var_1",
+        "creative_type": "UGC",
+        "headline": "Real People, Real Comfort",
+        "message": "Discover why 9 out of 10 customers prefer our Signa ure Soft undergarments for their comfort and quality",
+        "cta": "Explore Now",
+        "rationale": "Using social proof and user-generated content to increase engagement and appeal to a broader audience",
+        "expected_improvement": "20-30% increase in CTR"
+      },
+      {
+        "variation_id": "var_2",
+        "creative_type": "Video",
+        "headline": "The Comfort Revolution",
+        "message": "Join the thousands of men who have already made the switch to our ultra-soft and breathable undergarments",
+        "cta": "Learn More",
+        "rationale": "Using video content to showcase the benefits and features of the product and appeal to a wider audience",
+        "expected_improvement": "25-35% increase in CTR"
+      },
+      {
+        "variation_id": "var_3",
+        "creative_type": "Carousel",
+        "headline": "Comfort That Speaks For Itself",
+        "message": "Check out what our satisfied customers have to say about our Signa ure Soft undergarments",
+        "cta": "Read Reviews",
+        "rationale": "Using carousel ads to showcase multiple customer testimonials and increase social proof",
+        "expected_improvement": "30-40% increase in CTR"
+      }
+    ],
+    "testing_strategy": "Launch all three variations simultaneously, with a budget allocation of $50 per day for each variation, and rotate every 7 days"
+  },
+  {
+    "campaign": "Men ComfortMax Lunch",
+    "adset": "Adset-1 Retarget",
+    "current_issue": "Creative fatigue and lack of engaging ad content",
+    "insight_addressed": "creative_fatigue",
+    "creative_variations": [
+      {
+        "variation_id": "var_1",
+        "creative_type": "UGC",
+        "headline": "Still Thinking About ComfortMax?",
+        "message": "Join the thousands of men who have already experienced the comfort and quality of our ComfortMax undergarments",
+        "cta": "Shop Now",
+        "rationale": "Using social proof and user-generated content to increase engagement and appeal to a broader audience",
+        "expected_improvement": "25-35% increase in CTR"
+      },
+      {
+        "variation_id": "var_2",
+        "creative_type": "Video",
+        "headline": "The ComfortMax Difference",
+        "message": "Discover what sets our ComfortMax undergarments apart from the rest and why they're the perfect choice for comfort-seeking men",
+        "cta": "Learn More",
+        "rationale": "Using video content to showcase the unique features and benefits of the product",
+        "expected_improvement": "30-40% increase in CTR"
+      },
+      {
+        "variation_id": "var_3",
+        "creative_type": "Image",
+        "headline": "ComfortMax: The Ultimate Choice",
+        "message": "Experience the comfort, quality, and style of our ComfortMax undergarments, designed specifically for the modern man",
+        "cta": "Explore Now",
+        "rationale": "Using high-quality images to showcase the product and appeal to a wider audience",
+        "expected_improvement": "20-30% increase in CTR"
+      }
+    ],
+    "testing_strategy": "Launch all three variations simultaneously, with a budget allocation of $50 per day for each variation, and rotate every 7 days"
+  },
+  {
+    "campaign": "WOMEN  Seamless- Everyday",
+    "adset": "Adset-3 Broad",
+    "current_issue": "Inefficient budget allocation and lack of optimization",
+    "insight_addressed": "budget_allocation",
+    "creative_variations": [
+      {
+        "variation_id": "var_1",
+        "creative_type": "UGC",
+        "headline": "Real Women, Real Comfort",
+        "message": "Discover why our Seamless- Everyday undergarments are the perfect choice for comfort-seeking women",
+        "cta": "Shop Now",
+        "rationale": "Using social proof and user-generated content to increase engagement and appeal to a broader audience",
+        "expected_improvement": "20-30% increase in CTR"
+      },
+      {
+        "variation_id": "var_2",
+        "creative_type": "Video",
+        "headline": "The Seamless- Everyday Difference",
+        "message": "Learn how our Seamless- Everyday undergarments can help you feel confident and comfortable all day long",
+        "cta": "Learn More",
+        "rationale": "Using video content to showcase the benefits and features of the product",
+        "expected_improvement": "25-35% increase in CTR"
+      },
+      {
+        "variation_id": "var_3",
+        "creative_type": "Carousel",
+        "headline": "Seamless- Everyday: The Ultimate Choice",
+        "message": "Check out what our satisfied customers have to say about our Seamless- Everyday undergarments",
+        "cta": "Read Reviews",
+        "rationale": "Using carousel ads to showcase multiple customer testimonials and increase social proof",
+        "expected_improvement": "30-40% increase in CTR"
+      }
+    ],
+    "testing_strategy": "Launch all three variations simultaneously, with a budget allocation of $50 per day for each variation, and rotate every 7 days. Use automated bidding strategies to optimize for ROAS and revenue"
+  }
+]

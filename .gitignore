@@ -41,11 +41,18 @@ env/
 # Logs
 logs/*.jsonl
 logs/*.log
+!logs/execution.jsonl  # Keep one sample log for demonstration
 
-# Reports (generated)
-reports/insights.json
-reports/creatives.json
-reports/report.md
+# Reports (generated - keep samples for demonstration)
+# reports/insights.json
+# reports/creatives.json
+# reports/report.md
+
+# Documentation (private notes)
+STUDY.md
+
+# Schema drift detection snapshots (generated at runtime)
+config/schemas/schema_detected_*.yaml
 
 # OS
 .DS_Store

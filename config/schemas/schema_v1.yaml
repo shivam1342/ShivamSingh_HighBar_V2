@@ -1,0 +1,97 @@
+# Schema Definition v1.0
+# Defines expected structure of Facebook Ads CSV data
+
+version: "1.0"
+created_date: "2024-01-01"
+description: "Facebook Ads performance data schema"
+
+required_columns:
+  # Time dimension
+  date:
+    type: datetime64
+    required: true
+    description: "Date of ad performance"
+    
+  # Campaign structure
+  campaign_name:
+    type: object
+    required: true
+    description: "Campaign name"
+    
+  adset_name:
+    type: object
+    required: true
+    description: "Adset name"
+  
+  # Core metrics
+  spend:
+    type: float64
+    required: true
+    min_value: 0
+    description: "Ad spend in dollars"
+    
+  impressions:
+    type: int64
+    required: true
+    min_value: 0
+    description: "Number of impressions"
+    
+  clicks:
+    type: int64
+    required: true
+    min_value: 0
+    description: "Number of clicks"
+    
+  purchases:
+    type: int64
+    required: true
+    min_value: 0
+    description: "Number of purchases/conversions"
+    
+  revenue:
+    type: float64
+    required: true
+    min_value: 0
+    description: "Revenue generated in dollars"
+  
+  # Calculated metrics
+  ctr:
+    type: float64
+    required: true
+    min_value: 0
+    max_value: 1
+    description: "Click-through rate (clicks/impressions)"
+    
+  roas:
+    type: float64
+    required: true
+    min_value: 0
+    description: "Return on ad spend (revenue/spend)"
+
+optional_columns:
+  # Creative dimensions
+  creative_type:
+    type: object
+    description: "Type of creative (UGC, Video, Image, Carousel)"
+    
+  creative_message:
+    type: object
+    description: "Creative ad copy/message"
+  
+  # Audience dimensions
+  audience_type:
+    type: object
+    description: "Audience type (Retargeting, Prospecting, LAL)"
+    
+  platform:
+    type: object
+    description: "Platform (Facebook, Instagram)"
+    
+  country:
+    type: object
+    description: "Country targeting"
+
+validation_rules:
+  min_rows: 100
+  max_missing_percentage: 10  # Max 10% missing values per column
+  date_range_max_days: 365    # Max 1 year of data

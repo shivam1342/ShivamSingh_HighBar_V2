@@ -3,6 +3,7 @@ Orchestrator - Main agent coordination logic
 """
 import json
 import logging
+import time
 from pathlib import Path
 from typing import Dict, Any, List
 from datetime import datetime
@@ -14,6 +15,7 @@ from src.agents.evaluator import EvaluatorAgent
 from src.agents.creative_gen import CreativeGeneratorAgent
 from src.utils.llm import LLMClient
 from src.utils.data_loader import DataLoader
+from src.utils.structured_logger import StructuredLogger
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +30,9 @@ class AgentOrchestrator:
         self.config = config
         self.max_retries = 2
         
+        # Initialize structured logger
+        self.logger = StructuredLogger()
+        
         # Initialize LLM client
         self.llm_client = LLMClient(config["llm"])
         
@@ -39,18 +44,15 @@ class AgentOrchestrator:
             sample_size=data_config.get("sample_size", 1000)
         )
         
-        # Initialize agents
-        self.planner = PlannerAgent(self.llm_client)
-        self.data_agent = DataAgent(self.data_loader)
-        self.insight_agent = InsightAgent(self.llm_client)
-        self.evaluator = EvaluatorAgent(config)
-        self.creative_gen = CreativeGeneratorAgent(self.llm_client)
+        # Initialize agents (pass structured logger)
+        self.planner = PlannerAgent(self.llm_client, self.logger)
+        self.data_agent = DataAgent(self.data_loader, self.logger)
+        self.insight_agent = InsightAgent(self.llm_client, self.logger)
+        self.evaluator = EvaluatorAgent(config, self.logger)
+        self.creative_gen = CreativeGeneratorAgent(self.llm_client, self.logger)
         
         # Initialize data agent
         self.data_agent.initialize()
-        
-        # Execution log
-        self.execution_log = []
         
     def run(self, user_query: str) -> Dict[str, Any]:
         """
@@ -62,98 +64,135 @@ class AgentOrchestrator:
         Returns:
             Complete results including insights, creatives, and logs
         """
-        logger.info(f"Starting orchestration for query: {user_query}")
-        self._log_step("orchestration_start", {"query": user_query})
-        
-        # Step 1: Get data summary
-        data_summary = self.data_loader.get_summary()
-        self._log_step("data_summary", data_summary)
-        
-        # Step 2: Planner creates execution plan
-        plan = self.planner.plan(user_query, data_summary)
-        self._log_step("plan_created", {"subtasks": plan})
-        
-        # Step 3: Data agent executes subtasks
-        analysis_results = []
-        for subtask in plan:
-            result = self.data_agent.execute_subtask(subtask)
-            analysis_results.append(result)
-            self._log_step("subtask_executed", {
-                "task_id": subtask.get("task_id"),
-                "result": result
-            })
-        
-        # Step 4: Insight agent generates hypotheses (with retry logic)
-        data_context = self.data_agent.get_context_for_insights()
-        insights = None
-        evaluation = None
-        
-        for attempt in range(self.max_retries):
-            logger.info(f"Insight generation attempt {attempt + 1}/{self.max_retries}")
-            
-            insights = self.insight_agent.generate_insights(analysis_results, data_context)
-            self._log_step("insights_generated", {"insights": insights, "attempt": attempt + 1})
-            
-            # Step 5: Evaluator validates insights
-            evaluation = self.evaluator.evaluate_insights(insights, analysis_results)
-            self._log_step("insights_evaluated", evaluation)
-            
-            # Check if we need to retry
-            if not self.evaluator.requires_retry(evaluation):
-                logger.info("Insights passed evaluation")
-                break
-            else:
-                logger.warning(f"Insights failed evaluation, retrying... (attempt {attempt + 1})")
-        
-        # Use validated insights
-        validated_insights = evaluation.get("validated_insights", insights)
-        
-        # Step 6: Creative generator produces recommendations (for low-CTR campaigns)
-        # Find underperformer and top performer data
-        underperformer_data = {}
-        creative_analysis = {}
-        
-        for result in analysis_results:
-            if "top_underperformers" in result:
-                underperformer_data = result
-            if "top_performers" in result:
-                creative_analysis = result
-        
-        creatives = self.creative_gen.generate_creatives(
-            underperformer_data,
-            creative_analysis,
-            data_context
+        # Log orchestration start
+        self.logger.log_agent_start(
+            "orchestrator",
+            input_data={"user_query": user_query}
         )
-        self._log_step("creatives_generated", {"creatives": creatives})
         
-        # Step 7: Compile final results
-        results = {
-            "query": user_query,
-            "execution_time": datetime.now().isoformat(),
-            "plan": plan,
-            "analysis_results": analysis_results,
-            "insights": validated_insights,
-            "evaluation": evaluation,
-            "creative_recommendations": creatives,
-            "execution_log": self.execution_log
-        }
+        pipeline_start = time.time()
         
-        self._log_step("orchestration_complete", {"status": "success"})
-        logger.info("Orchestration complete")
-        
-        return results
-    
-    def _log_step(self, step_name: str, data: Dict[str, Any]):
-        """Log execution step for observability"""
-        log_entry = {
-            "timestamp": datetime.now().isoformat(),
-            "step": step_name,
-            "data": data
-        }
-        self.execution_log.append(log_entry)
+        try:
+            logger.info(f"Starting orchestration for query: {user_query}")
+            
+            # Step 1: Get data summary
+            step1_start = time.time()
+            data_summary = self.data_loader.get_summary()
+            self.logger.log_data_summary("dataset_overview", data_summary)
+            logger.info(f"Step 1 completed in {time.time() - step1_start:.2f}s")
+            
+            # Step 2: Planner creates execution plan
+            step2_start = time.time()
+            plan = self.planner.plan(user_query, data_summary)
+            logger.info(f"Step 2 completed in {time.time() - step2_start:.2f}s")
+            
+            # Step 3: Data agent executes subtasks
+            step3_start = time.time()
+            analysis_results = []
+            for subtask in plan:
+                result = self.data_agent.execute_subtask(subtask)
+                analysis_results.append(result)
+            logger.info(f"Step 3 completed in {time.time() - step3_start:.2f}s")
+            
+            # Step 4: Insight agent generates hypotheses (with retry logic)
+            step4_start = time.time()
+            data_context = self.data_agent.get_context_for_insights()
+            insights = None
+            evaluation = None
+            
+            for attempt in range(self.max_retries):
+                logger.info(f"Insight generation attempt {attempt + 1}/{self.max_retries}")
+                
+                # Log retry attempt if not first attempt
+                if attempt > 0:
+                    self.logger.log_retry_attempt(
+                        agent_name="orchestrator",
+                        attempt_number=attempt + 1,
+                        max_attempts=self.max_retries,
+                        reason="Insights failed validation",
+                        next_delay_seconds=0
+                    )
+                
+                insights = self.insight_agent.generate_insights(analysis_results, data_context, user_query)
+                
+                # Step 5: Evaluator validates insights
+                evaluation = self.evaluator.evaluate_insights(insights, analysis_results)
+                
+                # Check if we need to retry
+                if not self.evaluator.requires_retry(evaluation):
+                    logger.info("Insights passed evaluation")
+                    break
+                else:
+                    logger.warning(f"Insights failed evaluation, retrying... (attempt {attempt + 1})")
+            
+            logger.info(f"Steps 4-5 completed in {time.time() - step4_start:.2f}s")
+            
+            # Use validated insights
+            validated_insights = evaluation.get("validated_insights", insights)
+            
+            # Step 6: Creative generator produces recommendations (for low-CTR campaigns)
+            step6_start = time.time()
+            # Find underperformer and top performer data
+            underperformer_data = {}
+            creative_analysis = {}
+            
+            for result in analysis_results:
+                if "top_underperformers" in result:
+                    underperformer_data = result
+                if "top_performers" in result:
+                    creative_analysis = result
+            
+            creatives = self.creative_gen.generate_creatives(
+                underperformer_data,
+                creative_analysis,
+                data_context,
+                validated_insights  # Pass insights so creatives build on them!
+            )
+            logger.info(f"Step 6 completed in {time.time() - step6_start:.2f}s")
+            
+            # Step 7: Compile final results
+            results = {
+                "query": user_query,
+                "execution_time": datetime.now().isoformat(),
+                "plan": plan,
+                "analysis_results": analysis_results,
+                "insights": validated_insights,
+                "evaluation": evaluation,
+                "creative_recommendations": creatives
+            }
+            
+            # Log orchestration completion
+            pipeline_duration = time.time() - pipeline_start
+            self.logger.log_agent_complete(
+                "orchestrator",
+                output_data={
+                    "insight_count": len(validated_insights),
+                    "creative_count": len(creatives),
+                    "quality_score": evaluation.get("overall_quality", 0),
+                    "passed_validation": evaluation.get("pass_threshold", False)
+                },
+                duration_seconds=pipeline_duration
+            )
+            
+            logger.info(f"Orchestration complete in {pipeline_duration:.2f}s")
+            
+            return results
+            
+        except Exception as e:
+            # Log orchestration error
+            pipeline_duration = time.time() - pipeline_start
+            self.logger.log_agent_error(
+                "orchestrator",
+                error=e,
+                context={
+                    "user_query": user_query,
+                    "duration_before_error": pipeline_duration
+                }
+            )
+            raise
         
     def save_outputs(self, results: Dict[str, Any]):
-        """Save insights, creatives, report, and logs to files"""
+        """Save insights, creatives, and report to files"""
         outputs_config = self.config["outputs"]
         
         # Ensure directories exist
@@ -179,12 +218,7 @@ class AgentOrchestrator:
             f.write(report_content)
         logger.info(f"Saved report to {report_path}")
         
-        # Save execution logs
-        log_path = Path(outputs_config["logs_dir"]) / "execution.jsonl"
-        with open(log_path, 'a') as f:
-            for log_entry in results["execution_log"]:
-                f.write(json.dumps(log_entry) + '\n')
-        logger.info(f"Saved logs to {log_path}")
+        logger.info(f"Structured logs saved to {outputs_config['logs_dir']}/execution.jsonl")
     
     def _generate_report(self, results: Dict[str, Any]) -> str:
         """Generate markdown report for marketers"""

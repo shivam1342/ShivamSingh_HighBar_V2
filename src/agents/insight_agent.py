@@ -3,8 +3,11 @@ Insight Agent - Generates hypotheses explaining performance patterns
 """
 import json
 import logging
+import time
 from typing import Dict, List, Any
 from src.utils.llm import LLMClient
+from src.utils.structured_logger import StructuredLogger
+from src.utils.exceptions import JSONParseError
 
 logger = logging.getLogger(__name__)
 
@@ -14,13 +17,15 @@ class InsightAgent:
     Generates data-driven hypotheses about performance patterns
     """
     
-    def __init__(self, llm_client: LLMClient):
+    def __init__(self, llm_client: LLMClient, structured_logger: StructuredLogger = None):
         self.llm = llm_client
+        self.logger = structured_logger or StructuredLogger()
         
     def generate_insights(
         self,
         analysis_results: List[Dict[str, Any]],
-        data_context: Dict[str, Any]
+        data_context: Dict[str, Any],
+        user_query: str = None
     ) -> List[Dict[str, Any]]:
         """
         Generate insights from analysis results
@@ -28,31 +33,122 @@ class InsightAgent:
         Args:
             analysis_results: Results from data agent subtasks
             data_context: Overall dataset context
+            user_query: Original user question to focus insights
             
         Returns:
             List of insights with hypotheses and evidence
         """
-        logger.info("Generating insights from analysis results")
+        # Log agent start
+        self.logger.log_agent_start(
+            "insight_agent",
+            input_data={
+                "analysis_result_count": len(analysis_results),
+                "data_context_keys": list(data_context.keys())
+            }
+        )
         
-        system_prompt = self._get_system_prompt()
-        user_prompt = self._build_prompt(analysis_results, data_context)
-        
-        response = self.llm.generate(user_prompt, system_prompt)
+        start_time = time.time()
         
         try:
-            # Extract JSON from markdown code blocks if present
-            clean_response = response
-            if "```json" in response:
-                clean_response = response.split("```json")[1].split("```")[0].strip()
-            elif "```" in response:
-                clean_response = response.split("```")[1].split("```")[0].strip()
+            logger.info("Generating insights from analysis results")
             
-            insights = json.loads(clean_response)
-            logger.info(f"Generated {len(insights.get('insights', []))} insights")
-            return insights.get("insights", [])
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse insights response: {e}")
-            return self._get_fallback_insights(analysis_results)
+            system_prompt = self._get_system_prompt()
+            user_prompt = self._build_prompt(analysis_results, data_context, user_query)
+            
+            # Log LLM call
+            llm_start = time.time()
+            response = self.llm.generate(user_prompt, system_prompt)
+            llm_duration = time.time() - llm_start
+            
+            self.logger.log_llm_call(
+                agent_name="insight_agent",
+                prompt=user_prompt,
+                system_prompt=system_prompt,
+                response=response,
+                model=self.llm.model,
+                duration_seconds=llm_duration
+            )
+            
+            try:
+                # Extract JSON from markdown code blocks if present
+                clean_response = response
+                if "```json" in response:
+                    clean_response = response.split("```json")[1].split("```")[0].strip()
+                elif "```" in response:
+                    clean_response = response.split("```")[1].split("```")[0].strip()
+                
+                insights = json.loads(clean_response)
+                insight_list = insights.get("insights", [])
+                
+                logger.info(f"Generated {len(insight_list)} insights")
+                
+                # Log metrics for confidence scores
+                if insight_list:
+                    avg_confidence = sum(i.get("confidence", 0) for i in insight_list) / len(insight_list)
+                    self.logger.log_metric(
+                        "insight_confidence",
+                        avg_confidence,
+                        context={
+                            "insight_count": len(insight_list),
+                            "min_confidence": min(i.get("confidence", 0) for i in insight_list),
+                            "max_confidence": max(i.get("confidence", 0) for i in insight_list)
+                        }
+                    )
+                
+                # Log completion
+                duration = time.time() - start_time
+                self.logger.log_agent_complete(
+                    "insight_agent",
+                    output_data={
+                        "insight_count": len(insight_list),
+                        "categories": [i.get("category") for i in insight_list]
+                    },
+                    duration_seconds=duration
+                )
+                
+                return insight_list
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse insights response: {e}")
+                
+                # Log JSON parse error
+                self.logger.log_agent_error(
+                    "insight_agent",
+                    error=JSONParseError(
+                        f"Failed to parse JSON from LLM response: {e}",
+                        raw_response=response,
+                        agent_name="insight_agent"
+                    ),
+                    context={"raw_response": response[:500]}
+                )
+                
+                # Fallback
+                fallback = self._get_fallback_insights(analysis_results)
+                
+                duration = time.time() - start_time
+                self.logger.log_agent_complete(
+                    "insight_agent",
+                    output_data={
+                        "insight_count": len(fallback),
+                        "fallback_used": True
+                    },
+                    duration_seconds=duration
+                )
+                
+                return fallback
+                
+        except Exception as e:
+            # Log unexpected error
+            duration = time.time() - start_time
+            self.logger.log_agent_error(
+                "insight_agent",
+                error=e,
+                context={
+                    "analysis_result_count": len(analysis_results),
+                    "duration_before_error": duration
+                }
+            )
+            raise
     
     def _get_system_prompt(self) -> str:
         """System prompt for insight generation"""
@@ -101,17 +197,20 @@ class InsightAgent:
     def _build_prompt(
         self,
         analysis_results: List[Dict[str, Any]],
-        data_context: Dict[str, Any]
+        data_context: Dict[str, Any],
+        user_query: str = None
     ) -> str:
-        """Build prompt with analysis results and context"""
+        """Build prompt with analysis results, context, and user query"""
         
         # Summarize analysis results
         results_summary = []
         for i, result in enumerate(analysis_results, 1):
             results_summary.append(f"Analysis {i}: {json.dumps(result, indent=2)}")
         
+        query_context = f"\n**USER QUESTION:** {user_query}\n**IMPORTANT:** Your insights MUST directly answer this question. Focus your analysis on what the user asked.\n" if user_query else ""
+        
         return f"""Based on the following analysis results, generate 2-4 key insights explaining what's happening with this Facebook Ads account.
-
+{query_context}
 **Data Context:**
 - Date Range: {data_context['summary']['date_range']['start']} to {data_context['summary']['date_range']['end']}
 - Total Spend: ${data_context['summary']['metrics']['total_spend']:,.2f}

@@ -2,8 +2,10 @@
 Evaluator Agent - Validates insights and checks confidence levels
 """
 import logging
+import time
 from typing import Dict, List, Any
 import numpy as np
+from src.utils.structured_logger import StructuredLogger
 
 logger = logging.getLogger(__name__)
 
@@ -13,9 +15,10 @@ class EvaluatorAgent:
     Validates insights with quantitative checks and confidence scoring
     """
     
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Dict[str, Any], structured_logger: StructuredLogger = None):
         self.confidence_threshold = config.get("thresholds", {}).get("confidence_min", 0.6)
         self.min_evidence_count = 2
+        self.logger = structured_logger or StructuredLogger()
         
     def evaluate_insights(
         self,
@@ -32,41 +35,102 @@ class EvaluatorAgent:
         Returns:
             Evaluation report with validated insights and quality scores
         """
-        logger.info(f"Evaluating {len(insights)} insights")
-        
-        validated_insights = []
-        rejected_insights = []
-        
-        for insight in insights:
-            validation_result = self._validate_insight(insight, analysis_results)
-            
-            if validation_result["is_valid"]:
-                # Enhance insight with validation metadata
-                insight["validation"] = validation_result
-                validated_insights.append(insight)
-            else:
-                insight["rejection_reason"] = validation_result["rejection_reason"]
-                rejected_insights.append(insight)
-        
-        # Calculate overall quality score
-        quality_score = self._calculate_quality_score(validated_insights)
-        
-        evaluation_report = {
-            "total_insights": len(insights),
-            "validated_count": len(validated_insights),
-            "rejected_count": len(rejected_insights),
-            "overall_quality": quality_score,
-            "validated_insights": validated_insights,
-            "rejected_insights": rejected_insights,
-            "pass_threshold": quality_score >= 0.7
-        }
-        
-        logger.info(
-            f"Evaluation complete: {len(validated_insights)}/{len(insights)} passed "
-            f"(quality score: {quality_score:.2f})"
+        # Log agent start
+        self.logger.log_agent_start(
+            "evaluator",
+            input_data={
+                "insight_count": len(insights),
+                "analysis_result_count": len(analysis_results),
+                "confidence_threshold": self.confidence_threshold
+            }
         )
         
-        return evaluation_report
+        start_time = time.time()
+        
+        try:
+            logger.info(f"Evaluating {len(insights)} insights")
+            
+            validated_insights = []
+            rejected_insights = []
+            
+            for insight in insights:
+                validation_result = self._validate_insight(insight, analysis_results)
+                
+                # Log individual validation
+                self.logger.log_validation(
+                    validation_type=f"insight_{insight.get('category', 'unknown')}",
+                    passed=validation_result["is_valid"],
+                    details={
+                        "insight_id": insight.get("id"),
+                        "checks": validation_result.get("checks", {}),
+                        "rejection_reason": validation_result.get("rejection_reason")
+                    }
+                )
+                
+                if validation_result["is_valid"]:
+                    # Enhance insight with validation metadata
+                    insight["validation"] = validation_result
+                    validated_insights.append(insight)
+                else:
+                    insight["rejection_reason"] = validation_result["rejection_reason"]
+                    rejected_insights.append(insight)
+            
+            # Calculate overall quality score
+            quality_score = self._calculate_quality_score(validated_insights)
+            
+            # Log quality metrics
+            self.logger.log_metric(
+                "evaluation_quality_score",
+                quality_score,
+                context={
+                    "validated_count": len(validated_insights),
+                    "rejected_count": len(rejected_insights),
+                    "pass_threshold": quality_score >= 0.7
+                }
+            )
+            
+            evaluation_report = {
+                "total_insights": len(insights),
+                "validated_count": len(validated_insights),
+                "rejected_count": len(rejected_insights),
+                "overall_quality": quality_score,
+                "validated_insights": validated_insights,
+                "rejected_insights": rejected_insights,
+                "pass_threshold": quality_score >= 0.7
+            }
+            
+            logger.info(
+                f"Evaluation complete: {len(validated_insights)}/{len(insights)} passed "
+                f"(quality score: {quality_score:.2f})"
+            )
+            
+            # Log completion
+            duration = time.time() - start_time
+            self.logger.log_agent_complete(
+                "evaluator",
+                output_data={
+                    "validated_count": len(validated_insights),
+                    "rejected_count": len(rejected_insights),
+                    "quality_score": quality_score,
+                    "passed_threshold": quality_score >= 0.7
+                },
+                duration_seconds=duration
+            )
+            
+            return evaluation_report
+            
+        except Exception as e:
+            # Log error
+            duration = time.time() - start_time
+            self.logger.log_agent_error(
+                "evaluator",
+                error=e,
+                context={
+                    "insight_count": len(insights),
+                    "duration_before_error": duration
+                }
+            )
+            raise
     
     def _validate_insight(
         self,
