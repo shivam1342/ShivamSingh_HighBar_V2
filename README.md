@@ -471,7 +471,7 @@ Metric validation      | None         | Full        | ✅ No crashes
 This is an assignment submission project. For evaluation purposes:
 
 - **Git Hygiene**: 3+ meaningful commits
-- **Release Tag**: `v1.0` on final version
+- **Release Tag**: `v2.0` on final version
 - **Self-Review PR**: Describes design choices and tradeoffs
 
 ## 📝 License
