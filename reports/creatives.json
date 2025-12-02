@@ -2,109 +2,109 @@
   {
     "campaign": "Women-Studio Spo-ts",
     "adset": "Adset-1 ATC",
-    "current_issue": "Zero clicks, CTR 0.0%",
+    "current_issue": "Zero CTR, potential creative fatigue",
     "insight_addressed": "ctr_issues",
     "creative_variations": [
       {
         "variation_id": "var_1",
         "creative_type": "UGC",
         "headline": "Real Women, Real Comfort",
-        "message": "Discover the secret to all-day comfort with our Studio Spo-ts collection. Join the thousands of women who've already made the switch!",
+        "message": "Discover why our studio sports undergarments are a game-changer for women on-the-go",
         "cta": "Shop Now",
-        "rationale": "Using social proof and customer testimonials to re-engage users and drive clicks",
-        "expected_improvement": "20-30% CTR increase"
+        "rationale": "Fresh UGC angle to address creative fatigue and showcase social proof",
+        "expected_improvement": "20-30% CTR lift"
       },
       {
         "variation_id": "var_2",
         "creative_type": "Video",
-        "headline": "The Comfort Difference",
-        "message": "See the difference our Studio Spo-ts collection can make in your daily life. From lounging to running errands, our undergarments have got you covered!",
+        "headline": "Move Freely, Live Fully",
+        "message": "Experience the comfort and flexibility of our studio sports undergarments",
         "cta": "Learn More",
-        "rationale": "Showcasing the product benefits and features through video to educate and engage users",
-        "expected_improvement": "15-25% CTR increase"
+        "rationale": "High-energy video creative to capture attention and showcase product benefits",
+        "expected_improvement": "30-40% CTR lift"
       },
       {
         "variation_id": "var_3",
         "creative_type": "Carousel",
-        "headline": "Spo-ts for Every Occasion",
-        "message": "Whether you're hitting the gym or just lounging around, our Studio Spo-ts collection has the perfect undergarments for you. Browse our collection now!",
+        "headline": "Studio Sports Undergarments: Designed for You",
+        "message": "Explore our collection of comfortable, high-quality undergarments for women",
         "cta": "Browse Collection",
-        "rationale": "Using carousel format to showcase variety and drive engagement",
-        "expected_improvement": "10-20% CTR increase"
+        "rationale": "Carousel creative to showcase variety and encourage exploration",
+        "expected_improvement": "25-35% CTR lift"
       }
     ],
-    "testing_strategy": "Launch all 3 variations simultaneously, $20/day each, rotate every 7 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $20/day each, rotate every 5 days"
   },
   {
     "campaign": "Men Premiu- Modal",
     "adset": "Adset-4 Retarget",
-    "current_issue": "Zero clicks, CTR 0.0%",
-    "insight_addressed": "creative_fatigue",
+    "current_issue": "Zero CTR, potential audience saturation",
+    "insight_addressed": "audience_saturation",
     "creative_variations": [
       {
         "variation_id": "var_4",
         "creative_type": "UGC",
-        "headline": "Upgrade Your Undergarments",
-        "message": "Don't settle for less. Our Premium Modal collection offers unparalleled comfort and quality. Join the thousands of men who've already upgraded!",
-        "cta": "Shop Now",
-        "rationale": "Using social proof and customer testimonials to re-engage retargeting audience",
-        "expected_improvement": "25-35% CTR increase"
+        "headline": "Join the Ranks of Comfortable Men",
+        "message": "Don't miss out on our premium modal undergarments - tried and loved by thousands",
+        "cta": "Complete Your Purchase",
+        "rationale": "Social proof angle to address audience saturation and encourage conversion",
+        "expected_improvement": "25-35% CTR lift"
       },
       {
         "variation_id": "var_5",
         "creative_type": "Image",
-        "headline": "The Art of Comfort",
-        "message": "Experience the difference our Premium Modal collection can make in your daily life. From the gym to the office, our undergarments have got you covered!",
-        "cta": "Learn More",
-        "rationale": "Showcasing the product benefits and features through high-quality images to educate and engage users",
-        "expected_improvement": "20-30% CTR increase"
+        "headline": "Upgrade Your Undergarments, Upgrade Your Life",
+        "message": "Experience the comfort and quality of our premium modal undergarments",
+        "cta": "Shop Now",
+        "rationale": "High-quality image creative to showcase product benefits and encourage upgrade",
+        "expected_improvement": "20-30% CTR lift"
       },
       {
         "variation_id": "var_6",
         "creative_type": "Video",
-        "headline": "The Science of Comfort",
-        "message": "Discover the technology and craftsmanship that goes into creating our Premium Modal collection. From moisture-wicking to breathability, our undergarments are designed to keep you comfortable all day!",
-        "cta": "Watch Now",
-        "rationale": "Using video to educate and engage users on the product features and benefits",
-        "expected_improvement": "15-25% CTR increase"
+        "headline": "The Comfort Revolution: Premium Modal Undergarments",
+        "message": "Discover the secret to all-day comfort and confidence",
+        "cta": "Learn More",
+        "rationale": "Engaging video creative to capture attention and showcase product benefits",
+        "expected_improvement": "30-40% CTR lift"
       }
     ],
-    "testing_strategy": "Launch all 3 variations simultaneously, $30/day each, rotate every 10 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $30/day each, rotate every 5 days"
   },
   {
     "campaign": "WOMEN_Cot-on_Classics",
     "adset": "Adset-2 WC",
-    "current_issue": "Zero clicks, CTR 0.0%",
-    "insight_addressed": "platform_performance",
+    "current_issue": "Zero CTR, potential creative fatigue",
+    "insight_addressed": "ctr_issues",
     "creative_variations": [
       {
         "variation_id": "var_7",
         "creative_type": "Carousel",
-        "headline": "Classic Comfort for the Modern Woman",
-        "message": "Discover our Cotton Classics collection, designed to keep you comfortable and stylish all day. Browse our collection now!",
+        "headline": "Timeless Comfort: Cotton Classics",
+        "message": "Explore our collection of comfortable, high-quality cotton undergarments",
         "cta": "Browse Collection",
-        "rationale": "Using carousel format to showcase variety and drive engagement on Facebook and Instagram",
-        "expected_improvement": "20-30% CTR increase"
+        "rationale": "Carousel creative to showcase variety and encourage exploration",
+        "expected_improvement": "25-35% CTR lift"
       },
       {
         "variation_id": "var_8",
-        "creative_type": "Image",
-        "headline": "Timeless Elegance",
-        "message": "Experience the comfort and quality of our Cotton Classics collection. From lounging to running errands, our undergarments have got you covered!",
+        "creative_type": "UGC",
+        "headline": "Real Women, Real Comfort",
+        "message": "Discover why our cotton classics undergarments are a favorite among women",
         "cta": "Shop Now",
-        "rationale": "Showcasing the product benefits and features through high-quality images to educate and engage users on Instagram",
-        "expected_improvement": "15-25% CTR increase"
+        "rationale": "Fresh UGC angle to address creative fatigue and showcase social proof",
+        "expected_improvement": "20-30% CTR lift"
       },
       {
         "variation_id": "var_9",
-        "creative_type": "UGC",
-        "headline": "Real Women, Real Comfort",
-        "message": "Join the thousands of women who've already discovered the comfort and quality of our Cotton Classics collection. Read their stories now!",
-        "cta": "Read Stories",
-        "rationale": "Using social proof and customer testimonials to re-engage users on Facebook",
-        "expected_improvement": "10-20% CTR increase"
+        "creative_type": "Image",
+        "headline": "Comfort That Never Goes Out of Style",
+        "message": "Experience the comfort and quality of our cotton classics undergarments",
+        "cta": "Learn More",
+        "rationale": "High-quality image creative to showcase product benefits and encourage exploration",
+        "expected_improvement": "25-35% CTR lift"
       }
     ],
-    "testing_strategy": "Launch all 3 variations simultaneously, $25/day each, rotate every 7 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $25/day each, rotate every 5 days"
   }
 ]

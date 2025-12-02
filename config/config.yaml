@@ -25,6 +25,22 @@ thresholds:
   confidence_min: 0.6
   quality_score_min: 0.7
   
+  evaluator:
+    min_evidence_count: 2
+    
+    # Adaptive rules: adjust based on data quality
+    adaptive:
+      # Confidence threshold adjustments
+      volatile_confidence_multiplier: 0.7   # Lower for volatile data: 0.6 → 0.42
+      stable_confidence_multiplier: 1.2     # Raise for stable data: 0.6 → 0.72
+      
+      # Quality threshold adjustments
+      volatile_quality_multiplier: 0.85     # Lower for volatile: 0.7 → 0.595
+      stable_quality_multiplier: 1.1        # Raise for stable: 0.7 → 0.77
+      
+      # Evidence requirements
+      volatile_extra_evidence: 1            # Require more evidence for volatile data
+  
   # Planner thresholds (adaptive)
   planner:
     default_underperformer_threshold: 0.01  # For CTR, CVR

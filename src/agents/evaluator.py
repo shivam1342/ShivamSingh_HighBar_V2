@@ -12,36 +12,71 @@ logger = logging.getLogger(__name__)
 
 class EvaluatorAgent:
     """
-    Validates insights with quantitative checks and confidence scoring
+    Validates insights with quantitative checks and adaptive confidence scoring
     """
     
     def __init__(self, config: Dict[str, Any], structured_logger: StructuredLogger = None):
-        self.confidence_threshold = config.get("thresholds", {}).get("confidence_min", 0.6)
-        self.min_evidence_count = 2
+        self.config = config
         self.logger = structured_logger or StructuredLogger()
+        
+        # Load base thresholds from config
+        thresholds = config.get("thresholds", {})
+        self.config_confidence_threshold = thresholds.get("confidence_min", 0.6)
+        self.config_quality_threshold = thresholds.get("quality_score_min", 0.7)
+        self.base_min_evidence_count = thresholds.get("evaluator", {}).get("min_evidence_count", 2)
+        
+        # Load adaptive rules
+        adaptive_config = thresholds.get("evaluator", {}).get("adaptive", {})
+        self.volatile_confidence_multiplier = adaptive_config.get("volatile_confidence_multiplier", 0.7)
+        self.stable_confidence_multiplier = adaptive_config.get("stable_confidence_multiplier", 1.2)
+        self.volatile_quality_multiplier = adaptive_config.get("volatile_quality_multiplier", 0.85)
+        self.stable_quality_multiplier = adaptive_config.get("stable_quality_multiplier", 1.1)
+        self.volatile_extra_evidence = adaptive_config.get("volatile_extra_evidence", 1)
         
     def evaluate_insights(
         self,
         insights: List[Dict[str, Any]],
-        analysis_results: List[Dict[str, Any]]
+        analysis_results: List[Dict[str, Any]],
+        data_quality: Dict[str, Any] = None
     ) -> Dict[str, Any]:
         """
-        Validate insights against data and confidence thresholds
+        Validate insights against data and adaptive confidence thresholds
         
         Args:
             insights: Generated insights from insight agent
             analysis_results: Raw analysis data for validation
+            data_quality: Data quality assessment from planner (for adaptive thresholds)
             
         Returns:
             Evaluation report with validated insights and quality scores
         """
+        # Calculate adaptive thresholds based on data quality
+        if data_quality:
+            confidence_threshold = self._calculate_adaptive_confidence_threshold(data_quality)
+            quality_pass_threshold = self._get_quality_pass_threshold(data_quality)
+            min_evidence_count = self._get_min_evidence_count(data_quality)
+            
+            logger.info(f"Data quality: {data_quality.get('quality_level')}, adapting thresholds")
+            logger.info(f"Confidence threshold: {confidence_threshold:.2f} (base: {self.config_confidence_threshold:.2f})")
+            logger.info(f"Quality pass threshold: {quality_pass_threshold:.2f} (base: {self.config_quality_threshold:.2f})")
+            logger.info(f"Min evidence required: {min_evidence_count} (base: {self.base_min_evidence_count})")
+        else:
+            # Fallback to static thresholds if no data quality provided
+            confidence_threshold = self.config_confidence_threshold
+            quality_pass_threshold = self.config_quality_threshold
+            min_evidence_count = self.base_min_evidence_count
+            logger.info("Using static thresholds (no data quality assessment available)")
+        
         # Log agent start
         self.logger.log_agent_start(
             "evaluator",
             input_data={
                 "insight_count": len(insights),
                 "analysis_result_count": len(analysis_results),
-                "confidence_threshold": self.confidence_threshold
+                "confidence_threshold": confidence_threshold,
+                "quality_pass_threshold": quality_pass_threshold,
+                "min_evidence_count": min_evidence_count,
+                "data_quality": data_quality.get("quality_level") if data_quality else "unknown"
             }
         )
         
@@ -54,7 +89,8 @@ class EvaluatorAgent:
             rejected_insights = []
             
             for insight in insights:
-                validation_result = self._validate_insight(insight, analysis_results)
+                validation_result = self._validate_insight(insight, analysis_results, 
+                                                          confidence_threshold, min_evidence_count)
                 
                 # Log individual validation
                 self.logger.log_validation(
@@ -85,7 +121,8 @@ class EvaluatorAgent:
                 context={
                     "validated_count": len(validated_insights),
                     "rejected_count": len(rejected_insights),
-                    "pass_threshold": quality_score >= 0.7
+                    "pass_threshold": quality_score >= quality_pass_threshold,
+                    "adaptive_threshold": quality_pass_threshold
                 }
             )
             
@@ -96,7 +133,12 @@ class EvaluatorAgent:
                 "overall_quality": quality_score,
                 "validated_insights": validated_insights,
                 "rejected_insights": rejected_insights,
-                "pass_threshold": quality_score >= 0.7
+                "pass_threshold": quality_score >= quality_pass_threshold,
+                "adaptive_thresholds": {
+                    "confidence": confidence_threshold,
+                    "quality": quality_pass_threshold,
+                    "min_evidence": min_evidence_count
+                }
             }
             
             logger.info(
@@ -112,7 +154,12 @@ class EvaluatorAgent:
                     "validated_count": len(validated_insights),
                     "rejected_count": len(rejected_insights),
                     "quality_score": quality_score,
-                    "passed_threshold": quality_score >= 0.7
+                    "passed_threshold": quality_score >= quality_pass_threshold,
+                    "adaptive_thresholds": {
+                        "confidence": confidence_threshold,
+                        "quality": quality_pass_threshold,
+                        "min_evidence": min_evidence_count
+                    }
                 },
                 duration_seconds=duration
             )
@@ -132,19 +179,84 @@ class EvaluatorAgent:
             )
             raise
     
+    def _calculate_adaptive_confidence_threshold(self, data_quality: Dict[str, Any]) -> float:
+        """
+        Calculate adaptive confidence threshold based on data quality
+        
+        Args:
+            data_quality: Data quality assessment from planner
+            
+        Returns:
+            Adapted confidence threshold
+        """
+        quality_level = data_quality.get("quality_level", "medium")
+        base_threshold = self.config_confidence_threshold
+        
+        if quality_level == "volatile":
+            # Lower threshold for volatile data (more lenient)
+            return base_threshold * self.volatile_confidence_multiplier
+        elif quality_level == "stable":
+            # Raise threshold for stable data (more strict)
+            return base_threshold * self.stable_confidence_multiplier
+        else:
+            # Medium variance: use default
+            return base_threshold
+    
+    def _get_quality_pass_threshold(self, data_quality: Dict[str, Any]) -> float:
+        """
+        Calculate adaptive quality pass threshold based on data quality
+        
+        Args:
+            data_quality: Data quality assessment from planner
+            
+        Returns:
+            Adapted quality pass threshold
+        """
+        quality_level = data_quality.get("quality_level", "medium")
+        base_threshold = self.config_quality_threshold
+        
+        if quality_level == "volatile":
+            # Lower threshold for volatile data
+            return base_threshold * self.volatile_quality_multiplier
+        elif quality_level == "stable":
+            # Raise threshold for stable data
+            return base_threshold * self.stable_quality_multiplier
+        else:
+            return base_threshold
+    
+    def _get_min_evidence_count(self, data_quality: Dict[str, Any]) -> int:
+        """
+        Get minimum evidence count requirement based on data quality
+        
+        Args:
+            data_quality: Data quality assessment from planner
+            
+        Returns:
+            Minimum evidence count required
+        """
+        quality_level = data_quality.get("quality_level", "medium")
+        
+        if quality_level == "volatile":
+            # Require more evidence for volatile data
+            return self.base_min_evidence_count + self.volatile_extra_evidence
+        else:
+            return self.base_min_evidence_count
+    
     def _validate_insight(
         self,
         insight: Dict[str, Any],
-        analysis_results: List[Dict[str, Any]]
+        analysis_results: List[Dict[str, Any]],
+        confidence_threshold: float,
+        min_evidence_count: int
     ) -> Dict[str, bool]:
         """Validate a single insight"""
         
         checks = {
             "has_hypothesis": bool(insight.get("hypothesis")),
-            "has_evidence": len(insight.get("evidence", [])) >= self.min_evidence_count,
+            "has_evidence": len(insight.get("evidence", [])) >= min_evidence_count,
             "has_confidence": "confidence" in insight,
             "confidence_in_range": 0.0 <= insight.get("confidence", 0) <= 1.0,
-            "meets_threshold": insight.get("confidence", 0) >= self.confidence_threshold,
+            "meets_threshold": insight.get("confidence", 0) >= confidence_threshold,
             "has_reasoning": bool(insight.get("reasoning")),
             "has_recommendation": bool(insight.get("recommendation")),
             "evidence_is_quantitative": self._check_quantitative_evidence(insight.get("evidence", []))
@@ -165,9 +277,9 @@ class EvaluatorAgent:
         rejection_reason = None
         if not is_valid:
             if not checks["meets_threshold"]:
-                rejection_reason = f"Confidence {insight.get('confidence', 0):.2f} below threshold {self.confidence_threshold}"
+                rejection_reason = f"Confidence {insight.get('confidence', 0):.2f} below threshold {confidence_threshold:.2f}"
             elif not checks["has_evidence"]:
-                rejection_reason = f"Insufficient evidence (need >= {self.min_evidence_count})"
+                rejection_reason = f"Insufficient evidence (need >= {min_evidence_count})"
             else:
                 rejection_reason = "Failed basic validation checks"
         

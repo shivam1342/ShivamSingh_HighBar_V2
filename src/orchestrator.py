@@ -85,6 +85,9 @@ class AgentOrchestrator:
             step2_start = time.time()
             raw_data = self.data_loader.df  # Pass raw DataFrame for CV calculation
             plan = self.planner.plan(user_query, data_summary, raw_data)
+            
+            # Get data quality assessment for evaluator (planner stores it)
+            data_quality = self.planner._assess_data_quality(raw_data, data_summary)
             logger.info(f"Step 2 completed in {time.time() - step2_start:.2f}s")
             
             # Step 3: Data agent executes subtasks
@@ -116,8 +119,8 @@ class AgentOrchestrator:
                 
                 insights = self.insight_agent.generate_insights(analysis_results, data_context, user_query)
                 
-                # Step 5: Evaluator validates insights
-                evaluation = self.evaluator.evaluate_insights(insights, analysis_results)
+                # Step 5: Evaluator validates insights (with data quality for adaptive thresholds)
+                evaluation = self.evaluator.evaluate_insights(insights, analysis_results, data_quality)
                 
                 # Check if we need to retry
                 if not self.evaluator.requires_retry(evaluation):

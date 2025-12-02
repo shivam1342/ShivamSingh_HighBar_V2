@@ -2,48 +2,15 @@
   {
     "id": "insight_1",
     "category": "ctr_issues",
-    "hypothesis": "CTR is low due to underperforming campaigns with zero clicks",
+    "hypothesis": "CTR is declining due to creative fatigue across all campaigns",
     "evidence": [
-      "Multiple campaigns have 0.0 CTR, including 'Women-Studio Spo-ts', 'Women Seamless Eve yday', and 'WOMEN_Cot-on_Classics'",
-      "These campaigns have significant spend, with 'WOMEN_Cot-on_Classics' spending $961.56",
-      "Despite low CTR, some campaigns still generate revenue, indicating potential for improvement"
-    ],
-    "confidence": 0.9,
-    "reasoning": "The presence of multiple campaigns with zero clicks suggests a potential issue with ad creative or targeting. Despite this, some campaigns still generate revenue, indicating that the issue may be specific to certain ad sets or targeting strategies.",
-    "recommendation": "Review ad creative and targeting for underperforming campaigns, and consider pausing or re-targeting these campaigns to improve overall CTR",
-    "validation": {
-      "is_valid": true,
-      "checks": {
-        "has_hypothesis": true,
-        "has_evidence": true,
-        "has_confidence": true,
-        "confidence_in_range": true,
-        "meets_threshold": true,
-        "has_reasoning": true,
-        "has_recommendation": true,
-        "evidence_is_quantitative": true,
-        "numerically_grounded": true
-      },
-      "rejection_reason": null,
-      "quality_factors": {
-        "completeness": 1.0,
-        "confidence": 0.9,
-        "evidence_strength": 0.6
-      }
-    }
-  },
-  {
-    "id": "insight_2",
-    "category": "creative_fatigue",
-    "hypothesis": "Creative fatigue may be contributing to declining CTR over time",
-    "evidence": [
-      "CTR has decreased by 6.16% over the last 89 days, according to Analysis 3",
-      "This decline is consistent across multiple days, suggesting a trend rather than a one-time anomaly",
-      "Analysis 2 shows that different creative types have varying CTR, with UGC and Image ads performing slightly better than Carousel and Video ads"
+      "Average CTR has decreased by 6.16% in the last 89 days",
+      "Recent average CTR (0.0126) is lower than previous average CTR (0.0135)",
+      "Top underperforming campaigns have 0.0 CTR, indicating a potential issue with ad creative"
     ],
     "confidence": 0.8,
-    "reasoning": "The decline in CTR over time, combined with varying performance across different creative types, suggests that creative fatigue may be a contributing factor. This could be due to ad fatigue, where users become desensitized to repeated ad creative, or due to a lack of fresh and engaging ad content.",
-    "recommendation": "Rotate ad creative regularly to combat fatigue, and consider testing new ad formats and messaging to re-engage users",
+    "reasoning": "The decline in CTR over time, combined with the low CTR of top underperforming campaigns, suggests that creative fatigue is a major contributor to the issue.",
+    "recommendation": "Refresh ad creative across all campaigns and test new images, videos, and carousels to improve CTR",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -66,17 +33,17 @@
     }
   },
   {
-    "id": "insight_3",
-    "category": "platform_performance",
-    "hypothesis": "Facebook and Instagram have similar CTR performance, but may require different optimization strategies",
+    "id": "insight_2",
+    "category": "audience_saturation",
+    "hypothesis": "Audience saturation is contributing to low CTR in retargeting campaigns",
     "evidence": [
-      "Analysis 4 shows that Facebook and Instagram have CTR of 0.0132 and 0.0121, respectively",
-      "Both platforms have significant spend and revenue, with Facebook spending $1,068,612.07 and Instagram spending $1,036,967.83",
-      "The slightly higher CTR on Facebook may indicate differences in user behavior or ad effectiveness between the two platforms"
+      "Retargeting campaigns have low CTR (0.0) and high spend ($499.5 and $289.52)",
+      "Impressions are high for retargeting campaigns, indicating potential audience saturation",
+      "ROAS for retargeting campaigns is lower than other campaigns (4.03 and 20.28), indicating decreased effectiveness"
     ],
     "confidence": 0.7,
-    "reasoning": "The similar CTR performance between Facebook and Instagram suggests that both platforms can be effective for advertising, but may require different optimization strategies. The slightly higher CTR on Facebook could indicate that Facebook users are more engaged with ads, or that Facebook's ad targeting options are more effective.",
-    "recommendation": "Monitor platform-specific performance and adjust optimization strategies accordingly, considering factors such as user behavior, ad targeting, and creative effectiveness",
+    "reasoning": "The low CTR and high spend of retargeting campaigns, combined with high impressions, suggest that audience saturation is a contributing factor.",
+    "recommendation": "Expand retargeting campaigns to lookalike audiences or pause underperforming retargeting campaigns to allocate budget more effectively",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -94,6 +61,72 @@
       "quality_factors": {
         "completeness": 1.0,
         "confidence": 0.7,
+        "evidence_strength": 0.6
+      }
+    }
+  },
+  {
+    "id": "insight_3",
+    "category": "platform_performance",
+    "hypothesis": "Facebook and Instagram have similar performance, but Instagram has a slightly lower CTR",
+    "evidence": [
+      "Facebook has a CTR of 0.0132, while Instagram has a CTR of 0.0121",
+      "Spend and revenue are similar across both platforms",
+      "ROAS is slightly higher on Facebook (5.97) compared to Instagram (5.68)"
+    ],
+    "confidence": 0.9,
+    "reasoning": "The similar performance across both platforms, with a slight decrease in CTR on Instagram, suggests that platform-specific optimization may be necessary.",
+    "recommendation": "Monitor platform performance closely and allocate budget accordingly, potentially shifting budget to Facebook if ROI is higher",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.9,
+        "evidence_strength": 0.6
+      }
+    }
+  },
+  {
+    "id": "insight_4",
+    "category": "creative_fatigue",
+    "hypothesis": "UGC and Image ad formats have higher CTR compared to Video and Carousel",
+    "evidence": [
+      "UGC has a CTR of 0.0134, while Image has a CTR of 0.0131",
+      "Video has a CTR of 0.0118, while Carousel has a CTR of 0.0128",
+      "ROAS is similar across all ad formats, indicating that CTR is a key differentiator"
+    ],
+    "confidence": 0.85,
+    "reasoning": "The higher CTR of UGC and Image ad formats, combined with similar ROAS across all formats, suggests that ad format may be a contributing factor to CTR.",
+    "recommendation": "Test UGC and Image ad formats in underperforming campaigns to improve CTR and allocate budget accordingly",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.85,
         "evidence_strength": 0.6
       }
     }
