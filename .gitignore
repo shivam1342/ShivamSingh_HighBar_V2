@@ -48,8 +48,14 @@ logs/*.log
 # reports/creatives.json
 # reports/report.md
 
+# Test files (local testing only)
+test_adaptive_planner.py
+test_adaptive_live.py
+
 # Documentation (private notes)
 STUDY.md
+P1_ANALYSIS.md
+WHATS_NEW_P1.md
 
 # Schema drift detection snapshots (generated at runtime)
 config/schemas/schema_detected_*.yaml

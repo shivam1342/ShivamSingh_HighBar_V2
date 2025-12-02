@@ -64,12 +64,23 @@ class SchemaValidator:
             # Try to find similar columns (renamed detection)
             suggestions = self._suggest_column_mappings(missing_columns, df.columns)
             
-            error_msg = f"Missing required columns: {missing_columns}"
-            validation_report["errors"].append(error_msg)
+            # Build comprehensive error message
+            error_msg = f"Schema validation failed: Missing required columns: {missing_columns}"
             
             if suggestions:
+                error_msg += "\n\n💡 Possible Solutions:"
+                for suggestion in suggestions:
+                    error_msg += f"\n   • {suggestion}"
+                error_msg += "\n\n🔧 Action Required: Update your CSV column names to match the schema."
                 validation_report["suggestions"].extend(suggestions)
                 logger.warning(f"Missing columns detected. Suggestions: {suggestions}")
+            else:
+                error_msg += f"\n\n❌ No similar columns found in CSV."
+                error_msg += f"\n📋 Expected columns: {list(self.schema.get('required_columns', {}).keys())}"
+                error_msg += f"\n📋 Actual columns: {list(df.columns)}"
+                error_msg += "\n\n🔧 Action Required: Check your CSV file and schema definition."
+            
+            validation_report["errors"].append(error_msg)
             
             raise SchemaError(
                 error_msg,
@@ -122,31 +133,63 @@ class SchemaValidator:
         actual_columns: List[str]
     ) -> List[str]:
         """
-        Suggest possible renamed columns using fuzzy matching
+        Suggest possible renamed columns using fuzzy matching + semantic keywords
         
         Returns suggestions like:
         "Column 'spend' missing. Did you mean 'ad_spend'? (similarity: 85%)"
+        "Column 'revenue' missing. Did you mean 'sales_amount'? (contains: 'amount' - likely revenue)"
         """
         suggestions = []
-        threshold = 0.6  # 60% similarity threshold
+        threshold = 0.3  # 30% similarity threshold (catches more potential renames)
+        
+        # Semantic keyword mappings for common column types
+        semantic_keywords = {
+            'revenue': ['sales', 'amount', 'income', 'earnings'],
+            'spend': ['cost', 'budget', 'expense'],
+            'clicks': ['click', 'tap'],
+            'impressions': ['impression', 'views', 'reach'],
+            'purchases': ['conversion', 'order', 'transaction', 'buy']
+        }
         
         for missing in missing_columns:
             best_match = None
             best_score = 0
+            match_reason = "similarity"
             
-            for actual in actual_columns:
-                # Calculate similarity ratio
-                score = SequenceMatcher(None, missing.lower(), actual.lower()).ratio()
-                
-                if score > best_score and score >= threshold:
-                    best_score = score
-                    best_match = actual
+            # Check 1: Semantic keyword matching (PRIORITIZE THIS)
+            if missing.lower() in semantic_keywords:
+                keywords = semantic_keywords[missing.lower()]
+                for actual in actual_columns:
+                    for keyword in keywords:
+                        if keyword in actual.lower():
+                            semantic_score = 0.9  # High score for semantic matches
+                            if semantic_score > best_score:
+                                best_score = semantic_score
+                                best_match = actual
+                                match_reason = f"contains '{keyword}' (likely {missing})"
+                                break
+            
+            # Check 2: Fuzzy string matching (fallback)
+            if best_score < 0.9:  # Only if no semantic match found
+                for actual in actual_columns:
+                    score = SequenceMatcher(None, missing.lower(), actual.lower()).ratio()
+                    
+                    if score > best_score and score >= threshold:
+                        best_score = score
+                        best_match = actual
+                        match_reason = "similarity"
             
             if best_match:
-                suggestions.append(
-                    f"Column '{missing}' missing. Did you mean '{best_match}'? "
-                    f"(similarity: {best_score * 100:.0f}%)"
-                )
+                if match_reason == "similarity":
+                    suggestions.append(
+                        f"Column '{missing}' missing. Did you mean '{best_match}'? "
+                        f"(similarity: {best_score * 100:.0f}%)"
+                    )
+                else:
+                    suggestions.append(
+                        f"Column '{missing}' missing. Did you mean '{best_match}'? "
+                        f"({match_reason})"
+                    )
         
         return suggestions
     

@@ -44,8 +44,8 @@ class AgentOrchestrator:
             sample_size=data_config.get("sample_size", 1000)
         )
         
-        # Initialize agents (pass structured logger)
-        self.planner = PlannerAgent(self.llm_client, self.logger)
+        # Initialize agents (pass structured logger and config)
+        self.planner = PlannerAgent(self.llm_client, config, self.logger)
         self.data_agent = DataAgent(self.data_loader, self.logger)
         self.insight_agent = InsightAgent(self.llm_client, self.logger)
         self.evaluator = EvaluatorAgent(config, self.logger)
@@ -81,9 +81,10 @@ class AgentOrchestrator:
             self.logger.log_data_summary("dataset_overview", data_summary)
             logger.info(f"Step 1 completed in {time.time() - step1_start:.2f}s")
             
-            # Step 2: Planner creates execution plan
+            # Step 2: Planner creates execution plan (with raw data for quality assessment)
             step2_start = time.time()
-            plan = self.planner.plan(user_query, data_summary)
+            raw_data = self.data_loader.df  # Pass raw DataFrame for CV calculation
+            plan = self.planner.plan(user_query, data_summary, raw_data)
             logger.info(f"Step 2 completed in {time.time() - step2_start:.2f}s")
             
             # Step 3: Data agent executes subtasks

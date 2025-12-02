@@ -21,9 +21,27 @@ data:
 
 # Agent Thresholds
 thresholds:
+  # Evaluator thresholds
   confidence_min: 0.6
+  quality_score_min: 0.7
+  
+  # Planner thresholds (adaptive)
+  planner:
+    default_underperformer_threshold: 0.01  # For CTR, CVR
+    default_roas_threshold: 1.0
+    
+    # Adaptive rules: adjust based on data quality
+    adaptive:
+      # When coefficient of variation (CV = std/mean) is high, lower threshold
+      high_variance_multiplier: 0.7   # Lower threshold by 30%
+      low_variance_multiplier: 1.2    # Raise threshold by 20%
+      
+      # CV thresholds to trigger adaptation
+      high_variance_cv: 0.5   # CV > 0.5 = high variance
+      low_variance_cv: 0.2    # CV < 0.2 = low variance
+  
+  # General analysis thresholds
   roas_change_threshold: 0.15
-  ctr_low_threshold: 0.01
   min_spend_for_analysis: 100
 
 # Output Configuration

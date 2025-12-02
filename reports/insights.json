@@ -1,15 +1,16 @@
 [
   {
     "id": "insight_1",
-    "category": "audience_saturation",
-    "hypothesis": "The campaigns are spending the most money but generating zero sales due to audience saturation and lack of effective targeting.",
+    "category": "ctr_issues",
+    "hypothesis": "CTR is low due to underperforming campaigns with zero clicks",
     "evidence": [
-      "Analysis 1 shows that the top underperforming campaigns have a high number of impressions but low or zero spend, indicating that the ads are not being shown to the right audience.",
-      "Analysis 2 shows that the spend on Facebook and Instagram is high, but the ROAS is low, indicating that the targeting may not be effective."
+      "Multiple campaigns have 0.0 CTR, including 'Women-Studio Spo-ts', 'Women Seamless Eve yday', and 'WOMEN_Cot-on_Classics'",
+      "These campaigns have significant spend, with 'WOMEN_Cot-on_Classics' spending $961.56",
+      "Despite low CTR, some campaigns still generate revenue, indicating potential for improvement"
     ],
-    "confidence": 0.7,
-    "reasoning": "The data suggests that the campaigns are not effectively targeting the right audience, leading to a high number of impressions but low or zero sales.",
-    "recommendation": "Review and adjust the targeting options for the campaigns to ensure that they are reaching the right audience. Consider using lookalike audiences or interest-based targeting to expand the reach.",
+    "confidence": 0.9,
+    "reasoning": "The presence of multiple campaigns with zero clicks suggests a potential issue with ad creative or targeting. Despite this, some campaigns still generate revenue, indicating that the issue may be specific to certain ad sets or targeting strategies.",
+    "recommendation": "Review ad creative and targeting for underperforming campaigns, and consider pausing or re-targeting these campaigns to improve overall CTR",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -26,54 +27,23 @@
       "rejection_reason": null,
       "quality_factors": {
         "completeness": 1.0,
-        "confidence": 0.7,
-        "evidence_strength": 0.4
+        "confidence": 0.9,
+        "evidence_strength": 0.6
       }
     }
   },
   {
     "id": "insight_2",
     "category": "creative_fatigue",
-    "hypothesis": "The campaigns are spending the most money but generating zero sales due to creative fatigue and lack of engaging ad content.",
+    "hypothesis": "Creative fatigue may be contributing to declining CTR over time",
     "evidence": [
-      "Analysis 3 shows that the spend on different creative types is high, but the ROAS is low, indicating that the ad content may not be engaging enough.",
-      "Analysis 1 shows that the top underperforming campaigns have a low CTR, indicating that the ad content is not resonating with the audience."
-    ],
-    "confidence": 0.6,
-    "reasoning": "The data suggests that the ad content may be suffering from creative fatigue, leading to a low CTR and ROAS.",
-    "recommendation": "Refresh the ad content and creatives to make them more engaging and relevant to the target audience. Consider using user-generated content or social proof to increase engagement.",
-    "validation": {
-      "is_valid": true,
-      "checks": {
-        "has_hypothesis": true,
-        "has_evidence": true,
-        "has_confidence": true,
-        "confidence_in_range": true,
-        "meets_threshold": true,
-        "has_reasoning": true,
-        "has_recommendation": true,
-        "evidence_is_quantitative": true,
-        "numerically_grounded": true
-      },
-      "rejection_reason": null,
-      "quality_factors": {
-        "completeness": 1.0,
-        "confidence": 0.6,
-        "evidence_strength": 0.4
-      }
-    }
-  },
-  {
-    "id": "insight_3",
-    "category": "budget_allocation",
-    "hypothesis": "The campaigns are spending the most money but generating zero sales due to inefficient budget allocation and lack of optimization.",
-    "evidence": [
-      "Analysis 4 shows that the spend is increasing over time, but the ROAS is not improving, indicating that the budget allocation may not be optimized.",
-      "Analysis 2 shows that the spend on Facebook and Instagram is high, but the ROAS is low, indicating that the budget allocation may not be effective."
+      "CTR has decreased by 6.16% over the last 89 days, according to Analysis 3",
+      "This decline is consistent across multiple days, suggesting a trend rather than a one-time anomaly",
+      "Analysis 2 shows that different creative types have varying CTR, with UGC and Image ads performing slightly better than Carousel and Video ads"
     ],
     "confidence": 0.8,
-    "reasoning": "The data suggests that the budget allocation may not be optimized, leading to inefficient spend and low ROAS.",
-    "recommendation": "Review and adjust the budget allocation to ensure that it is optimized for ROAS and revenue. Consider using automated bidding strategies or budget allocation tools to optimize the spend.",
+    "reasoning": "The decline in CTR over time, combined with varying performance across different creative types, suggests that creative fatigue may be a contributing factor. This could be due to ad fatigue, where users become desensitized to repeated ad creative, or due to a lack of fresh and engaging ad content.",
+    "recommendation": "Rotate ad creative regularly to combat fatigue, and consider testing new ad formats and messaging to re-engage users",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -91,7 +61,40 @@
       "quality_factors": {
         "completeness": 1.0,
         "confidence": 0.8,
-        "evidence_strength": 0.4
+        "evidence_strength": 0.6
+      }
+    }
+  },
+  {
+    "id": "insight_3",
+    "category": "platform_performance",
+    "hypothesis": "Facebook and Instagram have similar CTR performance, but may require different optimization strategies",
+    "evidence": [
+      "Analysis 4 shows that Facebook and Instagram have CTR of 0.0132 and 0.0121, respectively",
+      "Both platforms have significant spend and revenue, with Facebook spending $1,068,612.07 and Instagram spending $1,036,967.83",
+      "The slightly higher CTR on Facebook may indicate differences in user behavior or ad effectiveness between the two platforms"
+    ],
+    "confidence": 0.7,
+    "reasoning": "The similar CTR performance between Facebook and Instagram suggests that both platforms can be effective for advertising, but may require different optimization strategies. The slightly higher CTR on Facebook could indicate that Facebook users are more engaged with ads, or that Facebook's ad targeting options are more effective.",
+    "recommendation": "Monitor platform-specific performance and adjust optimization strategies accordingly, considering factors such as user behavior, ad targeting, and creative effectiveness",
+    "validation": {
+      "is_valid": true,
+      "checks": {
+        "has_hypothesis": true,
+        "has_evidence": true,
+        "has_confidence": true,
+        "confidence_in_range": true,
+        "meets_threshold": true,
+        "has_reasoning": true,
+        "has_recommendation": true,
+        "evidence_is_quantitative": true,
+        "numerically_grounded": true
+      },
+      "rejection_reason": null,
+      "quality_factors": {
+        "completeness": 1.0,
+        "confidence": 0.7,
+        "evidence_strength": 0.6
       }
     }
   }

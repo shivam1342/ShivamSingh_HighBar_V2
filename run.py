@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from src.utils.config import load_config, setup_logging
 from src.orchestrator import AgentOrchestrator
+from src.utils.exceptions import SchemaError, DataValidationError
 
 # Load environment variables from .env file
 load_dotenv()
@@ -58,6 +59,18 @@ def main():
         logger.info(f"📋 Logs: {config['outputs']['logs_dir']}/execution.jsonl")
         
         print("\n✅ Analysis complete! Check the reports/ directory for outputs.")
+        
+    except SchemaError as e:
+        logger.error(f"Schema validation failed: {e}")
+        print(f"\n❌ SCHEMA ERROR:\n{e}")
+        print("\n" + "="*80)
+        sys.exit(1)
+        
+    except DataValidationError as e:
+        logger.error(f"Data validation failed: {e}")
+        print(f"\n❌ DATA VALIDATION ERROR:\n{e}")
+        print("\n" + "="*80)
+        sys.exit(1)
         
     except FileNotFoundError as e:
         logger.error(f"Data file not found: {e}")

@@ -4,6 +4,7 @@ Planner Agent - Decomposes user query into actionable subtasks
 import json
 import logging
 import time
+import numpy as np
 from typing import Dict, List, Any
 from src.utils.llm import LLMClient
 from src.utils.structured_logger import StructuredLogger
@@ -14,20 +15,34 @@ logger = logging.getLogger(__name__)
 
 class PlannerAgent:
     """
-    Decomposes high-level queries into structured subtasks
+    Decomposes high-level queries into structured subtasks with adaptive thresholds
     """
     
-    def __init__(self, llm_client: LLMClient, structured_logger: StructuredLogger = None):
+    def __init__(self, llm_client: LLMClient, config: Dict[str, Any] = None, structured_logger: StructuredLogger = None):
         self.llm = llm_client
         self.logger = structured_logger or StructuredLogger()
+        self.config = config or {}
         
-    def plan(self, user_query: str, data_summary: Dict[str, Any]) -> List[Dict[str, Any]]:
+        # Load planner thresholds from config
+        planner_config = self.config.get("thresholds", {}).get("planner", {})
+        self.default_underperformer_threshold = planner_config.get("default_underperformer_threshold", 0.01)
+        self.default_roas_threshold = planner_config.get("default_roas_threshold", 1.0)
+        
+        # Load adaptive rules
+        adaptive_config = planner_config.get("adaptive", {})
+        self.high_variance_multiplier = adaptive_config.get("high_variance_multiplier", 0.7)
+        self.low_variance_multiplier = adaptive_config.get("low_variance_multiplier", 1.2)
+        self.high_variance_cv = adaptive_config.get("high_variance_cv", 0.5)
+        self.low_variance_cv = adaptive_config.get("low_variance_cv", 0.2)
+        
+    def plan(self, user_query: str, data_summary: Dict[str, Any], raw_data: Any = None) -> List[Dict[str, Any]]:
         """
-        Create execution plan from user query
+        Create execution plan from user query with adaptive thresholds
         
         Args:
             user_query: Natural language query from user
             data_summary: High-level dataset statistics
+            raw_data: Optional pandas DataFrame for data quality assessment
             
         Returns:
             List of subtasks with type and parameters
@@ -46,8 +61,14 @@ class PlannerAgent:
         try:
             logger.info(f"Planning for query: {user_query}")
             
+            # Assess data quality and adapt thresholds
+            data_quality = self._assess_data_quality(raw_data, data_summary)
+            adaptive_thresholds = self._adapt_thresholds(data_quality)
+            
+            logger.info(f"Data quality: {data_quality['quality_level']}, Adaptive thresholds: {adaptive_thresholds}")
+            
             system_prompt = self._get_system_prompt()
-            user_prompt = self._build_prompt(user_query, data_summary)
+            user_prompt = self._build_prompt(user_query, data_summary, adaptive_thresholds, data_quality)
             
             # Log LLM call
             llm_start = time.time()
@@ -76,7 +97,9 @@ class PlannerAgent:
                     "planner",
                     output_data={
                         "subtasks": subtasks,
-                        "subtask_count": len(subtasks)
+                        "subtask_count": len(subtasks),
+                        "data_quality": data_quality,
+                        "adaptive_thresholds": adaptive_thresholds
                     },
                     duration_seconds=duration
                 )
@@ -125,6 +148,118 @@ class PlannerAgent:
                 }
             )
             raise
+    
+    def _assess_data_quality(self, raw_data: Any, data_summary: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Assess data quality characteristics to inform adaptive threshold selection
+        
+        Args:
+            raw_data: pandas DataFrame (optional)
+            data_summary: Dataset statistics
+            
+        Returns:
+            Dictionary with quality metrics:
+            - variance_level: 'high', 'medium', 'low'
+            - cv_values: Coefficient of variation for key metrics
+            - sample_size: Number of campaigns/data points
+            - quality_level: Overall assessment
+        """
+        quality = {
+            "variance_level": "medium",
+            "cv_values": {},
+            "sample_size": data_summary.get("campaigns", {}).get("count", 0),
+            "quality_level": "medium"
+        }
+        
+        # If raw data available, calculate actual CV
+        if raw_data is not None:
+            try:
+                # Calculate coefficient of variation for key metrics
+                for metric in ['ctr', 'roas', 'cvr']:
+                    if metric in raw_data.columns:
+                        values = raw_data[metric].dropna()
+                        if len(values) > 0 and values.mean() != 0:
+                            cv = values.std() / values.mean()
+                            quality["cv_values"][metric] = cv
+                
+                # Determine variance level based on average CV
+                if quality["cv_values"]:
+                    avg_cv = np.mean(list(quality["cv_values"].values()))
+                    
+                    if avg_cv > self.high_variance_cv:
+                        quality["variance_level"] = "high"
+                    elif avg_cv < self.low_variance_cv:
+                        quality["variance_level"] = "low"
+                    else:
+                        quality["variance_level"] = "medium"
+                        
+            except Exception as e:
+                logger.warning(f"Could not calculate CV from raw data: {e}")
+        
+        # Use data summary as fallback
+        else:
+            # Heuristic: if small sample or large metric spread, assume high variance
+            campaign_count = quality["sample_size"]
+            avg_roas = data_summary.get("metrics", {}).get("avg_roas", 0)
+            
+            if campaign_count < 10:
+                quality["variance_level"] = "high"
+            elif avg_roas < 0.5 or avg_roas > 5.0:
+                quality["variance_level"] = "high"
+            else:
+                quality["variance_level"] = "medium"
+        
+        # Set overall quality level
+        if quality["variance_level"] == "high":
+            quality["quality_level"] = "volatile"
+        elif quality["variance_level"] == "low" and quality["sample_size"] > 50:
+            quality["quality_level"] = "stable"
+        else:
+            quality["quality_level"] = "medium"
+            
+        return quality
+    
+    def _adapt_thresholds(self, data_quality: Dict[str, Any]) -> Dict[str, float]:
+        """
+        Adapt thresholds based on data quality assessment
+        
+        Args:
+            data_quality: Output from _assess_data_quality
+            
+        Returns:
+            Dictionary of adapted thresholds for different metrics
+        """
+        variance_level = data_quality["variance_level"]
+        
+        # Start with defaults
+        thresholds = {
+            "ctr_threshold": self.default_underperformer_threshold,
+            "cvr_threshold": self.default_underperformer_threshold,
+            "roas_threshold": self.default_roas_threshold
+        }
+        
+        # Adapt based on variance
+        if variance_level == "high":
+            # High variance: LOWER thresholds (more lenient, catch more candidates)
+            multiplier = self.high_variance_multiplier
+            logger.info(f"High variance detected, lowering thresholds by {(1-multiplier)*100:.0f}%")
+            
+        elif variance_level == "low":
+            # Low variance: RAISE thresholds (more strict, filter out noise)
+            multiplier = self.low_variance_multiplier
+            logger.info(f"Low variance detected, raising thresholds by {(multiplier-1)*100:.0f}%")
+            
+        else:
+            # Medium variance: use defaults
+            multiplier = 1.0
+            logger.info("Medium variance, using default thresholds")
+        
+        # Apply multiplier
+        thresholds["ctr_threshold"] *= multiplier
+        thresholds["cvr_threshold"] *= multiplier
+        thresholds["roas_threshold"] = self.default_roas_threshold / multiplier if multiplier != 1.0 else self.default_roas_threshold
+        
+        return thresholds
     
     def _get_system_prompt(self) -> str:
         """System prompt defining planner role and output format"""
@@ -179,8 +314,9 @@ class PlannerAgent:
 - Use ONLY metrics from the list above
 - Set reasonable parameters based on the data summary"""
 
-    def _build_prompt(self, user_query: str, data_summary: Dict[str, Any]) -> str:
-        """Build prompt with query and context"""
+    def _build_prompt(self, user_query: str, data_summary: Dict[str, Any], 
+                      adaptive_thresholds: Dict[str, float], data_quality: Dict[str, Any]) -> str:
+        """Build prompt with query, context, and adaptive thresholds"""
         return f"""User Query: "{user_query}"
 
 Dataset Context:
@@ -190,16 +326,25 @@ Dataset Context:
 - Average ROAS: {data_summary['metrics']['avg_roas']:.2f}
 - Average CTR: {data_summary['metrics']['avg_ctr']:.2%}
 
+Data Quality Assessment:
+- Variance Level: {data_quality['quality_level']}
+- Sample Size: {data_quality['sample_size']} campaigns
+
+Adaptive Thresholds (adjusted for data characteristics):
+- CTR Threshold: {adaptive_thresholds['ctr_threshold']:.4f}
+- CVR Threshold: {adaptive_thresholds['cvr_threshold']:.4f}
+- ROAS Threshold: {adaptive_thresholds['roas_threshold']:.2f}
+
 Available Dimensions:
 - Creative Types: {list(data_summary['dimensions']['creative_types'].keys())}
 - Platforms: {list(data_summary['dimensions']['platforms'].keys())}
 - Countries: {list(data_summary['dimensions']['countries'].keys())}
 
-Generate a structured plan with 2-4 subtasks to answer this query. Output ONLY valid JSON, no other text."""
+Generate a structured plan with 2-4 subtasks to answer this query. Use the adaptive thresholds above when setting parameters for underperformer identification. Output ONLY valid JSON, no other text."""
 
     def _get_default_plan(self) -> List[Dict[str, Any]]:
-        """Fallback plan if LLM fails"""
-        logger.warning("Using default fallback plan")
+        """Fallback plan if LLM fails - uses config-driven thresholds"""
+        logger.warning("Using default fallback plan with config-driven thresholds")
         return [
             {
                 "task_id": "1",
@@ -211,6 +356,6 @@ Generate a structured plan with 2-4 subtasks to answer this query. Output ONLY v
                 "task_id": "2",
                 "task_type": "identify_underperformers",
                 "description": "Find campaigns with low CTR",
-                "parameters": {"metric": "ctr", "threshold": 0.01}
+                "parameters": {"metric": "ctr", "threshold": self.default_underperformer_threshold}
             }
         ]

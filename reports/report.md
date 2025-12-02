@@ -1,7 +1,7 @@
 # Facebook Ads Performance Analysis Report
 
-**Generated:** 2025-12-01T23:44:08.223033  
-**Query:** Which campaigns are spending the most money but generating zero sales?
+**Generated:** 2025-12-03T00:32:36.460855  
+**Query:** Show me underperforming campaigns with low CTR
 
 ---
 
@@ -11,130 +11,59 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 ## Key Insights
 
-### 1. The campaigns are spending the most money but generating zero sales due to audience saturation and lack of effective targeting.
+### 1. CTR is low due to underperforming campaigns with zero clicks
 
-**Confidence:** 70%  
-**Category:** audience_saturation
+**Confidence:** 90%  
+**Category:** ctr_issues
 
 **Evidence:**
-- Analysis 1 shows that the top underperforming campaigns have a high number of impressions but low or zero spend, indicating that the ads are not being shown to the right audience.
-- Analysis 2 shows that the spend on Facebook and Instagram is high, but the ROAS is low, indicating that the targeting may not be effective.
+- Multiple campaigns have 0.0 CTR, including 'Women-Studio Spo-ts', 'Women Seamless Eve yday', and 'WOMEN_Cot-on_Classics'
+- These campaigns have significant spend, with 'WOMEN_Cot-on_Classics' spending $961.56
+- Despite low CTR, some campaigns still generate revenue, indicating potential for improvement
 
-**Reasoning:** The data suggests that the campaigns are not effectively targeting the right audience, leading to a high number of impressions but low or zero sales.
+**Reasoning:** The presence of multiple campaigns with zero clicks suggests a potential issue with ad creative or targeting. Despite this, some campaigns still generate revenue, indicating that the issue may be specific to certain ad sets or targeting strategies.
 
-**Recommendation:** Review and adjust the targeting options for the campaigns to ensure that they are reaching the right audience. Consider using lookalike audiences or interest-based targeting to expand the reach.
+**Recommendation:** Review ad creative and targeting for underperforming campaigns, and consider pausing or re-targeting these campaigns to improve overall CTR
 
 ---
 
-### 2. The campaigns are spending the most money but generating zero sales due to creative fatigue and lack of engaging ad content.
+### 2. Creative fatigue may be contributing to declining CTR over time
 
-**Confidence:** 60%  
+**Confidence:** 80%  
 **Category:** creative_fatigue
 
 **Evidence:**
-- Analysis 3 shows that the spend on different creative types is high, but the ROAS is low, indicating that the ad content may not be engaging enough.
-- Analysis 1 shows that the top underperforming campaigns have a low CTR, indicating that the ad content is not resonating with the audience.
+- CTR has decreased by 6.16% over the last 89 days, according to Analysis 3
+- This decline is consistent across multiple days, suggesting a trend rather than a one-time anomaly
+- Analysis 2 shows that different creative types have varying CTR, with UGC and Image ads performing slightly better than Carousel and Video ads
 
-**Reasoning:** The data suggests that the ad content may be suffering from creative fatigue, leading to a low CTR and ROAS.
+**Reasoning:** The decline in CTR over time, combined with varying performance across different creative types, suggests that creative fatigue may be a contributing factor. This could be due to ad fatigue, where users become desensitized to repeated ad creative, or due to a lack of fresh and engaging ad content.
 
-**Recommendation:** Refresh the ad content and creatives to make them more engaging and relevant to the target audience. Consider using user-generated content or social proof to increase engagement.
+**Recommendation:** Rotate ad creative regularly to combat fatigue, and consider testing new ad formats and messaging to re-engage users
 
 ---
 
-### 3. The campaigns are spending the most money but generating zero sales due to inefficient budget allocation and lack of optimization.
+### 3. Facebook and Instagram have similar CTR performance, but may require different optimization strategies
 
-**Confidence:** 80%  
-**Category:** budget_allocation
+**Confidence:** 70%  
+**Category:** platform_performance
 
 **Evidence:**
-- Analysis 4 shows that the spend is increasing over time, but the ROAS is not improving, indicating that the budget allocation may not be optimized.
-- Analysis 2 shows that the spend on Facebook and Instagram is high, but the ROAS is low, indicating that the budget allocation may not be effective.
+- Analysis 4 shows that Facebook and Instagram have CTR of 0.0132 and 0.0121, respectively
+- Both platforms have significant spend and revenue, with Facebook spending $1,068,612.07 and Instagram spending $1,036,967.83
+- The slightly higher CTR on Facebook may indicate differences in user behavior or ad effectiveness between the two platforms
 
-**Reasoning:** The data suggests that the budget allocation may not be optimized, leading to inefficient spend and low ROAS.
+**Reasoning:** The similar CTR performance between Facebook and Instagram suggests that both platforms can be effective for advertising, but may require different optimization strategies. The slightly higher CTR on Facebook could indicate that Facebook users are more engaged with ads, or that Facebook's ad targeting options are more effective.
 
-**Recommendation:** Review and adjust the budget allocation to ensure that it is optimized for ROAS and revenue. Consider using automated bidding strategies or budget allocation tools to optimize the spend.
+**Recommendation:** Monitor platform-specific performance and adjust optimization strategies accordingly, considering factors such as user behavior, ad targeting, and creative effectiveness
 
 ---
 
 ## Creative Recommendations
 
-### Campaign: MEN_Signa ure_Soft
+### Campaign: Women-Studio Spo-ts
 
-**Current Issue:** Audience saturation and lack of effective targeting
-
-**New Creative Variations:**
-
-#### Variation var_1
-
-- **Type:** UGC
-- **Headline:** Real People, Real Comfort
-- **Message:** Discover why 9 out of 10 customers prefer our Signa ure Soft undergarments for their comfort and quality
-- **CTA:** Explore Now
-- **Rationale:** Using social proof and user-generated content to increase engagement and appeal to a broader audience
-- **Expected Impact:** 20-30% increase in CTR
-
-#### Variation var_2
-
-- **Type:** Video
-- **Headline:** The Comfort Revolution
-- **Message:** Join the thousands of men who have already made the switch to our ultra-soft and breathable undergarments
-- **CTA:** Learn More
-- **Rationale:** Using video content to showcase the benefits and features of the product and appeal to a wider audience
-- **Expected Impact:** 25-35% increase in CTR
-
-#### Variation var_3
-
-- **Type:** Carousel
-- **Headline:** Comfort That Speaks For Itself
-- **Message:** Check out what our satisfied customers have to say about our Signa ure Soft undergarments
-- **CTA:** Read Reviews
-- **Rationale:** Using carousel ads to showcase multiple customer testimonials and increase social proof
-- **Expected Impact:** 30-40% increase in CTR
-
-**Testing Strategy:** Launch all three variations simultaneously, with a budget allocation of $50 per day for each variation, and rotate every 7 days
-
----
-
-### Campaign: Men ComfortMax Lunch
-
-**Current Issue:** Creative fatigue and lack of engaging ad content
-
-**New Creative Variations:**
-
-#### Variation var_1
-
-- **Type:** UGC
-- **Headline:** Still Thinking About ComfortMax?
-- **Message:** Join the thousands of men who have already experienced the comfort and quality of our ComfortMax undergarments
-- **CTA:** Shop Now
-- **Rationale:** Using social proof and user-generated content to increase engagement and appeal to a broader audience
-- **Expected Impact:** 25-35% increase in CTR
-
-#### Variation var_2
-
-- **Type:** Video
-- **Headline:** The ComfortMax Difference
-- **Message:** Discover what sets our ComfortMax undergarments apart from the rest and why they're the perfect choice for comfort-seeking men
-- **CTA:** Learn More
-- **Rationale:** Using video content to showcase the unique features and benefits of the product
-- **Expected Impact:** 30-40% increase in CTR
-
-#### Variation var_3
-
-- **Type:** Image
-- **Headline:** ComfortMax: The Ultimate Choice
-- **Message:** Experience the comfort, quality, and style of our ComfortMax undergarments, designed specifically for the modern man
-- **CTA:** Explore Now
-- **Rationale:** Using high-quality images to showcase the product and appeal to a wider audience
-- **Expected Impact:** 20-30% increase in CTR
-
-**Testing Strategy:** Launch all three variations simultaneously, with a budget allocation of $50 per day for each variation, and rotate every 7 days
-
----
-
-### Campaign: WOMEN  Seamless- Everyday
-
-**Current Issue:** Inefficient budget allocation and lack of optimization
+**Current Issue:** Zero clicks, CTR 0.0%
 
 **New Creative Variations:**
 
@@ -142,30 +71,104 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 - **Type:** UGC
 - **Headline:** Real Women, Real Comfort
-- **Message:** Discover why our Seamless- Everyday undergarments are the perfect choice for comfort-seeking women
+- **Message:** Discover the secret to all-day comfort with our Studio Spo-ts collection. Join the thousands of women who've already made the switch!
 - **CTA:** Shop Now
-- **Rationale:** Using social proof and user-generated content to increase engagement and appeal to a broader audience
-- **Expected Impact:** 20-30% increase in CTR
+- **Rationale:** Using social proof and customer testimonials to re-engage users and drive clicks
+- **Expected Impact:** 20-30% CTR increase
 
 #### Variation var_2
 
 - **Type:** Video
-- **Headline:** The Seamless- Everyday Difference
-- **Message:** Learn how our Seamless- Everyday undergarments can help you feel confident and comfortable all day long
+- **Headline:** The Comfort Difference
+- **Message:** See the difference our Studio Spo-ts collection can make in your daily life. From lounging to running errands, our undergarments have got you covered!
 - **CTA:** Learn More
-- **Rationale:** Using video content to showcase the benefits and features of the product
-- **Expected Impact:** 25-35% increase in CTR
+- **Rationale:** Showcasing the product benefits and features through video to educate and engage users
+- **Expected Impact:** 15-25% CTR increase
 
 #### Variation var_3
 
 - **Type:** Carousel
-- **Headline:** Seamless- Everyday: The Ultimate Choice
-- **Message:** Check out what our satisfied customers have to say about our Seamless- Everyday undergarments
-- **CTA:** Read Reviews
-- **Rationale:** Using carousel ads to showcase multiple customer testimonials and increase social proof
-- **Expected Impact:** 30-40% increase in CTR
+- **Headline:** Spo-ts for Every Occasion
+- **Message:** Whether you're hitting the gym or just lounging around, our Studio Spo-ts collection has the perfect undergarments for you. Browse our collection now!
+- **CTA:** Browse Collection
+- **Rationale:** Using carousel format to showcase variety and drive engagement
+- **Expected Impact:** 10-20% CTR increase
 
-**Testing Strategy:** Launch all three variations simultaneously, with a budget allocation of $50 per day for each variation, and rotate every 7 days. Use automated bidding strategies to optimize for ROAS and revenue
+**Testing Strategy:** Launch all 3 variations simultaneously, $20/day each, rotate every 7 days
+
+---
+
+### Campaign: Men Premiu- Modal
+
+**Current Issue:** Zero clicks, CTR 0.0%
+
+**New Creative Variations:**
+
+#### Variation var_4
+
+- **Type:** UGC
+- **Headline:** Upgrade Your Undergarments
+- **Message:** Don't settle for less. Our Premium Modal collection offers unparalleled comfort and quality. Join the thousands of men who've already upgraded!
+- **CTA:** Shop Now
+- **Rationale:** Using social proof and customer testimonials to re-engage retargeting audience
+- **Expected Impact:** 25-35% CTR increase
+
+#### Variation var_5
+
+- **Type:** Image
+- **Headline:** The Art of Comfort
+- **Message:** Experience the difference our Premium Modal collection can make in your daily life. From the gym to the office, our undergarments have got you covered!
+- **CTA:** Learn More
+- **Rationale:** Showcasing the product benefits and features through high-quality images to educate and engage users
+- **Expected Impact:** 20-30% CTR increase
+
+#### Variation var_6
+
+- **Type:** Video
+- **Headline:** The Science of Comfort
+- **Message:** Discover the technology and craftsmanship that goes into creating our Premium Modal collection. From moisture-wicking to breathability, our undergarments are designed to keep you comfortable all day!
+- **CTA:** Watch Now
+- **Rationale:** Using video to educate and engage users on the product features and benefits
+- **Expected Impact:** 15-25% CTR increase
+
+**Testing Strategy:** Launch all 3 variations simultaneously, $30/day each, rotate every 10 days
+
+---
+
+### Campaign: WOMEN_Cot-on_Classics
+
+**Current Issue:** Zero clicks, CTR 0.0%
+
+**New Creative Variations:**
+
+#### Variation var_7
+
+- **Type:** Carousel
+- **Headline:** Classic Comfort for the Modern Woman
+- **Message:** Discover our Cotton Classics collection, designed to keep you comfortable and stylish all day. Browse our collection now!
+- **CTA:** Browse Collection
+- **Rationale:** Using carousel format to showcase variety and drive engagement on Facebook and Instagram
+- **Expected Impact:** 20-30% CTR increase
+
+#### Variation var_8
+
+- **Type:** Image
+- **Headline:** Timeless Elegance
+- **Message:** Experience the comfort and quality of our Cotton Classics collection. From lounging to running errands, our undergarments have got you covered!
+- **CTA:** Shop Now
+- **Rationale:** Showcasing the product benefits and features through high-quality images to educate and engage users on Instagram
+- **Expected Impact:** 15-25% CTR increase
+
+#### Variation var_9
+
+- **Type:** UGC
+- **Headline:** Real Women, Real Comfort
+- **Message:** Join the thousands of women who've already discovered the comfort and quality of our Cotton Classics collection. Read their stories now!
+- **CTA:** Read Stories
+- **Rationale:** Using social proof and customer testimonials to re-engage users on Facebook
+- **Expected Impact:** 10-20% CTR increase
+
+**Testing Strategy:** Launch all 3 variations simultaneously, $25/day each, rotate every 7 days
 
 ---
 
@@ -173,7 +176,7 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 - **Total Insights Generated:** 3
 - **Validated Insights:** 3
-- **Quality Score:** 0.73/1.00
+- **Quality Score:** 0.82/1.00
 - **Evaluation Status:** ✅ Passed
 
 ---
