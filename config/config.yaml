@@ -21,10 +21,51 @@ data:
 
 # Agent Thresholds
 thresholds:
-  # Evaluator thresholds
+  # Global defaults (lowest priority)
   confidence_min: 0.6
   quality_score_min: 0.7
+  roas_change_threshold: 0.15
+  min_spend_for_analysis: 100
   
+  # Per-metric defaults (override global)
+  # Priority: campaign-specific > metric-specific > adaptive > global
+  metrics:
+    ctr:
+      default: 0.01
+      high_performance_threshold: 0.05   # Top performers
+      low_performance_threshold: 0.005   # Bottom performers
+    
+    cvr:
+      default: 0.02
+      high_performance_threshold: 0.10
+      low_performance_threshold: 0.01
+    
+    roas:
+      default: 1.0
+      high_performance_threshold: 2.5
+      low_performance_threshold: 0.5
+  
+  # Per-campaign overrides (highest priority)
+  # Example usage: different standards for different campaign types
+  campaigns:
+    # Uncomment and customize for your campaigns:
+    # premium_brand_campaign:
+    #   ctr: 0.025    # Premium brands expect higher CTR
+    #   roas: 2.0     # Higher ROAS required
+    # 
+    # clearance_campaign:
+    #   ctr: 0.008    # Clearance can have lower CTR
+    #   roas: 0.8     # Lower ROAS acceptable
+  
+  # Historical data-driven thresholds (auto-calculated)
+  historical:
+    enabled: true
+    lookback_days: 30      # Analyze last 30 days
+    percentile: 25         # Bottom 25% = underperformers
+    min_samples: 100       # Require at least 100 data points
+    cache_duration_hours: 24  # Cache for 24 hours
+  
+  # Evaluator thresholds
   evaluator:
     min_evidence_count: 2
     
@@ -55,10 +96,6 @@ thresholds:
       # CV thresholds to trigger adaptation
       high_variance_cv: 0.5   # CV > 0.5 = high variance
       low_variance_cv: 0.2    # CV < 0.2 = low variance
-  
-  # General analysis thresholds
-  roas_change_threshold: 0.15
-  min_spend_for_analysis: 100
 
 # Output Configuration
 outputs:

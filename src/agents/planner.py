@@ -9,6 +9,7 @@ from typing import Dict, List, Any
 from src.utils.llm import LLMClient
 from src.utils.structured_logger import StructuredLogger
 from src.utils.exceptions import JSONParseError
+from src.utils.threshold_manager import ThresholdManager
 
 logger = logging.getLogger(__name__)
 
@@ -23,15 +24,12 @@ class PlannerAgent:
         self.logger = structured_logger or StructuredLogger()
         self.config = config or {}
         
-        # Load planner thresholds from config
-        planner_config = self.config.get("thresholds", {}).get("planner", {})
-        self.default_underperformer_threshold = planner_config.get("default_underperformer_threshold", 0.01)
-        self.default_roas_threshold = planner_config.get("default_roas_threshold", 1.0)
+        # Initialize centralized threshold manager
+        self.threshold_mgr = ThresholdManager(self.config)
         
-        # Load adaptive rules
+        # Load adaptive config (for CV thresholds)
+        planner_config = self.config.get("thresholds", {}).get("planner", {})
         adaptive_config = planner_config.get("adaptive", {})
-        self.high_variance_multiplier = adaptive_config.get("high_variance_multiplier", 0.7)
-        self.low_variance_multiplier = adaptive_config.get("low_variance_multiplier", 1.2)
         self.high_variance_cv = adaptive_config.get("high_variance_cv", 0.5)
         self.low_variance_cv = adaptive_config.get("low_variance_cv", 0.2)
         
@@ -221,7 +219,7 @@ class PlannerAgent:
     
     def _adapt_thresholds(self, data_quality: Dict[str, Any]) -> Dict[str, float]:
         """
-        Adapt thresholds based on data quality assessment
+        Adapt thresholds based on data quality assessment using ThresholdManager
         
         Args:
             data_quality: Output from _assess_data_quality
@@ -231,33 +229,34 @@ class PlannerAgent:
         """
         variance_level = data_quality["variance_level"]
         
-        # Start with defaults
-        thresholds = {
-            "ctr_threshold": self.default_underperformer_threshold,
-            "cvr_threshold": self.default_underperformer_threshold,
-            "roas_threshold": self.default_roas_threshold
+        # Map variance_level to data_quality string for ThresholdManager
+        quality_mapping = {
+            "high": "volatile",
+            "low": "stable",
+            "medium": "medium"
         }
+        quality_str = quality_mapping.get(variance_level, "medium")
         
-        # Adapt based on variance
-        if variance_level == "high":
-            # High variance: LOWER thresholds (more lenient, catch more candidates)
-            multiplier = self.high_variance_multiplier
-            logger.info(f"High variance detected, lowering thresholds by {(1-multiplier)*100:.0f}%")
-            
-        elif variance_level == "low":
-            # Low variance: RAISE thresholds (more strict, filter out noise)
-            multiplier = self.low_variance_multiplier
-            logger.info(f"Low variance detected, raising thresholds by {(multiplier-1)*100:.0f}%")
-            
-        else:
-            # Medium variance: use defaults
-            multiplier = 1.0
-            logger.info("Medium variance, using default thresholds")
+        logger.info(f"Adapting thresholds for variance_level='{variance_level}' (quality='{quality_str}')")
         
-        # Apply multiplier
-        thresholds["ctr_threshold"] *= multiplier
-        thresholds["cvr_threshold"] *= multiplier
-        thresholds["roas_threshold"] = self.default_roas_threshold / multiplier if multiplier != 1.0 else self.default_roas_threshold
+        # Use ThresholdManager with priority resolution and adaptive multipliers
+        thresholds = {
+            "ctr_threshold": self.threshold_mgr.get_threshold(
+                metric="ctr",
+                data_quality=quality_str,
+                use_adaptive=True
+            ),
+            "cvr_threshold": self.threshold_mgr.get_threshold(
+                metric="cvr",
+                data_quality=quality_str,
+                use_adaptive=True
+            ),
+            "roas_threshold": self.threshold_mgr.get_threshold(
+                metric="roas",
+                data_quality=quality_str,
+                use_adaptive=True
+            )
+        }
         
         return thresholds
     
@@ -343,8 +342,12 @@ Available Dimensions:
 Generate a structured plan with 2-4 subtasks to answer this query. Use the adaptive thresholds above when setting parameters for underperformer identification. Output ONLY valid JSON, no other text."""
 
     def _get_default_plan(self) -> List[Dict[str, Any]]:
-        """Fallback plan if LLM fails - uses config-driven thresholds"""
-        logger.warning("Using default fallback plan with config-driven thresholds")
+        """Fallback plan if LLM fails - uses ThresholdManager"""
+        logger.warning("Using default fallback plan with ThresholdManager")
+        
+        # Get threshold from ThresholdManager (no adaptive, just base)
+        ctr_threshold = self.threshold_mgr.get_threshold(metric="ctr", use_adaptive=False)
+        
         return [
             {
                 "task_id": "1",
@@ -356,6 +359,6 @@ Generate a structured plan with 2-4 subtasks to answer this query. Use the adapt
                 "task_id": "2",
                 "task_type": "identify_underperformers",
                 "description": "Find campaigns with low CTR",
-                "parameters": {"metric": "ctr", "threshold": self.default_underperformer_threshold}
+                "parameters": {"metric": "ctr", "threshold": ctr_threshold}
             }
         ]

@@ -46,7 +46,7 @@ class AgentOrchestrator:
         
         # Initialize agents (pass structured logger and config)
         self.planner = PlannerAgent(self.llm_client, config, self.logger)
-        self.data_agent = DataAgent(self.data_loader, self.logger)
+        self.data_agent = DataAgent(self.data_loader, self.config, self.logger)
         self.insight_agent = InsightAgent(self.llm_client, self.logger)
         self.evaluator = EvaluatorAgent(config, self.logger)
         self.creative_gen = CreativeGeneratorAgent(self.llm_client, self.logger)

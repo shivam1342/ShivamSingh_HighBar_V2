@@ -1,16 +1,16 @@
 [
   {
     "id": "insight_1",
-    "category": "ctr_issues",
-    "hypothesis": "CTR is declining due to creative fatigue across all campaigns",
+    "category": "creative_fatigue",
+    "hypothesis": "The 'MEN BOL COLORS DROP' campaign is experiencing creative fatigue, leading to a low ROAS of 0.5543044139246052",
     "evidence": [
-      "Average CTR has decreased by 6.16% in the last 89 days",
-      "Recent average CTR (0.0126) is lower than previous average CTR (0.0135)",
-      "Top underperforming campaigns have 0.0 CTR, indicating a potential issue with ad creative"
+      "The campaign has a high CTR of 0.004522264397371536 but a low CVR of 0.01263537906137184",
+      "The campaign has a high number of clicks (554) but low purchases (7)",
+      "The campaign's spend is $388.09, indicating a significant investment with low returns"
     ],
     "confidence": 0.8,
-    "reasoning": "The decline in CTR over time, combined with the low CTR of top underperforming campaigns, suggests that creative fatigue is a major contributor to the issue.",
-    "recommendation": "Refresh ad creative across all campaigns and test new images, videos, and carousels to improve CTR",
+    "reasoning": "The correlation between high CTR and low CVR suggests that the ad creative is grabbing attention but not driving conversions. This is a classic sign of creative fatigue.",
+    "recommendation": "Refresh the ad creative for the 'MEN BOL COLORS DROP' campaign to improve CVR and ROAS",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -35,15 +35,15 @@
   {
     "id": "insight_2",
     "category": "audience_saturation",
-    "hypothesis": "Audience saturation is contributing to low CTR in retargeting campaigns",
+    "hypothesis": "The 'WOMEN Coton Classics' campaign is experiencing audience saturation, leading to a low ROAS of 3.270009151795",
     "evidence": [
-      "Retargeting campaigns have low CTR (0.0) and high spend ($499.5 and $289.52)",
-      "Impressions are high for retargeting campaigns, indicating potential audience saturation",
-      "ROAS for retargeting campaigns is lower than other campaigns (4.03 and 20.28), indicating decreased effectiveness"
+      "The campaign has a high number of impressions (512834) but low clicks (0) and purchases (134)",
+      "The campaign's spend is $961.56, indicating a significant investment with low returns",
+      "The campaign's CTR is 0.0, indicating a lack of engagement with the target audience"
     ],
     "confidence": 0.7,
-    "reasoning": "The low CTR and high spend of retargeting campaigns, combined with high impressions, suggest that audience saturation is a contributing factor.",
-    "recommendation": "Expand retargeting campaigns to lookalike audiences or pause underperforming retargeting campaigns to allocate budget more effectively",
+    "reasoning": "The high number of impressions with low engagement suggests that the target audience is saturated, leading to a decrease in ROAS.",
+    "recommendation": "Expand the target audience for the 'WOMEN Coton Classics' campaign or adjust the ad targeting to reach a fresh audience",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -68,15 +68,15 @@
   {
     "id": "insight_3",
     "category": "platform_performance",
-    "hypothesis": "Facebook and Instagram have similar performance, but Instagram has a slightly lower CTR",
+    "hypothesis": "The Facebook platform is outperforming Instagram in terms of ROAS, with a 5.97% ROAS compared to 5.68% on Instagram",
     "evidence": [
-      "Facebook has a CTR of 0.0132, while Instagram has a CTR of 0.0121",
-      "Spend and revenue are similar across both platforms",
-      "ROAS is slightly higher on Facebook (5.97) compared to Instagram (5.68)"
+      "The Facebook platform has a higher ROAS (5.97%) compared to Instagram (5.68%)",
+      "The Facebook platform has a higher revenue ($6,379,168.24) compared to Instagram ($5,886,532.48)",
+      "The Facebook platform has a higher number of purchases (177,478) compared to Instagram (163,666)"
     ],
     "confidence": 0.9,
-    "reasoning": "The similar performance across both platforms, with a slight decrease in CTR on Instagram, suggests that platform-specific optimization may be necessary.",
-    "recommendation": "Monitor platform performance closely and allocate budget accordingly, potentially shifting budget to Facebook if ROI is higher",
+    "reasoning": "The data suggests that the Facebook platform is driving more revenue and purchases compared to Instagram, indicating a better ROAS.",
+    "recommendation": "Allocate more budget to the Facebook platform to maximize ROAS and revenue",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -88,11 +88,11 @@
         "has_reasoning": true,
         "has_recommendation": true,
         "evidence_is_quantitative": true,
-        "numerically_grounded": true
+        "numerically_grounded": false
       },
       "rejection_reason": null,
       "quality_factors": {
-        "completeness": 1.0,
+        "completeness": 0.8888888888888888,
         "confidence": 0.9,
         "evidence_strength": 0.6
       }
@@ -100,16 +100,16 @@
   },
   {
     "id": "insight_4",
-    "category": "creative_fatigue",
-    "hypothesis": "UGC and Image ad formats have higher CTR compared to Video and Carousel",
+    "category": "ctr_issues",
+    "hypothesis": "The 'm n | athleisure cooling' campaign has a CTR issue, with a 0.0% CTR and $142.11 spend",
     "evidence": [
-      "UGC has a CTR of 0.0134, while Image has a CTR of 0.0131",
-      "Video has a CTR of 0.0118, while Carousel has a CTR of 0.0128",
-      "ROAS is similar across all ad formats, indicating that CTR is a key differentiator"
+      "The campaign has a 0.0% CTR, indicating a lack of engagement with the target audience",
+      "The campaign has a high number of impressions (70,425) but no clicks or purchases",
+      "The campaign's spend is $142.11, indicating a significant investment with no returns"
     ],
-    "confidence": 0.85,
-    "reasoning": "The higher CTR of UGC and Image ad formats, combined with similar ROAS across all formats, suggests that ad format may be a contributing factor to CTR.",
-    "recommendation": "Test UGC and Image ad formats in underperforming campaigns to improve CTR and allocate budget accordingly",
+    "confidence": 0.6,
+    "reasoning": "The low CTR suggests that the ad creative is not resonating with the target audience, leading to a lack of engagement and conversions.",
+    "recommendation": "Optimize the ad creative for the 'm n | athleisure cooling' campaign to improve CTR and drive conversions",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -121,12 +121,12 @@
         "has_reasoning": true,
         "has_recommendation": true,
         "evidence_is_quantitative": true,
-        "numerically_grounded": true
+        "numerically_grounded": false
       },
       "rejection_reason": null,
       "quality_factors": {
-        "completeness": 1.0,
-        "confidence": 0.85,
+        "completeness": 0.8888888888888888,
+        "confidence": 0.6,
         "evidence_strength": 0.6
       }
     }

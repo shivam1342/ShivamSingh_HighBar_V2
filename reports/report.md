@@ -1,7 +1,7 @@
 # Facebook Ads Performance Analysis Report
 
-**Generated:** 2025-12-03T00:58:28.539541  
-**Query:** Show me underperforming campaigns with low CTR
+**Generated:** 2025-12-03T01:17:58.853697  
+**Query:** Which campaigns have the worst performance?
 
 ---
 
@@ -11,180 +11,180 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 ## Key Insights
 
-### 1. CTR is declining due to creative fatigue across all campaigns
+### 1. The 'MEN BOL COLORS DROP' campaign is experiencing creative fatigue, leading to a low ROAS of 0.5543044139246052
 
 **Confidence:** 80%  
-**Category:** ctr_issues
+**Category:** creative_fatigue
 
 **Evidence:**
-- Average CTR has decreased by 6.16% in the last 89 days
-- Recent average CTR (0.0126) is lower than previous average CTR (0.0135)
-- Top underperforming campaigns have 0.0 CTR, indicating a potential issue with ad creative
+- The campaign has a high CTR of 0.004522264397371536 but a low CVR of 0.01263537906137184
+- The campaign has a high number of clicks (554) but low purchases (7)
+- The campaign's spend is $388.09, indicating a significant investment with low returns
 
-**Reasoning:** The decline in CTR over time, combined with the low CTR of top underperforming campaigns, suggests that creative fatigue is a major contributor to the issue.
+**Reasoning:** The correlation between high CTR and low CVR suggests that the ad creative is grabbing attention but not driving conversions. This is a classic sign of creative fatigue.
 
-**Recommendation:** Refresh ad creative across all campaigns and test new images, videos, and carousels to improve CTR
+**Recommendation:** Refresh the ad creative for the 'MEN BOL COLORS DROP' campaign to improve CVR and ROAS
 
 ---
 
-### 2. Audience saturation is contributing to low CTR in retargeting campaigns
+### 2. The 'WOMEN Coton Classics' campaign is experiencing audience saturation, leading to a low ROAS of 3.270009151795
 
 **Confidence:** 70%  
 **Category:** audience_saturation
 
 **Evidence:**
-- Retargeting campaigns have low CTR (0.0) and high spend ($499.5 and $289.52)
-- Impressions are high for retargeting campaigns, indicating potential audience saturation
-- ROAS for retargeting campaigns is lower than other campaigns (4.03 and 20.28), indicating decreased effectiveness
+- The campaign has a high number of impressions (512834) but low clicks (0) and purchases (134)
+- The campaign's spend is $961.56, indicating a significant investment with low returns
+- The campaign's CTR is 0.0, indicating a lack of engagement with the target audience
 
-**Reasoning:** The low CTR and high spend of retargeting campaigns, combined with high impressions, suggest that audience saturation is a contributing factor.
+**Reasoning:** The high number of impressions with low engagement suggests that the target audience is saturated, leading to a decrease in ROAS.
 
-**Recommendation:** Expand retargeting campaigns to lookalike audiences or pause underperforming retargeting campaigns to allocate budget more effectively
+**Recommendation:** Expand the target audience for the 'WOMEN Coton Classics' campaign or adjust the ad targeting to reach a fresh audience
 
 ---
 
-### 3. Facebook and Instagram have similar performance, but Instagram has a slightly lower CTR
+### 3. The Facebook platform is outperforming Instagram in terms of ROAS, with a 5.97% ROAS compared to 5.68% on Instagram
 
 **Confidence:** 90%  
 **Category:** platform_performance
 
 **Evidence:**
-- Facebook has a CTR of 0.0132, while Instagram has a CTR of 0.0121
-- Spend and revenue are similar across both platforms
-- ROAS is slightly higher on Facebook (5.97) compared to Instagram (5.68)
+- The Facebook platform has a higher ROAS (5.97%) compared to Instagram (5.68%)
+- The Facebook platform has a higher revenue ($6,379,168.24) compared to Instagram ($5,886,532.48)
+- The Facebook platform has a higher number of purchases (177,478) compared to Instagram (163,666)
 
-**Reasoning:** The similar performance across both platforms, with a slight decrease in CTR on Instagram, suggests that platform-specific optimization may be necessary.
+**Reasoning:** The data suggests that the Facebook platform is driving more revenue and purchases compared to Instagram, indicating a better ROAS.
 
-**Recommendation:** Monitor platform performance closely and allocate budget accordingly, potentially shifting budget to Facebook if ROI is higher
+**Recommendation:** Allocate more budget to the Facebook platform to maximize ROAS and revenue
 
 ---
 
-### 4. UGC and Image ad formats have higher CTR compared to Video and Carousel
+### 4. The 'm n | athleisure cooling' campaign has a CTR issue, with a 0.0% CTR and $142.11 spend
 
-**Confidence:** 85%  
-**Category:** creative_fatigue
+**Confidence:** 60%  
+**Category:** ctr_issues
 
 **Evidence:**
-- UGC has a CTR of 0.0134, while Image has a CTR of 0.0131
-- Video has a CTR of 0.0118, while Carousel has a CTR of 0.0128
-- ROAS is similar across all ad formats, indicating that CTR is a key differentiator
+- The campaign has a 0.0% CTR, indicating a lack of engagement with the target audience
+- The campaign has a high number of impressions (70,425) but no clicks or purchases
+- The campaign's spend is $142.11, indicating a significant investment with no returns
 
-**Reasoning:** The higher CTR of UGC and Image ad formats, combined with similar ROAS across all formats, suggests that ad format may be a contributing factor to CTR.
+**Reasoning:** The low CTR suggests that the ad creative is not resonating with the target audience, leading to a lack of engagement and conversions.
 
-**Recommendation:** Test UGC and Image ad formats in underperforming campaigns to improve CTR and allocate budget accordingly
+**Recommendation:** Optimize the ad creative for the 'm n | athleisure cooling' campaign to improve CTR and drive conversions
 
 ---
 
 ## Creative Recommendations
 
-### Campaign: Women-Studio Spo-ts
+### Campaign: MEN SIGNATURE SOT
 
-**Current Issue:** Zero CTR, potential creative fatigue
+**Current Issue:** Low CTR of 0.011767883528670314
 
 **New Creative Variations:**
 
 #### Variation var_1
 
 - **Type:** UGC
-- **Headline:** Real Women, Real Comfort
-- **Message:** Discover why our studio sports undergarments are a game-changer for women on-the-go
-- **CTA:** Shop Now
-- **Rationale:** Fresh UGC angle to address creative fatigue and showcase social proof
-- **Expected Impact:** 20-30% CTR lift
+- **Headline:** Real Men, Real Comfort
+- **Message:** Hear from our satisfied customers who've made the switch to Signature SOT
+- **CTA:** Read Reviews
+- **Rationale:** Using social proof to address creative fatigue and increase credibility
+- **Expected Impact:** 20-30% CTR increase
 
 #### Variation var_2
 
 - **Type:** Video
-- **Headline:** Move Freely, Live Fully
-- **Message:** Experience the comfort and flexibility of our studio sports undergarments
+- **Headline:** What Makes Signature SOT Special?
+- **Message:** Discover the innovative features that set our undergarments apart
 - **CTA:** Learn More
-- **Rationale:** High-energy video creative to capture attention and showcase product benefits
-- **Expected Impact:** 30-40% CTR lift
+- **Rationale:** Showcasing product benefits through video to refresh messaging
+- **Expected Impact:** 15-25% CTR increase
 
 #### Variation var_3
 
-- **Type:** Carousel
-- **Headline:** Studio Sports Undergarments: Designed for You
-- **Message:** Explore our collection of comfortable, high-quality undergarments for women
-- **CTA:** Browse Collection
-- **Rationale:** Carousel creative to showcase variety and encourage exploration
-- **Expected Impact:** 25-35% CTR lift
+- **Type:** Image
+- **Headline:** Limited Time Offer: Upgrade to Signature SOT
+- **Message:** Experience the comfort and quality you deserve, now with a special promotion
+- **CTA:** Shop Now
+- **Rationale:** Creating urgency with a limited-time offer to drive conversions
+- **Expected Impact:** 10-20% CTR increase
 
-**Testing Strategy:** Launch 3 variations simultaneously, $20/day each, rotate every 5 days
+**Testing Strategy:** Launch 3 variations simultaneously, $50/day each, rotate every 7 days
 
 ---
 
-### Campaign: Men Premiu- Modal
+### Campaign: women Summer Inv-sible
 
-**Current Issue:** Zero CTR, potential audience saturation
+**Current Issue:** Low CTR of 0.011594780924163866
 
 **New Creative Variations:**
 
 #### Variation var_4
 
-- **Type:** UGC
-- **Headline:** Join the Ranks of Comfortable Men
-- **Message:** Don't miss out on our premium modal undergarments - tried and loved by thousands
-- **CTA:** Complete Your Purchase
-- **Rationale:** Social proof angle to address audience saturation and encourage conversion
-- **Expected Impact:** 25-35% CTR lift
+- **Type:** Carousel
+- **Headline:** Find Your Perfect Match
+- **Message:** Explore our range of Summer Inv-sible undergarments and discover your new favorite
+- **CTA:** Browse Collection
+- **Rationale:** Expanding targeting to reach a fresh audience with a carousel showcasing variety
+- **Expected Impact:** 25-35% CTR increase
 
 #### Variation var_5
 
-- **Type:** Image
-- **Headline:** Upgrade Your Undergarments, Upgrade Your Life
-- **Message:** Experience the comfort and quality of our premium modal undergarments
-- **CTA:** Shop Now
-- **Rationale:** High-quality image creative to showcase product benefits and encourage upgrade
-- **Expected Impact:** 20-30% CTR lift
+- **Type:** UGC
+- **Headline:** Real Women, Real Stories
+- **Message:** Hear from our customers who've found comfort and confidence with Summer Inv-sible
+- **CTA:** Read Stories
+- **Rationale:** Using social proof to appeal to a broader audience and increase engagement
+- **Expected Impact:** 20-30% CTR increase
 
 #### Variation var_6
 
 - **Type:** Video
-- **Headline:** The Comfort Revolution: Premium Modal Undergarments
-- **Message:** Discover the secret to all-day comfort and confidence
-- **CTA:** Learn More
-- **Rationale:** Engaging video creative to capture attention and showcase product benefits
-- **Expected Impact:** 30-40% CTR lift
+- **Headline:** The Summer Inv-sible Difference
+- **Message:** Learn about the innovative features and benefits of our undergarments
+- **CTA:** Watch Video
+- **Rationale:** Educating the audience about product benefits to attract new customers
+- **Expected Impact:** 15-25% CTR increase
 
-**Testing Strategy:** Launch 3 variations simultaneously, $30/day each, rotate every 5 days
+**Testing Strategy:** Launch 3 variations simultaneously, $40/day each, rotate every 5 days
 
 ---
 
-### Campaign: WOMEN_Cot-on_Classics
+### Campaign: MEN | ATHLEISURECOOLING
 
-**Current Issue:** Zero CTR, potential creative fatigue
+**Current Issue:** Low CTR of 0.022955073729261723
 
 **New Creative Variations:**
 
 #### Variation var_7
 
-- **Type:** Carousel
-- **Headline:** Timeless Comfort: Cotton Classics
-- **Message:** Explore our collection of comfortable, high-quality cotton undergarments
-- **CTA:** Browse Collection
-- **Rationale:** Carousel creative to showcase variety and encourage exploration
-- **Expected Impact:** 25-35% CTR lift
+- **Type:** Image
+- **Headline:** Stay Cool, Stay Fresh
+- **Message:** Experience the comfort and performance of ATHLEISURECOOLING undergarments
+- **CTA:** Shop Now
+- **Rationale:** Optimizing for Facebook platform with image ad to increase ROAS
+- **Expected Impact:** 10-20% ROAS increase
 
 #### Variation var_8
 
-- **Type:** UGC
-- **Headline:** Real Women, Real Comfort
-- **Message:** Discover why our cotton classics undergarments are a favorite among women
-- **CTA:** Shop Now
-- **Rationale:** Fresh UGC angle to address creative fatigue and showcase social proof
-- **Expected Impact:** 20-30% CTR lift
+- **Type:** Video
+- **Headline:** ATHLEISURECOOLING: Designed for Performance
+- **Message:** Discover the technology and features that make our undergarments stand out
+- **CTA:** Learn More
+- **Rationale:** Showcasing product benefits through video to increase engagement and conversions
+- **Expected Impact:** 15-25% ROAS increase
 
 #### Variation var_9
 
-- **Type:** Image
-- **Headline:** Comfort That Never Goes Out of Style
-- **Message:** Experience the comfort and quality of our cotton classics undergarments
-- **CTA:** Learn More
-- **Rationale:** High-quality image creative to showcase product benefits and encourage exploration
-- **Expected Impact:** 25-35% CTR lift
+- **Type:** UGC
+- **Headline:** Real Athletes, Real Results
+- **Message:** Hear from athletes who've experienced the comfort and performance of ATHLEISURECOOLING
+- **CTA:** Read Reviews
+- **Rationale:** Using social proof to increase credibility and drive sales
+- **Expected Impact:** 20-30% ROAS increase
 
-**Testing Strategy:** Launch 3 variations simultaneously, $25/day each, rotate every 5 days
+**Testing Strategy:** Launch 3 variations simultaneously, $60/day each, rotate every 10 days
 
 ---
 
@@ -192,7 +192,7 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 - **Total Insights Generated:** 4
 - **Validated Insights:** 4
-- **Quality Score:** 0.83/1.00
+- **Quality Score:** 0.78/1.00
 - **Evaluation Status:** ✅ Passed
 
 ---

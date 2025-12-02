@@ -6,6 +6,7 @@ import time
 from typing import Dict, List, Any
 import numpy as np
 from src.utils.structured_logger import StructuredLogger
+from src.utils.threshold_manager import ThresholdManager
 
 logger = logging.getLogger(__name__)
 
@@ -19,19 +20,13 @@ class EvaluatorAgent:
         self.config = config
         self.logger = structured_logger or StructuredLogger()
         
-        # Load base thresholds from config
-        thresholds = config.get("thresholds", {})
-        self.config_confidence_threshold = thresholds.get("confidence_min", 0.6)
-        self.config_quality_threshold = thresholds.get("quality_score_min", 0.7)
-        self.base_min_evidence_count = thresholds.get("evaluator", {}).get("min_evidence_count", 2)
+        # Initialize centralized threshold manager
+        self.threshold_mgr = ThresholdManager(self.config)
         
-        # Load adaptive rules
-        adaptive_config = thresholds.get("evaluator", {}).get("adaptive", {})
-        self.volatile_confidence_multiplier = adaptive_config.get("volatile_confidence_multiplier", 0.7)
-        self.stable_confidence_multiplier = adaptive_config.get("stable_confidence_multiplier", 1.2)
-        self.volatile_quality_multiplier = adaptive_config.get("volatile_quality_multiplier", 0.85)
-        self.stable_quality_multiplier = adaptive_config.get("stable_quality_multiplier", 1.1)
-        self.volatile_extra_evidence = adaptive_config.get("volatile_extra_evidence", 1)
+        # Load base evidence count (non-threshold config)
+        thresholds = config.get("thresholds", {})
+        self.base_min_evidence_count = thresholds.get("evaluator", {}).get("min_evidence_count", 2)
+        self.volatile_extra_evidence = thresholds.get("evaluator", {}).get("adaptive", {}).get("volatile_extra_evidence", 1)
         
     def evaluate_insights(
         self,
@@ -56,14 +51,18 @@ class EvaluatorAgent:
             quality_pass_threshold = self._get_quality_pass_threshold(data_quality)
             min_evidence_count = self._get_min_evidence_count(data_quality)
             
+            # Get base thresholds for logging comparison
+            base_confidence = self.threshold_mgr.get_threshold("confidence", use_adaptive=False)
+            base_quality = self.threshold_mgr.get_threshold("quality", use_adaptive=False)
+            
             logger.info(f"Data quality: {data_quality.get('quality_level')}, adapting thresholds")
-            logger.info(f"Confidence threshold: {confidence_threshold:.2f} (base: {self.config_confidence_threshold:.2f})")
-            logger.info(f"Quality pass threshold: {quality_pass_threshold:.2f} (base: {self.config_quality_threshold:.2f})")
+            logger.info(f"Confidence threshold: {confidence_threshold:.2f} (base: {base_confidence:.2f})")
+            logger.info(f"Quality pass threshold: {quality_pass_threshold:.2f} (base: {base_quality:.2f})")
             logger.info(f"Min evidence required: {min_evidence_count} (base: {self.base_min_evidence_count})")
         else:
-            # Fallback to static thresholds if no data quality provided
-            confidence_threshold = self.config_confidence_threshold
-            quality_pass_threshold = self.config_quality_threshold
+            # Fallback to static thresholds from ThresholdManager if no data quality provided
+            confidence_threshold = self.threshold_mgr.get_threshold("confidence", use_adaptive=False)
+            quality_pass_threshold = self.threshold_mgr.get_threshold("quality", use_adaptive=False)
             min_evidence_count = self.base_min_evidence_count
             logger.info("Using static thresholds (no data quality assessment available)")
         
@@ -181,7 +180,7 @@ class EvaluatorAgent:
     
     def _calculate_adaptive_confidence_threshold(self, data_quality: Dict[str, Any]) -> float:
         """
-        Calculate adaptive confidence threshold based on data quality
+        Calculate adaptive confidence threshold using ThresholdManager
         
         Args:
             data_quality: Data quality assessment from planner
@@ -190,21 +189,17 @@ class EvaluatorAgent:
             Adapted confidence threshold
         """
         quality_level = data_quality.get("quality_level", "medium")
-        base_threshold = self.config_confidence_threshold
         
-        if quality_level == "volatile":
-            # Lower threshold for volatile data (more lenient)
-            return base_threshold * self.volatile_confidence_multiplier
-        elif quality_level == "stable":
-            # Raise threshold for stable data (more strict)
-            return base_threshold * self.stable_confidence_multiplier
-        else:
-            # Medium variance: use default
-            return base_threshold
+        # Use ThresholdManager with adaptive multipliers
+        return self.threshold_mgr.get_threshold(
+            metric="confidence",
+            data_quality=quality_level,
+            use_adaptive=True
+        )
     
     def _get_quality_pass_threshold(self, data_quality: Dict[str, Any]) -> float:
         """
-        Calculate adaptive quality pass threshold based on data quality
+        Calculate adaptive quality pass threshold using ThresholdManager
         
         Args:
             data_quality: Data quality assessment from planner
@@ -213,16 +208,13 @@ class EvaluatorAgent:
             Adapted quality pass threshold
         """
         quality_level = data_quality.get("quality_level", "medium")
-        base_threshold = self.config_quality_threshold
         
-        if quality_level == "volatile":
-            # Lower threshold for volatile data
-            return base_threshold * self.volatile_quality_multiplier
-        elif quality_level == "stable":
-            # Raise threshold for stable data
-            return base_threshold * self.stable_quality_multiplier
-        else:
-            return base_threshold
+        # Use ThresholdManager with adaptive multipliers
+        return self.threshold_mgr.get_threshold(
+            metric="quality",
+            data_quality=quality_level,
+            use_adaptive=True
+        )
     
     def _get_min_evidence_count(self, data_quality: Dict[str, Any]) -> int:
         """

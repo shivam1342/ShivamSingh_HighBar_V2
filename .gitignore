@@ -57,6 +57,7 @@ STUDY.md
 P1_ANALYSIS.md
 WHATS_NEW_P1.md
 IMPLEMENTATION_NOTES.md
+WHATS_NEW_P1_THRESHOLD_MANAGER.md
 
 # Schema drift detection snapshots (generated at runtime)
 config/schemas/schema_detected_*.yaml

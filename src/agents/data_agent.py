@@ -8,6 +8,7 @@ import time
 from typing import Dict, Any, List
 from src.utils.data_loader import DataLoader
 from src.utils.structured_logger import StructuredLogger
+from src.utils.threshold_manager import ThresholdManager
 
 logger = logging.getLogger(__name__)
 
@@ -30,10 +31,14 @@ class DataAgent:
     # Valid calculated metrics
     VALID_CALCULATED_METRICS = {'ctr', 'roas', 'cpc', 'cpm', 'cvr'}
     
-    def __init__(self, data_loader: DataLoader, structured_logger: StructuredLogger = None):
+    def __init__(self, data_loader: DataLoader, config: Dict[str, Any] = None, structured_logger: StructuredLogger = None):
         self.loader = data_loader
         self.df = None
+        self.config = config or {}
         self.logger = structured_logger or StructuredLogger()
+        
+        # Initialize threshold manager for default threshold resolution
+        self.threshold_mgr = ThresholdManager(self.config)
         
     def initialize(self):
         """Load the dataset"""
@@ -192,22 +197,38 @@ class DataAgent:
         raw_metric = params.get("metric", "ctr")
         
         # Parse threshold parameter (handle various formats)
-        threshold_param = params.get("threshold", 0.01)
-        try:
-            # Handle string thresholds like "top_10", "zero", etc.
-            if isinstance(threshold_param, str):
-                if "zero" in threshold_param.lower():
-                    threshold = 0.0
-                elif "top" in threshold_param.lower():
-                    # For "top_N" queries, use a reasonable default for filtering
-                    threshold = 0.01
+        threshold_param = params.get("threshold")
+        
+        # If no threshold provided, use ThresholdManager
+        if threshold_param is None:
+            threshold = self.threshold_mgr.get_threshold(
+                metric=raw_metric,
+                use_adaptive=False
+            )
+            logger.debug(f"No threshold provided, using ThresholdManager default: {threshold}")
+        else:
+            try:
+                # Handle string thresholds like "top_10", "zero", etc.
+                if isinstance(threshold_param, str):
+                    if "zero" in threshold_param.lower():
+                        threshold = 0.0
+                    elif "top" in threshold_param.lower():
+                        # For "top_N" queries, use ThresholdManager default
+                        threshold = self.threshold_mgr.get_threshold(
+                            metric=raw_metric,
+                            use_adaptive=False
+                        )
+                    else:
+                        threshold = float(threshold_param)
                 else:
                     threshold = float(threshold_param)
-            else:
-                threshold = float(threshold_param)
-        except (ValueError, TypeError):
-            logger.warning(f"Invalid threshold value '{threshold_param}', using default 0.01")
-            threshold = 0.01
+            except (ValueError, TypeError):
+                # Fallback to ThresholdManager instead of hardcoded value
+                logger.warning(f"Invalid threshold value '{threshold_param}', using ThresholdManager default")
+                threshold = self.threshold_mgr.get_threshold(
+                    metric=raw_metric,
+                    use_adaptive=False
+                )
         
         # Normalize and validate metric
         try:
