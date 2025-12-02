@@ -337,3 +337,45 @@ class DataAgent:
             "time_series": self.loader.get_time_series_summary('roas', window=7),
             "dimensions": dimensions
         }
+    
+    # Pipeline wrapper methods (for declarative execution)
+    
+    def execute_subtasks(self, plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Execute all subtasks from plan (wrapper for pipeline).
+        
+        Args:
+            plan: List of subtasks from planner
+        
+        Returns:
+            List of analysis results
+        """
+        results = []
+        for subtask in plan:
+            result = self.execute_subtask(subtask)
+            results.append(result)
+        return results
+    
+    def prepare_creative_inputs(self, analysis_results: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Extract underperformer and creative data for creative generation (wrapper for pipeline).
+        
+        Args:
+            analysis_results: Results from data_analysis stage
+        
+        Returns:
+            Dict with underperformer_data and creative_analysis
+        """
+        underperformer_data = {}
+        creative_analysis = {}
+        
+        for result in analysis_results:
+            if "top_underperformers" in result:
+                underperformer_data = result
+            if "top_performers" in result:
+                creative_analysis = result
+        
+        return {
+            'underperformer_data': underperformer_data,
+            'creative_analysis': creative_analysis
+        }

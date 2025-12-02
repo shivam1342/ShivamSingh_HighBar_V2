@@ -33,7 +33,7 @@ class PlannerAgent:
         self.high_variance_cv = adaptive_config.get("high_variance_cv", 0.5)
         self.low_variance_cv = adaptive_config.get("low_variance_cv", 0.2)
         
-    def plan(self, user_query: str, data_summary: Dict[str, Any], raw_data: Any = None) -> List[Dict[str, Any]]:
+    def plan(self, user_query: str, data_summary: Dict[str, Any], raw_data: Any = None) -> Dict[str, Any]:
         """
         Create execution plan from user query with adaptive thresholds
         
@@ -43,7 +43,7 @@ class PlannerAgent:
             raw_data: Optional pandas DataFrame for data quality assessment
             
         Returns:
-            List of subtasks with type and parameters
+            Dict with 'plan' (list of subtasks) and 'data_quality' (assessment)
         """
         # Log agent start
         self.logger.log_agent_start(
@@ -102,7 +102,11 @@ class PlannerAgent:
                     duration_seconds=duration
                 )
                 
-                return subtasks
+                # Return dict with plan and data_quality (for pipeline compatibility)
+                return {
+                    'plan': subtasks,
+                    'data_quality': data_quality
+                }
                 
             except json.JSONDecodeError as e:
                 logger.error(f"Failed to parse planner response: {e}")
@@ -132,7 +136,11 @@ class PlannerAgent:
                     duration_seconds=duration
                 )
                 
-                return fallback_plan
+                # Return dict with fallback plan and data_quality
+                return {
+                    'plan': fallback_plan,
+                    'data_quality': data_quality
+                }
                 
         except Exception as e:
             # Log unexpected error

@@ -1,110 +1,110 @@
 [
   {
-    "campaign": "MEN SIGNATURE SOT",
-    "adset": "Adset-1 Retarget",
-    "current_issue": "Low CTR of 0.011767883528670314",
+    "campaign": "Women-Studio Spo-ts",
+    "adset": "Adset-1 ATC",
+    "current_issue": "Zero CTR, potential creative fatigue",
     "insight_addressed": "creative_fatigue",
     "creative_variations": [
       {
         "variation_id": "var_1",
         "creative_type": "UGC",
-        "headline": "Real Men, Real Comfort",
-        "message": "Hear from our satisfied customers who've made the switch to Signature SOT",
-        "cta": "Read Reviews",
-        "rationale": "Using social proof to address creative fatigue and increase credibility",
+        "headline": "Say Goodbye to Discomfort",
+        "message": "Our studio sports collection is designed for the modern woman. Breathable, comfortable, and stylish.",
+        "cta": "Shop Now",
+        "rationale": "Fresh angle focusing on comfort and style, using UGC for authenticity",
         "expected_improvement": "20-30% CTR increase"
       },
       {
         "variation_id": "var_2",
         "creative_type": "Video",
-        "headline": "What Makes Signature SOT Special?",
-        "message": "Discover the innovative features that set our undergarments apart",
-        "cta": "Learn More",
-        "rationale": "Showcasing product benefits through video to refresh messaging",
-        "expected_improvement": "15-25% CTR increase"
+        "headline": "Move Freely, Live Freely",
+        "message": "Discover our seamless everyday collection, designed for the active woman.",
+        "cta": "Explore Collection",
+        "rationale": "Video creative to showcase product benefits and features",
+        "expected_improvement": "25-35% CTR increase"
       },
       {
         "variation_id": "var_3",
         "creative_type": "Image",
-        "headline": "Limited Time Offer: Upgrade to Signature SOT",
-        "message": "Experience the comfort and quality you deserve, now with a special promotion",
-        "cta": "Shop Now",
-        "rationale": "Creating urgency with a limited-time offer to drive conversions",
-        "expected_improvement": "10-20% CTR increase"
+        "headline": "Elevate Your Everyday",
+        "message": "Our cotton classics collection is perfect for any occasion. Comfortable, stylish, and affordable.",
+        "cta": "Browse Collection",
+        "rationale": "Image creative to highlight product quality and style",
+        "expected_improvement": "15-25% CTR increase"
       }
     ],
-    "testing_strategy": "Launch 3 variations simultaneously, $50/day each, rotate every 7 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $20/day each, rotate every 7 days"
   },
   {
-    "campaign": "women Summer Inv-sible",
-    "adset": "Adset-5 LAL1",
-    "current_issue": "Low CTR of 0.011594780924163866",
+    "campaign": "Men Premiu- Modal",
+    "adset": "Adset-4 Retarget",
+    "current_issue": "Zero CTR, potential audience saturation",
     "insight_addressed": "audience_saturation",
     "creative_variations": [
       {
         "variation_id": "var_4",
-        "creative_type": "Carousel",
-        "headline": "Find Your Perfect Match",
-        "message": "Explore our range of Summer Inv-sible undergarments and discover your new favorite",
-        "cta": "Browse Collection",
-        "rationale": "Expanding targeting to reach a fresh audience with a carousel showcasing variety",
-        "expected_improvement": "25-35% CTR increase"
+        "creative_type": "UGC",
+        "headline": "Complete Your Wardrobe",
+        "message": "You've shown interest in our premium modal collection. Complete your wardrobe with our best-sellers.",
+        "cta": "Shop Now",
+        "rationale": "Retargeting ad with a focus on completing the purchase",
+        "expected_improvement": "30-40% CTR increase"
       },
       {
         "variation_id": "var_5",
-        "creative_type": "UGC",
-        "headline": "Real Women, Real Stories",
-        "message": "Hear from our customers who've found comfort and confidence with Summer Inv-sible",
-        "cta": "Read Stories",
-        "rationale": "Using social proof to appeal to a broader audience and increase engagement",
-        "expected_improvement": "20-30% CTR increase"
+        "creative_type": "Video",
+        "headline": "The Art of Comfort",
+        "message": "Discover what makes our premium modal collection stand out. Quality, comfort, and style.",
+        "cta": "Learn More",
+        "rationale": "Video creative to showcase product quality and features",
+        "expected_improvement": "35-45% CTR increase"
       },
       {
         "variation_id": "var_6",
-        "creative_type": "Video",
-        "headline": "The Summer Inv-sible Difference",
-        "message": "Learn about the innovative features and benefits of our undergarments",
-        "cta": "Watch Video",
-        "rationale": "Educating the audience about product benefits to attract new customers",
-        "expected_improvement": "15-25% CTR increase"
+        "creative_type": "Carousel",
+        "headline": "Premium Modal Collection",
+        "message": "Explore our best-selling premium modal products. Comfortable, stylish, and affordable.",
+        "cta": "Browse Collection",
+        "rationale": "Carousel creative to showcase multiple products and features",
+        "expected_improvement": "20-30% CTR increase"
       }
     ],
-    "testing_strategy": "Launch 3 variations simultaneously, $40/day each, rotate every 5 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $30/day each, rotate every 10 days"
   },
   {
-    "campaign": "MEN | ATHLEISURECOOLING",
-    "adset": "Adset-3 Broad",
-    "current_issue": "Low CTR of 0.022955073729261723",
-    "insight_addressed": "platform_performance",
+    "campaign": "WOMEN_Cot-on_Classics",
+    "adset": "Adset-2 WC",
+    "current_issue": "Zero CTR, potential creative fatigue",
+    "insight_addressed": "creative_fatigue",
     "creative_variations": [
       {
         "variation_id": "var_7",
-        "creative_type": "Image",
-        "headline": "Stay Cool, Stay Fresh",
-        "message": "Experience the comfort and performance of ATHLEISURECOOLING undergarments",
+        "creative_type": "UGC",
+        "headline": "Timeless Comfort",
+        "message": "Our cotton classics collection is designed for the modern woman. Comfortable, stylish, and affordable.",
         "cta": "Shop Now",
-        "rationale": "Optimizing for Facebook platform with image ad to increase ROAS",
-        "expected_improvement": "10-20% ROAS increase"
+        "rationale": "Fresh angle focusing on comfort and style, using UGC for authenticity",
+        "expected_improvement": "25-35% CTR increase"
       },
       {
         "variation_id": "var_8",
-        "creative_type": "Video",
-        "headline": "ATHLEISURECOOLING: Designed for Performance",
-        "message": "Discover the technology and features that make our undergarments stand out",
-        "cta": "Learn More",
-        "rationale": "Showcasing product benefits through video to increase engagement and conversions",
-        "expected_improvement": "15-25% ROAS increase"
+        "creative_type": "Image",
+        "headline": "Elevate Your Style",
+        "message": "Our cotton classics collection is perfect for any occasion. Comfortable, stylish, and affordable.",
+        "cta": "Browse Collection",
+        "rationale": "Image creative to highlight product quality and style",
+        "expected_improvement": "20-30% CTR increase"
       },
       {
         "variation_id": "var_9",
-        "creative_type": "UGC",
-        "headline": "Real Athletes, Real Results",
-        "message": "Hear from athletes who've experienced the comfort and performance of ATHLEISURECOOLING",
-        "cta": "Read Reviews",
-        "rationale": "Using social proof to increase credibility and drive sales",
-        "expected_improvement": "20-30% ROAS increase"
+        "creative_type": "Video",
+        "headline": "The Comfort Difference",
+        "message": "Discover what makes our cotton classics collection stand out. Quality, comfort, and style.",
+        "cta": "Learn More",
+        "rationale": "Video creative to showcase product quality and features",
+        "expected_improvement": "30-40% CTR increase"
       }
     ],
-    "testing_strategy": "Launch 3 variations simultaneously, $60/day each, rotate every 10 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $25/day each, rotate every 7 days"
   }
 ]

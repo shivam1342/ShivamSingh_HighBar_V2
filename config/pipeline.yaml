@@ -1,0 +1,214 @@
+# Pipeline Configuration - Declarative Stage Definitions
+# Defines the agent execution flow without hardcoded logic
+
+pipeline:
+  name: "facebook_ads_analyst"
+  version: "1.0"
+  description: "Multi-agent pipeline for Facebook Ads performance analysis"
+  
+  # Define all stages with clear inputs/outputs
+  stages:
+    - id: "data_summary"
+      name: "Data Summary"
+      description: "Load and summarize dataset statistics"
+      agent: "data_loader"
+      method: "get_summary"
+      inputs: []
+      outputs:
+        - name: "data_summary"
+          type: "dict"
+          required: true
+      config:
+        retry: false
+        timeout_seconds: 5
+        log_output: true
+    
+    - id: "planning"
+      name: "Query Planning"
+      description: "Decompose user query into subtasks with adaptive thresholds"
+      agent: "planner"
+      method: "plan"
+      inputs:
+        - name: "user_query"
+          source: "context:user_query"
+          required: true
+        - name: "data_summary"
+          source: "stage:data_summary"
+          required: true
+        - name: "raw_data"
+          source: "context:raw_data"
+          required: true
+      outputs:
+        - name: "plan"
+          type: "list"
+          required: true
+        - name: "data_quality"
+          type: "dict"
+          required: true
+          computed_by: "_assess_data_quality"
+      config:
+        retry: false
+        timeout_seconds: 15
+        log_output: true
+    
+    - id: "data_analysis"
+      name: "Data Analysis"
+      description: "Execute planned subtasks to analyze data"
+      agent: "data"
+      method: "execute_subtasks"
+      inputs:
+        - name: "plan"
+          source: "stage:planning.plan"
+          required: true
+      outputs:
+        - name: "analysis_results"
+          type: "list"
+          required: true
+      config:
+        retry: false
+        timeout_seconds: 20
+        log_output: true
+    
+    - id: "context_preparation"
+      name: "Context Preparation"
+      description: "Prepare context for insight generation"
+      agent: "data"
+      method: "get_context_for_insights"
+      inputs: []
+      outputs:
+        - name: "data_context"
+          type: "dict"
+          required: true
+      config:
+        retry: false
+        timeout_seconds: 5
+        log_output: false
+    
+    - id: "insight_generation"
+      name: "Insight Generation"
+      description: "Generate insights from analysis results"
+      agent: "insight"
+      method: "generate_insights"
+      inputs:
+        - name: "analysis_results"
+          source: "stage:data_analysis"
+          required: true
+        - name: "data_context"
+          source: "stage:context_preparation"
+          required: true
+        - name: "user_query"
+          source: "context:user_query"
+          required: true
+      outputs:
+        - name: "insights"
+          type: "list"
+          required: true
+      config:
+        retry: true
+        max_retries: 2
+        timeout_seconds: 30
+        log_output: true
+    
+    - id: "evaluation"
+      name: "Insight Evaluation"
+      description: "Validate insights with adaptive confidence scoring"
+      agent: "evaluator"
+      method: "evaluate_insights"
+      inputs:
+        - name: "insights"
+          source: "stage:insight_generation"
+          required: true
+        - name: "analysis_results"
+          source: "stage:data_analysis"
+          required: true
+        - name: "data_quality"
+          source: "stage:planning"
+          required: true
+      outputs:
+        - name: "evaluation"
+          type: "dict"
+          required: true
+        - name: "validated_insights"
+          type: "list"
+          required: true
+      config:
+        retry: false
+        timeout_seconds: 10
+        log_output: true
+      # Conditional: retry insight generation if validation fails
+      condition:
+        field: "evaluation.pass_threshold"
+        operator: "equals"
+        value: false
+        on_match:
+          action: "retry_stage"
+          target: "insight_generation"
+          max_attempts: 2
+    
+    - id: "creative_preparation"
+      name: "Creative Data Preparation"
+      description: "Extract underperformer and top performer data"
+      agent: "data"
+      method: "prepare_creative_inputs"
+      inputs:
+        - name: "analysis_results"
+          source: "stage:data_analysis"
+          required: true
+      outputs:
+        - name: "underperformer_data"
+          type: "dict"
+          required: false
+        - name: "creative_analysis"
+          type: "dict"
+          required: false
+      config:
+        retry: false
+        timeout_seconds: 5
+        log_output: false
+    
+    - id: "creative_generation"
+      name: "Creative Generation"
+      description: "Generate creative recommendations for underperformers"
+      agent: "creative"
+      method: "generate_creatives"
+      inputs:
+        - name: "underperformers"
+          source: "stage:creative_preparation.underperformer_data"
+          required: true
+        - name: "top_performers"
+          source: "stage:creative_preparation.creative_analysis"
+          required: false
+        - name: "dataset_context"
+          source: "stage:context_preparation"
+          required: true
+        - name: "validated_insights"
+          source: "stage:evaluation.validated_insights"
+          required: true
+      outputs:
+        - name: "creatives"
+          type: "list"
+          required: true
+      config:
+        retry: false
+        timeout_seconds: 20
+        log_output: true
+  
+  # Define state transitions and retry logic
+  transitions:
+    - from: "evaluation"
+      condition:
+        field: "evaluation.pass_threshold"
+        operator: "equals"
+        value: false
+      to: "insight_generation"
+      action: "retry"
+      max_attempts: 2
+      reason: "Insights failed validation, regenerating"
+  
+  # Pipeline-level configuration
+  settings:
+    fail_fast: false  # Continue even if non-critical stages fail
+    log_level: "INFO"
+    capture_timing: true
+    capture_outputs: true
+    validate_schemas: true

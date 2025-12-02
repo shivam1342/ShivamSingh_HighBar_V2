@@ -2,15 +2,15 @@
   {
     "id": "insight_1",
     "category": "creative_fatigue",
-    "hypothesis": "The 'MEN BOL COLORS DROP' campaign is experiencing creative fatigue, leading to a low ROAS of 0.5543044139246052",
+    "hypothesis": "Creative fatigue is a significant contributor to the decline in performance, with top-performing creatives showing higher CTRs and ROAS compared to bottom performers",
     "evidence": [
-      "The campaign has a high CTR of 0.004522264397371536 but a low CVR of 0.01263537906137184",
-      "The campaign has a high number of clicks (554) but low purchases (7)",
-      "The campaign's spend is $388.09, indicating a significant investment with low returns"
+      "Top-performing UGC creative has a CTR of 0.0315 and ROAS of 6.99",
+      "Bottom-performing Video creative has a CTR of 0.0046 and ROAS of 0.97",
+      "There is a 0.0265 difference in CTR between top and bottom performers"
     ],
     "confidence": 0.8,
-    "reasoning": "The correlation between high CTR and low CVR suggests that the ad creative is grabbing attention but not driving conversions. This is a classic sign of creative fatigue.",
-    "recommendation": "Refresh the ad creative for the 'MEN BOL COLORS DROP' campaign to improve CVR and ROAS",
+    "reasoning": "The significant difference in performance between top and bottom creatives suggests that creative fatigue is a major factor in the decline. Refreshing creatives and testing new ones can help improve performance",
+    "recommendation": "Rotate and refresh top-performing creatives every 2-3 weeks to maintain performance and test new creatives to identify potential winners",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -34,16 +34,16 @@
   },
   {
     "id": "insight_2",
-    "category": "audience_saturation",
-    "hypothesis": "The 'WOMEN Coton Classics' campaign is experiencing audience saturation, leading to a low ROAS of 3.270009151795",
+    "category": "creative_fatigue",
+    "hypothesis": "The high number of creative variants (806) may be contributing to creative fatigue, making it harder to identify top performers and optimize campaigns",
     "evidence": [
-      "The campaign has a high number of impressions (512834) but low clicks (0) and purchases (134)",
-      "The campaign's spend is $961.56, indicating a significant investment with low returns",
-      "The campaign's CTR is 0.0, indicating a lack of engagement with the target audience"
+      "There are 806 total creative variants, making it challenging to optimize and identify top performers",
+      "The top 10 performers account for a significant portion of total spend and revenue",
+      "The creative type summary shows that UGC and Image creatives have higher CTRs compared to Video"
     ],
     "confidence": 0.7,
-    "reasoning": "The high number of impressions with low engagement suggests that the target audience is saturated, leading to a decrease in ROAS.",
-    "recommendation": "Expand the target audience for the 'WOMEN Coton Classics' campaign or adjust the ad targeting to reach a fresh audience",
+    "reasoning": "The high number of creative variants can lead to creative fatigue and make it harder to optimize campaigns. Identifying and focusing on top-performing creatives can help improve performance",
+    "recommendation": "Consolidate and prioritize top-performing creatives, and consider reducing the total number of creative variants to improve campaign optimization and performance",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -67,49 +67,16 @@
   },
   {
     "id": "insight_3",
-    "category": "platform_performance",
-    "hypothesis": "The Facebook platform is outperforming Instagram in terms of ROAS, with a 5.97% ROAS compared to 5.68% on Instagram",
+    "category": "audience_saturation",
+    "hypothesis": "Audience saturation may be a contributing factor to the decline in performance, particularly for retargeting campaigns",
     "evidence": [
-      "The Facebook platform has a higher ROAS (5.97%) compared to Instagram (5.68%)",
-      "The Facebook platform has a higher revenue ($6,379,168.24) compared to Instagram ($5,886,532.48)",
-      "The Facebook platform has a higher number of purchases (177,478) compared to Instagram (163,666)"
-    ],
-    "confidence": 0.9,
-    "reasoning": "The data suggests that the Facebook platform is driving more revenue and purchases compared to Instagram, indicating a better ROAS.",
-    "recommendation": "Allocate more budget to the Facebook platform to maximize ROAS and revenue",
-    "validation": {
-      "is_valid": true,
-      "checks": {
-        "has_hypothesis": true,
-        "has_evidence": true,
-        "has_confidence": true,
-        "confidence_in_range": true,
-        "meets_threshold": true,
-        "has_reasoning": true,
-        "has_recommendation": true,
-        "evidence_is_quantitative": true,
-        "numerically_grounded": false
-      },
-      "rejection_reason": null,
-      "quality_factors": {
-        "completeness": 0.8888888888888888,
-        "confidence": 0.9,
-        "evidence_strength": 0.6
-      }
-    }
-  },
-  {
-    "id": "insight_4",
-    "category": "ctr_issues",
-    "hypothesis": "The 'm n | athleisure cooling' campaign has a CTR issue, with a 0.0% CTR and $142.11 spend",
-    "evidence": [
-      "The campaign has a 0.0% CTR, indicating a lack of engagement with the target audience",
-      "The campaign has a high number of impressions (70,425) but no clicks or purchases",
-      "The campaign's spend is $142.11, indicating a significant investment with no returns"
+      "Retargeting campaigns show a CTR of 0.0 and ROAS of 4.03, indicating potential audience saturation",
+      "The Adset-1 Retarget campaign has a high spend and impression count, but low CTR and ROAS",
+      "The creative type summary shows that Video creatives have lower CTRs compared to other types"
     ],
     "confidence": 0.6,
-    "reasoning": "The low CTR suggests that the ad creative is not resonating with the target audience, leading to a lack of engagement and conversions.",
-    "recommendation": "Optimize the ad creative for the 'm n | athleisure cooling' campaign to improve CTR and drive conversions",
+    "reasoning": "The low CTR and ROAS for retargeting campaigns suggest that audience saturation may be a factor. Expanding to new audiences or using lookalike targeting can help improve performance",
+    "recommendation": "Consider expanding retargeting campaigns to lookalike audiences or exploring new targeting options to reduce audience saturation and improve performance",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -121,11 +88,11 @@
         "has_reasoning": true,
         "has_recommendation": true,
         "evidence_is_quantitative": true,
-        "numerically_grounded": false
+        "numerically_grounded": true
       },
       "rejection_reason": null,
       "quality_factors": {
-        "completeness": 0.8888888888888888,
+        "completeness": 1.0,
         "confidence": 0.6,
         "evidence_strength": 0.6
       }

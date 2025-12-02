@@ -1,0 +1,308 @@
+# Agent Contracts - Schema Definitions for All Agent Outputs
+# Ensures type safety and validation across the pipeline
+
+schemas:
+  PlanSchema:
+    description: "Output from PlannerAgent.plan()"
+    type: "array"
+    minItems: 1
+    maxItems: 10
+    items:
+      type: "object"
+      required: ["task_id", "task_type", "description", "parameters"]
+      properties:
+        task_id:
+          type: "string"
+          pattern: "^[0-9]+$"
+        task_type:
+          type: "string"
+          enum: 
+            - "analyze_metric_trend"
+            - "identify_underperformers"
+            - "segment_analysis"
+            - "creative_analysis"
+        description:
+          type: "string"
+          minLength: 10
+          maxLength: 200
+        parameters:
+          type: "object"
+          additionalProperties: true
+  
+  DataQualitySchema:
+    description: "Output from PlannerAgent._assess_data_quality()"
+    type: "object"
+    required: ["quality_level", "variance_level", "cv_stats"]
+    properties:
+      quality_level:
+        type: "string"
+        enum: ["volatile", "stable", "medium"]
+      variance_level:
+        type: "string"
+        enum: ["high", "low", "medium"]
+      cv_stats:
+        type: "object"
+        required: ["ctr_cv", "roas_cv", "cvr_cv"]
+        properties:
+          ctr_cv:
+            type: "number"
+            minimum: 0
+          roas_cv:
+            type: "number"
+            minimum: 0
+          cvr_cv:
+            type: "number"
+            minimum: 0
+      reasons:
+        type: "array"
+        items:
+          type: "string"
+  
+  AnalysisResultsSchema:
+    description: "Output from DataAgent.execute_subtasks()"
+    type: "array"
+    minItems: 1
+    items:
+      type: "object"
+      required: ["task_id", "task_type", "status"]
+      properties:
+        task_id:
+          type: "string"
+        task_type:
+          type: "string"
+        status:
+          type: "string"
+          enum: ["success", "error", "partial"]
+        result:
+          type: "object"
+          additionalProperties: true
+        error:
+          type: "string"
+  
+  DataContextSchema:
+    description: "Output from DataAgent.get_context_for_insights()"
+    type: "object"
+    required: ["total_spend", "total_campaigns", "date_range"]
+    properties:
+      total_spend:
+        type: "number"
+        minimum: 0
+      total_campaigns:
+        type: "integer"
+        minimum: 0
+      total_adsets:
+        type: "integer"
+        minimum: 0
+      date_range:
+        type: "object"
+        required: ["start_date", "end_date"]
+        properties:
+          start_date:
+            type: "string"
+            format: "date"
+          end_date:
+            type: "string"
+            format: "date"
+      metrics_summary:
+        type: "object"
+        additionalProperties: true
+  
+  InsightsSchema:
+    description: "Output from InsightAgent.generate_insights() or validated insights"
+    type: "array"
+    minItems: 1
+    maxItems: 10
+    items:
+      type: "object"
+      required: ["insight_id", "hypothesis", "confidence", "evidence", "reasoning", "recommendation"]
+      properties:
+        insight_id:
+          type: "string"
+          pattern: "^insight_[a-z_]+$"
+        hypothesis:
+          type: "string"
+          minLength: 10
+          maxLength: 300
+        confidence:
+          type: "number"
+          minimum: 0.0
+          maximum: 1.0
+        category:
+          type: "string"
+          enum:
+            - "performance"
+            - "creative_fatigue"
+            - "audience"
+            - "timing"
+            - "budget"
+            - "targeting"
+        evidence:
+          type: "array"
+          minItems: 2
+          items:
+            type: "string"
+            minLength: 10
+        reasoning:
+          type: "string"
+          minLength: 20
+          maxLength: 500
+        recommendation:
+          type: "string"
+          minLength: 10
+          maxLength: 300
+        impact:
+          type: "string"
+          enum: ["high", "medium", "low"]
+  
+  EvaluationSchema:
+    description: "Output from EvaluatorAgent.evaluate_insights()"
+    type: "object"
+    required: ["total_insights", "validated_count", "rejected_count", "overall_quality", "pass_threshold"]
+    properties:
+      total_insights:
+        type: "integer"
+        minimum: 0
+      validated_count:
+        type: "integer"
+        minimum: 0
+      rejected_count:
+        type: "integer"
+        minimum: 0
+      overall_quality:
+        type: "number"
+        minimum: 0.0
+        maximum: 1.0
+      pass_threshold:
+        type: "boolean"
+      validated_insights:
+        $ref: "#/schemas/InsightsSchema"
+      rejected_insights:
+        type: "array"
+        items:
+          type: "object"
+      quality_breakdown:
+        type: "object"
+        properties:
+          confidence_scores:
+            type: "array"
+            items:
+              type: "number"
+          evidence_counts:
+            type: "array"
+            items:
+              type: "integer"
+  
+  CreativesSchema:
+    description: "Output from CreativeGeneratorAgent.generate_creatives()"
+    type: "array"
+    minItems: 0
+    maxItems: 10
+    items:
+      type: "object"
+      required: ["campaign", "current_issue", "creative_variations"]
+      properties:
+        campaign:
+          type: "string"
+          minLength: 1
+        current_issue:
+          type: "string"
+          minLength: 10
+        creative_variations:
+          type: "array"
+          minItems: 1
+          maxItems: 5
+          items:
+            type: "object"
+            required: ["variation_id", "creative_type", "headline", "message", "cta", "rationale"]
+            properties:
+              variation_id:
+                type: "string"
+              creative_type:
+                type: "string"
+                enum: ["image", "video", "carousel", "collection"]
+              headline:
+                type: "string"
+                minLength: 5
+                maxLength: 100
+              message:
+                type: "string"
+                minLength: 20
+                maxLength: 500
+              cta:
+                type: "string"
+                minLength: 3
+                maxLength: 30
+              visual_concept:
+                type: "string"
+              rationale:
+                type: "string"
+                minLength: 20
+              expected_improvement:
+                type: "string"
+        testing_strategy:
+          type: "string"
+          minLength: 20
+  
+  DataSummarySchema:
+    description: "Output from DataLoader.get_summary()"
+    type: "object"
+    required: ["total_rows", "date_range", "total_spend", "metrics"]
+    properties:
+      total_rows:
+        type: "integer"
+        minimum: 1
+      date_range:
+        type: "object"
+        required: ["start", "end", "days"]
+        properties:
+          start:
+            type: "string"
+            format: "date"
+          end:
+            type: "string"
+            format: "date"
+          days:
+            type: "integer"
+            minimum: 1
+      total_spend:
+        type: "number"
+        minimum: 0
+      total_campaigns:
+        type: "integer"
+        minimum: 0
+      metrics:
+        type: "object"
+        required: ["avg_ctr", "avg_roas"]
+        properties:
+          avg_ctr:
+            type: "number"
+            minimum: 0
+          avg_roas:
+            type: "number"
+            minimum: 0
+      dimensions:
+        type: "object"
+        additionalProperties: true
+
+# Validation rules (applied automatically by PipelineEngine)
+validation:
+  strict_mode: true  # Fail on schema violations
+  coerce_types: false  # Don't auto-convert types
+  log_warnings: true  # Log validation warnings
+  
+  # Custom validators
+  custom_rules:
+    - name: "confidence_evidence_correlation"
+      description: "High confidence (>0.8) requires at least 3 pieces of evidence"
+      applies_to: "InsightsSchema"
+      rule: "if confidence > 0.8 then len(evidence) >= 3"
+    
+    - name: "quality_threshold_validation"
+      description: "Pass threshold requires quality >= 0.7"
+      applies_to: "EvaluationSchema"
+      rule: "if pass_threshold == true then overall_quality >= 0.7"
+    
+    - name: "validated_count_consistency"
+      description: "Validated count must match validated_insights length"
+      applies_to: "EvaluationSchema"
+      rule: "validated_count == len(validated_insights)"
