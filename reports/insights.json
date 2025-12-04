@@ -1,16 +1,16 @@
 [
   {
     "id": "insight_1",
-    "category": "creative_fatigue",
-    "hypothesis": "Creative fatigue is a significant contributor to the decline in performance, with top-performing creatives showing higher CTRs and ROAS compared to bottom performers",
+    "category": "roas_decline",
+    "hypothesis": "ROAS decline is driven by underperforming campaigns with low or zero CVR, indicating potential creative fatigue or audience issues",
     "evidence": [
-      "Top-performing UGC creative has a CTR of 0.0315 and ROAS of 6.99",
-      "Bottom-performing Video creative has a CTR of 0.0046 and ROAS of 0.97",
-      "There is a 0.0265 difference in CTR between top and bottom performers"
+      "Multiple campaigns (e.g., 'Women | tudio Sports', 'Women | Studi Sports') have 0% CVR despite significant spend and impressions",
+      "Campaigns with low CVR (e.g., 'MEN SIGNATURE SOT', 'women su-mer invisible') have low ROAS, suggesting a correlation between CVR and ROAS",
+      "High spend campaigns (e.g., 'WOMEN Coton Classics', 'Men-Bold Colors Drop') with low CVR may be causing overall ROAS decline"
     ],
     "confidence": 0.8,
-    "reasoning": "The significant difference in performance between top and bottom creatives suggests that creative fatigue is a major factor in the decline. Refreshing creatives and testing new ones can help improve performance",
-    "recommendation": "Rotate and refresh top-performing creatives every 2-3 weeks to maintain performance and test new creatives to identify potential winners",
+    "reasoning": "The data suggests that campaigns with low or zero CVR are contributing to the overall ROAS decline. This could be due to creative fatigue, where ad creative is no longer resonating with the target audience, or audience issues, where the target audience is not converting as expected.",
+    "recommendation": "Refresh ad creative, test new targeting options, and consider audience expansion to improve CVR and ROAS",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -34,16 +34,15 @@
   },
   {
     "id": "insight_2",
-    "category": "creative_fatigue",
-    "hypothesis": "The high number of creative variants (806) may be contributing to creative fatigue, making it harder to identify top performers and optimize campaigns",
+    "category": "ctr_issues",
+    "hypothesis": "CTR issues are contributing to underperformance in certain campaigns, potentially due to ad fatigue or targeting issues",
     "evidence": [
-      "There are 806 total creative variants, making it challenging to optimize and identify top performers",
-      "The top 10 performers account for a significant portion of total spend and revenue",
-      "The creative type summary shows that UGC and Image creatives have higher CTRs compared to Video"
+      "Campaigns with 0% CTR (e.g., 'Women-Studio Spo-ts', 'WOMEN_Cot-on_Classics') have low or zero ROAS",
+      "Campaigns with low CTR (e.g., 'MEN BOL COLORS DROP', 'women Summer Inv-sible') have low ROAS, suggesting a correlation between CTR and ROAS"
     ],
     "confidence": 0.7,
-    "reasoning": "The high number of creative variants can lead to creative fatigue and make it harder to optimize campaigns. Identifying and focusing on top-performing creatives can help improve performance",
-    "recommendation": "Consolidate and prioritize top-performing creatives, and consider reducing the total number of creative variants to improve campaign optimization and performance",
+    "reasoning": "The data suggests that campaigns with low or zero CTR are contributing to underperformance. This could be due to ad fatigue, where the target audience is no longer engaging with the ads, or targeting issues, where the target audience is not being reached effectively.",
+    "recommendation": "Test new ad creative, targeting options, and consider audience expansion to improve CTR and ROAS",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -61,22 +60,21 @@
       "quality_factors": {
         "completeness": 1.0,
         "confidence": 0.7,
-        "evidence_strength": 0.6
+        "evidence_strength": 0.4
       }
     }
   },
   {
     "id": "insight_3",
     "category": "audience_saturation",
-    "hypothesis": "Audience saturation may be a contributing factor to the decline in performance, particularly for retargeting campaigns",
+    "hypothesis": "Audience saturation may be contributing to underperformance in retargeting campaigns, potentially due to over-targeting the same audience",
     "evidence": [
-      "Retargeting campaigns show a CTR of 0.0 and ROAS of 4.03, indicating potential audience saturation",
-      "The Adset-1 Retarget campaign has a high spend and impression count, but low CTR and ROAS",
-      "The creative type summary shows that Video creatives have lower CTRs compared to other types"
+      "Retargeting campaigns (e.g., 'Men Pr-mium Modal', 'Men Premiu- Modal') have low or zero CTR and CVR",
+      "High spend retargeting campaigns (e.g., 'Men-Bold Colors Drop') have low ROAS, suggesting potential audience saturation"
     ],
     "confidence": 0.6,
-    "reasoning": "The low CTR and ROAS for retargeting campaigns suggest that audience saturation may be a factor. Expanding to new audiences or using lookalike targeting can help improve performance",
-    "recommendation": "Consider expanding retargeting campaigns to lookalike audiences or exploring new targeting options to reduce audience saturation and improve performance",
+    "reasoning": "The data suggests that retargeting campaigns may be experiencing audience saturation, where the target audience is being over-targeted, leading to decreased engagement and conversions.",
+    "recommendation": "Consider expanding targeting options, refreshing ad creative, or adjusting retargeting strategies to reduce audience saturation",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -87,14 +85,14 @@
         "meets_threshold": true,
         "has_reasoning": true,
         "has_recommendation": true,
-        "evidence_is_quantitative": true,
+        "evidence_is_quantitative": false,
         "numerically_grounded": true
       },
       "rejection_reason": null,
       "quality_factors": {
-        "completeness": 1.0,
+        "completeness": 0.8888888888888888,
         "confidence": 0.6,
-        "evidence_strength": 0.6
+        "evidence_strength": 0.4
       }
     }
   }

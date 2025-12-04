@@ -1,7 +1,7 @@
 # Facebook Ads Performance Analysis Report
 
-**Generated:** 2025-12-03T01:45:58.189294  
-**Query:** Analyze creative fatigue patterns
+**Generated:** 2025-12-04T22:40:18.833365  
+**Query:** Show me underperforming campaigns
 
 ---
 
@@ -11,164 +11,162 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 ## Key Insights
 
-### 1. Creative fatigue is a significant contributor to the decline in performance, with top-performing creatives showing higher CTRs and ROAS compared to bottom performers
+### 1. ROAS decline is driven by underperforming campaigns with low or zero CVR, indicating potential creative fatigue or audience issues
 
 **Confidence:** 80%  
-**Category:** creative_fatigue
+**Category:** roas_decline
 
 **Evidence:**
-- Top-performing UGC creative has a CTR of 0.0315 and ROAS of 6.99
-- Bottom-performing Video creative has a CTR of 0.0046 and ROAS of 0.97
-- There is a 0.0265 difference in CTR between top and bottom performers
+- Multiple campaigns (e.g., 'Women | tudio Sports', 'Women | Studi Sports') have 0% CVR despite significant spend and impressions
+- Campaigns with low CVR (e.g., 'MEN SIGNATURE SOT', 'women su-mer invisible') have low ROAS, suggesting a correlation between CVR and ROAS
+- High spend campaigns (e.g., 'WOMEN Coton Classics', 'Men-Bold Colors Drop') with low CVR may be causing overall ROAS decline
 
-**Reasoning:** The significant difference in performance between top and bottom creatives suggests that creative fatigue is a major factor in the decline. Refreshing creatives and testing new ones can help improve performance
+**Reasoning:** The data suggests that campaigns with low or zero CVR are contributing to the overall ROAS decline. This could be due to creative fatigue, where ad creative is no longer resonating with the target audience, or audience issues, where the target audience is not converting as expected.
 
-**Recommendation:** Rotate and refresh top-performing creatives every 2-3 weeks to maintain performance and test new creatives to identify potential winners
+**Recommendation:** Refresh ad creative, test new targeting options, and consider audience expansion to improve CVR and ROAS
 
 ---
 
-### 2. The high number of creative variants (806) may be contributing to creative fatigue, making it harder to identify top performers and optimize campaigns
+### 2. CTR issues are contributing to underperformance in certain campaigns, potentially due to ad fatigue or targeting issues
 
 **Confidence:** 70%  
-**Category:** creative_fatigue
+**Category:** ctr_issues
 
 **Evidence:**
-- There are 806 total creative variants, making it challenging to optimize and identify top performers
-- The top 10 performers account for a significant portion of total spend and revenue
-- The creative type summary shows that UGC and Image creatives have higher CTRs compared to Video
+- Campaigns with 0% CTR (e.g., 'Women-Studio Spo-ts', 'WOMEN_Cot-on_Classics') have low or zero ROAS
+- Campaigns with low CTR (e.g., 'MEN BOL COLORS DROP', 'women Summer Inv-sible') have low ROAS, suggesting a correlation between CTR and ROAS
 
-**Reasoning:** The high number of creative variants can lead to creative fatigue and make it harder to optimize campaigns. Identifying and focusing on top-performing creatives can help improve performance
+**Reasoning:** The data suggests that campaigns with low or zero CTR are contributing to underperformance. This could be due to ad fatigue, where the target audience is no longer engaging with the ads, or targeting issues, where the target audience is not being reached effectively.
 
-**Recommendation:** Consolidate and prioritize top-performing creatives, and consider reducing the total number of creative variants to improve campaign optimization and performance
+**Recommendation:** Test new ad creative, targeting options, and consider audience expansion to improve CTR and ROAS
 
 ---
 
-### 3. Audience saturation may be a contributing factor to the decline in performance, particularly for retargeting campaigns
+### 3. Audience saturation may be contributing to underperformance in retargeting campaigns, potentially due to over-targeting the same audience
 
 **Confidence:** 60%  
 **Category:** audience_saturation
 
 **Evidence:**
-- Retargeting campaigns show a CTR of 0.0 and ROAS of 4.03, indicating potential audience saturation
-- The Adset-1 Retarget campaign has a high spend and impression count, but low CTR and ROAS
-- The creative type summary shows that Video creatives have lower CTRs compared to other types
+- Retargeting campaigns (e.g., 'Men Pr-mium Modal', 'Men Premiu- Modal') have low or zero CTR and CVR
+- High spend retargeting campaigns (e.g., 'Men-Bold Colors Drop') have low ROAS, suggesting potential audience saturation
 
-**Reasoning:** The low CTR and ROAS for retargeting campaigns suggest that audience saturation may be a factor. Expanding to new audiences or using lookalike targeting can help improve performance
+**Reasoning:** The data suggests that retargeting campaigns may be experiencing audience saturation, where the target audience is being over-targeted, leading to decreased engagement and conversions.
 
-**Recommendation:** Consider expanding retargeting campaigns to lookalike audiences or exploring new targeting options to reduce audience saturation and improve performance
+**Recommendation:** Consider expanding targeting options, refreshing ad creative, or adjusting retargeting strategies to reduce audience saturation
 
 ---
 
 ## Creative Recommendations
 
-### Campaign: Women-Studio Spo-ts
+### Campaign: m n | athleisure cooling
 
-**Current Issue:** Zero CTR, potential creative fatigue
+**Current Issue:** Audience fatigue - zero CTR, potential creative fatigue
 
 **New Creative Variations:**
 
 #### Variation var_1
 
 - **Type:** UGC
-- **Headline:** Say Goodbye to Discomfort
-- **Message:** Our studio sports collection is designed for the modern woman. Breathable, comfortable, and stylish.
-- **CTA:** Shop Now
-- **Rationale:** Fresh angle focusing on comfort and style, using UGC for authenticity
-- **Expected Impact:** 20-30% CTR increase
+- **Headline:** Real Men, Real Comfort
+- **Message:** Don't just take our word for it. Hear from men who've made the switch to athleisure cooling underwear
+- **CTA:** Read Reviews
+- **Rationale:** Social proof to combat audience fatigue and improve CVR
+- **Expected Impact:** 20-30% CTR lift
 
 #### Variation var_2
 
 - **Type:** Video
-- **Headline:** Move Freely, Live Freely
-- **Message:** Discover our seamless everyday collection, designed for the active woman.
-- **CTA:** Explore Collection
-- **Rationale:** Video creative to showcase product benefits and features
-- **Expected Impact:** 25-35% CTR increase
+- **Headline:** What's Holding You Back?
+- **Message:** Say goodbye to sweat and discomfort. Upgrade to athleisure cooling underwear today
+- **CTA:** Shop Now
+- **Rationale:** Emotional appeal to address pain points and create urgency
+- **Expected Impact:** 15-25% CTR lift
 
 #### Variation var_3
 
-- **Type:** Image
-- **Headline:** Elevate Your Everyday
-- **Message:** Our cotton classics collection is perfect for any occasion. Comfortable, stylish, and affordable.
-- **CTA:** Browse Collection
-- **Rationale:** Image creative to highlight product quality and style
-- **Expected Impact:** 15-25% CTR increase
+- **Type:** Carousel
+- **Headline:** Cooling Underwear for the Modern Man
+- **Message:** Discover the benefits of athleisure cooling underwear: moisture-wicking, breathable, and comfortable
+- **CTA:** Learn More
+- **Rationale:** Highlighting key features and benefits to educate and engage the audience
+- **Expected Impact:** 10-20% CTR lift
 
-**Testing Strategy:** Launch 3 variations simultaneously, $20/day each, rotate every 7 days
+**Testing Strategy:** Launch all 3 variations simultaneously, $50/day each, rotate every 7 days
 
 ---
 
-### Campaign: Men Premiu- Modal
+### Campaign: women Summer Inv-sible
 
-**Current Issue:** Zero CTR, potential audience saturation
+**Current Issue:** Low CTR - 0.01%, potential targeting issues
 
 **New Creative Variations:**
 
 #### Variation var_4
 
-- **Type:** UGC
-- **Headline:** Complete Your Wardrobe
-- **Message:** You've shown interest in our premium modal collection. Complete your wardrobe with our best-sellers.
+- **Type:** Image
+- **Headline:** Invisible Comfort for the Modern Woman
+- **Message:** Experience the comfort and freedom of Summer Inv-sible underwear
 - **CTA:** Shop Now
-- **Rationale:** Retargeting ad with a focus on completing the purchase
-- **Expected Impact:** 30-40% CTR increase
+- **Rationale:** Simple, attention-grabbing creative to improve CTR
+- **Expected Impact:** 25-40% CTR lift
 
 #### Variation var_5
 
-- **Type:** Video
-- **Headline:** The Art of Comfort
-- **Message:** Discover what makes our premium modal collection stand out. Quality, comfort, and style.
-- **CTA:** Learn More
-- **Rationale:** Video creative to showcase product quality and features
-- **Expected Impact:** 35-45% CTR increase
+- **Type:** UGC
+- **Headline:** Real Women, Real Comfort
+- **Message:** Hear from women who've experienced the comfort and confidence of Summer Inv-sible underwear
+- **CTA:** Read Reviews
+- **Rationale:** Social proof to build trust and credibility
+- **Expected Impact:** 20-35% CTR lift
 
 #### Variation var_6
 
-- **Type:** Carousel
-- **Headline:** Premium Modal Collection
-- **Message:** Explore our best-selling premium modal products. Comfortable, stylish, and affordable.
-- **CTA:** Browse Collection
-- **Rationale:** Carousel creative to showcase multiple products and features
-- **Expected Impact:** 20-30% CTR increase
+- **Type:** Video
+- **Headline:** Say Goodbye to Visible Lines
+- **Message:** Upgrade to Summer Inv-sible underwear for a seamless, comfortable fit
+- **CTA:** Learn More
+- **Rationale:** Emotional appeal to address pain points and create urgency
+- **Expected Impact:** 15-30% CTR lift
 
-**Testing Strategy:** Launch 3 variations simultaneously, $30/day each, rotate every 10 days
+**Testing Strategy:** Launch all 3 variations simultaneously, $30/day each, rotate every 5 days
 
 ---
 
-### Campaign: WOMEN_Cot-on_Classics
+### Campaign: MEN SIGNATURE SOT
 
-**Current Issue:** Zero CTR, potential creative fatigue
+**Current Issue:** Low CTR - 0.01%, potential audience saturation
 
 **New Creative Variations:**
 
 #### Variation var_7
 
-- **Type:** UGC
-- **Headline:** Timeless Comfort
-- **Message:** Our cotton classics collection is designed for the modern woman. Comfortable, stylish, and affordable.
+- **Type:** Carousel
+- **Headline:** Elevate Your Underwear Game
+- **Message:** Discover the comfort, quality, and style of MEN SIGNATURE SOT underwear
 - **CTA:** Shop Now
-- **Rationale:** Fresh angle focusing on comfort and style, using UGC for authenticity
-- **Expected Impact:** 25-35% CTR increase
+- **Rationale:** Highlighting key features and benefits to educate and engage the audience
+- **Expected Impact:** 20-35% CTR lift
 
 #### Variation var_8
 
-- **Type:** Image
-- **Headline:** Elevate Your Style
-- **Message:** Our cotton classics collection is perfect for any occasion. Comfortable, stylish, and affordable.
-- **CTA:** Browse Collection
-- **Rationale:** Image creative to highlight product quality and style
-- **Expected Impact:** 20-30% CTR increase
+- **Type:** UGC
+- **Headline:** Real Men, Real Style
+- **Message:** Hear from men who've experienced the comfort and confidence of MEN SIGNATURE SOT underwear
+- **CTA:** Read Reviews
+- **Rationale:** Social proof to build trust and credibility
+- **Expected Impact:** 15-30% CTR lift
 
 #### Variation var_9
 
 - **Type:** Video
-- **Headline:** The Comfort Difference
-- **Message:** Discover what makes our cotton classics collection stand out. Quality, comfort, and style.
+- **Headline:** What Sets Us Apart
+- **Message:** Learn about the quality, comfort, and style that goes into every pair of MEN SIGNATURE SOT underwear
 - **CTA:** Learn More
-- **Rationale:** Video creative to showcase product quality and features
-- **Expected Impact:** 30-40% CTR increase
+- **Rationale:** Emotional appeal to address pain points and create urgency
+- **Expected Impact:** 10-25% CTR lift
 
-**Testing Strategy:** Launch 3 variations simultaneously, $25/day each, rotate every 7 days
+**Testing Strategy:** Launch all 3 variations simultaneously, $40/day each, rotate every 7 days
 
 ---
 
@@ -176,7 +174,7 @@ This report analyzes Facebook Ads performance for the undergarments campaign, id
 
 - **Total Insights Generated:** 3
 - **Validated Insights:** 3
-- **Quality Score:** 0.77/1.00
+- **Quality Score:** 0.73/1.00
 - **Evaluation Status:** ✅ Passed
 
 ---

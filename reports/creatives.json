@@ -1,110 +1,110 @@
 [
   {
-    "campaign": "Women-Studio Spo-ts",
-    "adset": "Adset-1 ATC",
-    "current_issue": "Zero CTR, potential creative fatigue",
-    "insight_addressed": "creative_fatigue",
+    "campaign": "m n | athleisure cooling",
+    "adset": "Adset-1 Retarget",
+    "current_issue": "Audience fatigue - zero CTR, potential creative fatigue",
+    "insight_addressed": "roas_decline, audience_saturation",
     "creative_variations": [
       {
         "variation_id": "var_1",
         "creative_type": "UGC",
-        "headline": "Say Goodbye to Discomfort",
-        "message": "Our studio sports collection is designed for the modern woman. Breathable, comfortable, and stylish.",
-        "cta": "Shop Now",
-        "rationale": "Fresh angle focusing on comfort and style, using UGC for authenticity",
-        "expected_improvement": "20-30% CTR increase"
+        "headline": "Real Men, Real Comfort",
+        "message": "Don't just take our word for it. Hear from men who've made the switch to athleisure cooling underwear",
+        "cta": "Read Reviews",
+        "rationale": "Social proof to combat audience fatigue and improve CVR",
+        "expected_improvement": "20-30% CTR lift"
       },
       {
         "variation_id": "var_2",
         "creative_type": "Video",
-        "headline": "Move Freely, Live Freely",
-        "message": "Discover our seamless everyday collection, designed for the active woman.",
-        "cta": "Explore Collection",
-        "rationale": "Video creative to showcase product benefits and features",
-        "expected_improvement": "25-35% CTR increase"
+        "headline": "What's Holding You Back?",
+        "message": "Say goodbye to sweat and discomfort. Upgrade to athleisure cooling underwear today",
+        "cta": "Shop Now",
+        "rationale": "Emotional appeal to address pain points and create urgency",
+        "expected_improvement": "15-25% CTR lift"
       },
       {
         "variation_id": "var_3",
-        "creative_type": "Image",
-        "headline": "Elevate Your Everyday",
-        "message": "Our cotton classics collection is perfect for any occasion. Comfortable, stylish, and affordable.",
-        "cta": "Browse Collection",
-        "rationale": "Image creative to highlight product quality and style",
-        "expected_improvement": "15-25% CTR increase"
+        "creative_type": "Carousel",
+        "headline": "Cooling Underwear for the Modern Man",
+        "message": "Discover the benefits of athleisure cooling underwear: moisture-wicking, breathable, and comfortable",
+        "cta": "Learn More",
+        "rationale": "Highlighting key features and benefits to educate and engage the audience",
+        "expected_improvement": "10-20% CTR lift"
       }
     ],
-    "testing_strategy": "Launch 3 variations simultaneously, $20/day each, rotate every 7 days"
+    "testing_strategy": "Launch all 3 variations simultaneously, $50/day each, rotate every 7 days"
   },
   {
-    "campaign": "Men Premiu- Modal",
-    "adset": "Adset-4 Retarget",
-    "current_issue": "Zero CTR, potential audience saturation",
-    "insight_addressed": "audience_saturation",
+    "campaign": "women Summer Inv-sible",
+    "adset": "Adset-5 LAL1",
+    "current_issue": "Low CTR - 0.01%, potential targeting issues",
+    "insight_addressed": "ctr_issues",
     "creative_variations": [
       {
         "variation_id": "var_4",
-        "creative_type": "UGC",
-        "headline": "Complete Your Wardrobe",
-        "message": "You've shown interest in our premium modal collection. Complete your wardrobe with our best-sellers.",
+        "creative_type": "Image",
+        "headline": "Invisible Comfort for the Modern Woman",
+        "message": "Experience the comfort and freedom of Summer Inv-sible underwear",
         "cta": "Shop Now",
-        "rationale": "Retargeting ad with a focus on completing the purchase",
-        "expected_improvement": "30-40% CTR increase"
+        "rationale": "Simple, attention-grabbing creative to improve CTR",
+        "expected_improvement": "25-40% CTR lift"
       },
       {
         "variation_id": "var_5",
-        "creative_type": "Video",
-        "headline": "The Art of Comfort",
-        "message": "Discover what makes our premium modal collection stand out. Quality, comfort, and style.",
-        "cta": "Learn More",
-        "rationale": "Video creative to showcase product quality and features",
-        "expected_improvement": "35-45% CTR increase"
+        "creative_type": "UGC",
+        "headline": "Real Women, Real Comfort",
+        "message": "Hear from women who've experienced the comfort and confidence of Summer Inv-sible underwear",
+        "cta": "Read Reviews",
+        "rationale": "Social proof to build trust and credibility",
+        "expected_improvement": "20-35% CTR lift"
       },
       {
         "variation_id": "var_6",
-        "creative_type": "Carousel",
-        "headline": "Premium Modal Collection",
-        "message": "Explore our best-selling premium modal products. Comfortable, stylish, and affordable.",
-        "cta": "Browse Collection",
-        "rationale": "Carousel creative to showcase multiple products and features",
-        "expected_improvement": "20-30% CTR increase"
+        "creative_type": "Video",
+        "headline": "Say Goodbye to Visible Lines",
+        "message": "Upgrade to Summer Inv-sible underwear for a seamless, comfortable fit",
+        "cta": "Learn More",
+        "rationale": "Emotional appeal to address pain points and create urgency",
+        "expected_improvement": "15-30% CTR lift"
       }
     ],
-    "testing_strategy": "Launch 3 variations simultaneously, $30/day each, rotate every 10 days"
+    "testing_strategy": "Launch all 3 variations simultaneously, $30/day each, rotate every 5 days"
   },
   {
-    "campaign": "WOMEN_Cot-on_Classics",
-    "adset": "Adset-2 WC",
-    "current_issue": "Zero CTR, potential creative fatigue",
-    "insight_addressed": "creative_fatigue",
+    "campaign": "MEN SIGNATURE SOT",
+    "adset": "Adset-1 Retarget",
+    "current_issue": "Low CTR - 0.01%, potential audience saturation",
+    "insight_addressed": "audience_saturation",
     "creative_variations": [
       {
         "variation_id": "var_7",
-        "creative_type": "UGC",
-        "headline": "Timeless Comfort",
-        "message": "Our cotton classics collection is designed for the modern woman. Comfortable, stylish, and affordable.",
+        "creative_type": "Carousel",
+        "headline": "Elevate Your Underwear Game",
+        "message": "Discover the comfort, quality, and style of MEN SIGNATURE SOT underwear",
         "cta": "Shop Now",
-        "rationale": "Fresh angle focusing on comfort and style, using UGC for authenticity",
-        "expected_improvement": "25-35% CTR increase"
+        "rationale": "Highlighting key features and benefits to educate and engage the audience",
+        "expected_improvement": "20-35% CTR lift"
       },
       {
         "variation_id": "var_8",
-        "creative_type": "Image",
-        "headline": "Elevate Your Style",
-        "message": "Our cotton classics collection is perfect for any occasion. Comfortable, stylish, and affordable.",
-        "cta": "Browse Collection",
-        "rationale": "Image creative to highlight product quality and style",
-        "expected_improvement": "20-30% CTR increase"
+        "creative_type": "UGC",
+        "headline": "Real Men, Real Style",
+        "message": "Hear from men who've experienced the comfort and confidence of MEN SIGNATURE SOT underwear",
+        "cta": "Read Reviews",
+        "rationale": "Social proof to build trust and credibility",
+        "expected_improvement": "15-30% CTR lift"
       },
       {
         "variation_id": "var_9",
         "creative_type": "Video",
-        "headline": "The Comfort Difference",
-        "message": "Discover what makes our cotton classics collection stand out. Quality, comfort, and style.",
+        "headline": "What Sets Us Apart",
+        "message": "Learn about the quality, comfort, and style that goes into every pair of MEN SIGNATURE SOT underwear",
         "cta": "Learn More",
-        "rationale": "Video creative to showcase product quality and features",
-        "expected_improvement": "30-40% CTR increase"
+        "rationale": "Emotional appeal to address pain points and create urgency",
+        "expected_improvement": "10-25% CTR lift"
       }
     ],
-    "testing_strategy": "Launch 3 variations simultaneously, $25/day each, rotate every 7 days"
+    "testing_strategy": "Launch all 3 variations simultaneously, $40/day each, rotate every 7 days"
   }
 ]

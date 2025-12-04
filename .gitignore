@@ -60,9 +60,14 @@ IMPLEMENTATION_NOTES.md
 WHATS_NEW_P1_THRESHOLD_MANAGER.md
 ORCHESTRATOR_CLEANUP_PLAN.md
 WHATS_NEW_P1_ORCHESTRATOR_CLEANUP.md
+DRIFT_DETECTION_RESULTS.md
+P2_DRIFT_DETECTION_GUIDE.md
 
 # Schema drift detection snapshots (generated at runtime)
 config/schemas/schema_detected_*.yaml
+
+# Drift detection baseline (generated - contains historical metrics)
+config/baseline_metrics.json
 
 # OS
 .DS_Store
@@ -70,3 +75,4 @@ Thumbs.db
 
 # Data (large files)
 *.csv.bak
+*_backup.csv

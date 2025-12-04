@@ -9,6 +9,8 @@ from typing import Dict, Any, List
 from src.utils.data_loader import DataLoader
 from src.utils.structured_logger import StructuredLogger
 from src.utils.threshold_manager import ThresholdManager
+from src.monitoring.metric_tracker import MetricTracker
+from src.monitoring.drift_detector import DriftDetector
 
 logger = logging.getLogger(__name__)
 
@@ -40,9 +42,18 @@ class DataAgent:
         # Initialize threshold manager for default threshold resolution
         self.threshold_mgr = ThresholdManager(self.config)
         
+        # Initialize drift detection components
+        self.metric_tracker = MetricTracker()
+        self.drift_detector = DriftDetector(self.config)
+        self.drift_alerts = []
+        
     def initialize(self):
-        """Load the dataset"""
+        """Load the dataset and check for metric drift"""
         self.df = self.loader.load()
+        
+        # Perform drift detection
+        self._check_drift()
+        
         logger.info("Data Agent initialized")
         
     def _normalize_metric(self, metric: str) -> str:
@@ -378,4 +389,80 @@ class DataAgent:
         return {
             'underperformer_data': underperformer_data,
             'creative_analysis': creative_analysis
+        }
+    
+    def _check_drift(self) -> None:
+        """
+        Check for metric drift compared to historical baseline.
+        
+        Performs drift detection on first data load:
+        1. If no baseline exists: Create and save baseline
+        2. If baseline exists: Compare and detect drift
+        """
+        baseline = self.metric_tracker.load_baseline()
+        
+        if baseline is None:
+            # First run - create baseline
+            logger.info("ℹ️  First run - creating baseline metrics")
+            baseline = self.metric_tracker.calculate_baseline(self.df)
+            self.metric_tracker.save_baseline(baseline)
+            logger.info("✅ Baseline created and saved")
+        else:
+            # Compare to baseline
+            baseline_age = self.metric_tracker.get_baseline_age_days()
+            logger.info(f"🔍 Checking for metric drift (baseline age: {baseline_age:.1f} days)")
+            
+            alerts = self.drift_detector.detect_drift(self.df, baseline)
+            
+            if alerts:
+                self.drift_detector.log_alerts(alerts)
+                self.drift_alerts = alerts
+                
+                # Check if critical drift requires baseline update
+                critical_alerts = [a for a in alerts if a.severity == 'CRITICAL']
+                if critical_alerts:
+                    logger.warning("💡 Critical drift detected - consider updating baseline")
+                    logger.warning("   Call data_agent.update_baseline() to reset baseline")
+            else:
+                logger.info("✅ No drift detected - metrics within normal range")
+                self.drift_alerts = []
+    
+    def update_baseline(self) -> Dict:
+        """
+        Manually update baseline with current data.
+        
+        Use this when drift is expected (e.g., seasonal changes,
+        business model changes) to reset the baseline.
+        
+        Returns:
+            New baseline dictionary
+        """
+        logger.info("📝 Updating baseline with current data...")
+        baseline = self.metric_tracker.update_baseline(self.df)
+        self.drift_alerts = []  # Clear alerts
+        logger.info("✅ Baseline updated - drift alerts cleared")
+        return baseline
+    
+    def get_drift_summary(self) -> Dict[str, Any]:
+        """
+        Get summary of detected drift.
+        
+        Returns:
+            Dictionary with drift summary and alerts
+        """
+        return {
+            'has_drift': len(self.drift_alerts) > 0,
+            'num_alerts': len(self.drift_alerts),
+            'critical_alerts': len([a for a in self.drift_alerts if a.severity == 'CRITICAL']),
+            'warning_alerts': len([a for a in self.drift_alerts if a.severity == 'WARNING']),
+            'alerts': [
+                {
+                    'metric': a.metric,
+                    'severity': a.severity,
+                    'message': a.message,
+                    'change_pct': a.change_pct,
+                    'affected_campaigns': a.affected_campaigns
+                }
+                for a in self.drift_alerts
+            ]
         }

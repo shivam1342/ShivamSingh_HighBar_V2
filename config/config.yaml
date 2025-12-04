@@ -110,3 +110,19 @@ logging:
   level: "INFO"  # DEBUG, INFO, WARNING, ERROR
   format: "json"
   file: "logs/execution.jsonl"
+
+# Monitoring & Drift Detection
+monitoring:
+  drift_detection:
+    enabled: true
+    roas_drop_threshold: 0.5      # Alert if ROAS drops >50%
+    ctr_drop_threshold: 0.3       # Alert if CTR drops >30%
+    cvr_drop_threshold: 0.3       # Alert if CVR drops >30%
+    outlier_std_threshold: 3.0    # Flag values >3 std deviations
+    baseline_path: "config/baseline_metrics.json"
+  
+  alerts:
+    enabled: true
+    confidence_threshold: 0.5     # Alert if insights have confidence <0.5
+    min_data_days: 7              # Alert if no data in last 7 days
+    quality_threshold: 0.6        # Alert if quality score <0.6
