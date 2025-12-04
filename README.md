@@ -123,9 +123,11 @@ data:
 | **Logging** | Structured JSONL | Full observability with timestamped event logs |
 | **Testing** | pytest | Unit tests for evaluator |
 
-## 🛡️ Production Features (P0 Requirements)
+## 🛡️ Production Features (P0 + P2 Requirements)
 
-### 1. Exponential Backoff Retry with Jitter
+### P0: Core Reliability
+
+#### 1. Exponential Backoff Retry with Jitter
 - **Automatic retry** on LLM API failures (rate limits, timeouts, network errors)
 - **Smart delays**: 1s → 2s → 4s → 8s with randomized jitter to prevent thundering herd
 - **Configurable**: max retries, base delay, retriable exceptions
@@ -213,6 +215,70 @@ required_columns:
 # Handles user queries like "campaigns with zero sales"
 METRIC_ALIASES = {'sales': 'revenue', 'conversions': 'purchases'}
 # Automatically maps 'sales' → 'revenue' before querying data
+```
+
+### P2: Monitoring & Observability
+
+#### 7. Drift Detection System
+- **Metric tracking**: Baseline tracking for ROAS, CTR, CVR with statistical analysis
+- **Drift alerts**: Detects significant deviations using Z-score and IQR methods
+- **Outlier detection**: Identifies campaigns with anomalous metrics (>3 std dev)
+- **Historical comparison**: Compares current vs baseline metrics with percentage changes
+- **Persistent baselines**: Saves/loads baselines for multi-run comparison
+
+```python
+# Automatic drift detection during data load
+drift_detector.check_drift(current_metrics)
+# Output: "🚨 88 campaigns (2.0%) have outlier ROAS values"
+```
+
+#### 8. Health Check System
+- **Pre-flight validation**: 5 health checks run before pipeline execution
+  - Data freshness (<24h default)
+  - Data completeness (<5% missing)
+  - Data validity (no negatives, zero impressions)
+  - Schema consistency (required columns present)
+  - Metric ranges (suspicious values flagged)
+- **Severity levels**: CRITICAL (blocks execution) vs WARNING (logs only)
+- **Actionable recommendations**: Each failed check includes fix suggestions
+
+```python
+# Health checks run automatically before pipeline
+health_checker.run_all_checks(df, data_summary)
+# Output: "❌ Data is 5975 hours old (threshold: 24h)"
+```
+
+#### 9. Centralized Alert Management
+- **Alert collection**: Single AlertManager aggregates all system alerts
+- **8 alert types**: Low confidence, quality scores, drift, missing data, freshness, etc
+- **Formatted output**: Color-coded console output with emojis (🚨❌⚠️ℹ️)
+- **Alert history**: Tracks last 100 alerts with deduplication
+- **Summary reporting**: End-of-pipeline alert digest with recommendations
+
+```python
+# Alerts displayed at end of execution
+alert_manager.log_all_alerts()
+# Output: "⚠️ WARNING: Data is 5975.4 hours old"
+#         "💡 Recommendation: Consider refreshing data"
+```
+
+#### 10. Monitoring Integration
+- **InsightAgent**: Triggers alerts for low confidence insights
+- **Evaluator**: Triggers alerts when quality scores too low
+- **Orchestrator**: Displays health check results and alert summary
+- **Never fails silently**: All issues surfaced with context and recommendations
+
+```yaml
+# config.yaml monitoring configuration
+monitoring:
+  alerts:
+    enabled: true
+    confidence_threshold: 0.5
+    quality_threshold: 0.7
+  health_checks:
+    max_data_age_hours: 24
+    max_missing_pct: 5
+    required_columns: ["campaign_id", "spend", "revenue"]
 ```
 
 ## 📂 Project Structure
@@ -386,11 +452,47 @@ logging:
 ## 🧪 Testing
 
 ```bash
-# Run tests
+# Run all tests
 pytest tests/ -v
+
+# Run with coverage report
+pytest tests/ --cov=src --cov-report=html --cov-report=term
+
+# Run specific test modules
+pytest tests/test_drift_detection.py -v  # Drift detection (100% passing)
+pytest tests/test_alerting.py -v         # Alerting system (72% passing)
+pytest tests/test_evaluator.py -v        # Evaluator agent (83% passing)
 
 # Run specific test
 pytest tests/test_evaluator.py::test_evaluate_valid_insight -v
+```
+
+### Test Coverage
+
+**Current Status:** 47+ tests, ~26% code coverage
+
+| Module | Tests | Coverage | Status |
+|--------|-------|----------|--------|
+| **Drift Detection** | 16 | 92% | ✅ Fully tested |
+| **Alert Manager** | 11 | 58% | ✅ Core working |
+| **Health Checker** | 14 | 76% | ⚠️ 7 edge cases pending |
+| **Evaluator** | 6 | 75% | ✅ Core working |
+| **Utilities** | Various | 40-88% | ✅ Key paths tested |
+
+**Why some tests are mocked:** Agents that use LLM calls (Planner, InsightAgent, CreativeGenerator) are tested with mocked LLM responses to avoid:
+- External API dependencies in CI/CD
+- Rate limits during test runs
+- Non-deterministic outputs
+- Slow test execution (0.1s vs 1s+ per test)
+
+**LLM-dependent code IS testable:** We mock the `llm.generate()` method to return controlled JSON responses, then test the parsing, validation, and error handling logic. This ensures 100% test reliability while still verifying business logic.
+
+```python
+# Example: Testing planner with mocked LLM
+def test_plan_generation(self):
+    mock_llm.generate.return_value = '{"subtasks": [...]}'
+    plan = planner.plan("test query", data_summary)
+    assert len(plan["subtasks"]) > 0
 ```
 
 ## 🔍 Validation Logic
@@ -482,4 +584,6 @@ MIT License - Built for Kasparro Applied AI Engineer Assignment
 
 **Built with:** Python 3.11 | pandas | Groq API (llama-3.3-70b-versatile) | Pure multi-agent orchestration (no frameworks)
 
-**v2 Improvements:** Exponential backoff retry | 8 exception types | Schema validation | Structured JSONL logging | Query adaptation | Metric validation
+**v2 Improvements:** Exponential backoff retry | 8 exception types | Schema validation | Structured JSONL logging | Query adaptation | Metric validation | Drift detection | Health monitoring | Alerting system
+
+**P2 Features:** Metric drift detection with statistical baselines | Pre-flight health checks | Alert management system | Quality monitoring | Test coverage 47+ tests

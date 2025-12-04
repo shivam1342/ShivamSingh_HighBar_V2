@@ -63,6 +63,7 @@ WHATS_NEW_P1_ORCHESTRATOR_CLEANUP.md
 DRIFT_DETECTION_RESULTS.md
 P2_DRIFT_DETECTION_GUIDE.md
 P2_ALERT.md
+P2_COMPLETION_SUMMARY.md
 
 # Schema drift detection snapshots (generated at runtime)
 config/schemas/schema_detected_*.yaml
