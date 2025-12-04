@@ -49,8 +49,8 @@ logs/*.log
 # reports/report.md
 
 # Test files (local testing only)
-test_adaptive_planner.py
-test_adaptive_live.py
+# test_adaptive_planner.py
+# test_adaptive_live.py
 
 # Documentation (private notes)
 STUDY.md
@@ -62,6 +62,7 @@ ORCHESTRATOR_CLEANUP_PLAN.md
 WHATS_NEW_P1_ORCHESTRATOR_CLEANUP.md
 DRIFT_DETECTION_RESULTS.md
 P2_DRIFT_DETECTION_GUIDE.md
+P2_ALERT.md
 
 # Schema drift detection snapshots (generated at runtime)
 config/schemas/schema_detected_*.yaml

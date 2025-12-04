@@ -20,6 +20,8 @@ from src.agents.creative_gen import CreativeGeneratorAgent
 from src.utils.llm import LLMClient
 from src.utils.data_loader import DataLoader
 from src.utils.structured_logger import StructuredLogger
+from src.monitoring.alert_manager import AlertManager
+from src.monitoring.health_checker import HealthChecker
 from src.pipeline import PipelineEngine
 
 logger = logging.getLogger(__name__)
@@ -44,6 +46,9 @@ class AgentOrchestrator:
         self.config = config
         self.logger = StructuredLogger()
         
+        # Initialize alert manager
+        self.alert_manager = AlertManager(config)
+        
         # Initialize LLM client
         self.llm_client = LLMClient(config["llm"])
         
@@ -55,12 +60,15 @@ class AgentOrchestrator:
             sample_size=data_config.get("sample_size", 1000)
         )
         
-        # Initialize agents (pass structured logger and config)
+        # Initialize agents (pass structured logger, config, and alert_manager)
         self.planner = PlannerAgent(self.llm_client, config, self.logger)
         self.data_agent = DataAgent(self.data_loader, self.config, self.logger)
-        self.insight_agent = InsightAgent(self.llm_client, self.logger)
-        self.evaluator = EvaluatorAgent(config, self.logger)
+        self.insight_agent = InsightAgent(self.llm_client, self.logger, self.alert_manager, config)
+        self.evaluator = EvaluatorAgent(config, self.logger, self.alert_manager)
         self.creative_gen = CreativeGeneratorAgent(self.llm_client, self.logger)
+        
+        # Initialize health checker
+        self.health_checker = HealthChecker(config, self.alert_manager)
         
         # Initialize data agent
         self.data_agent.initialize()
@@ -92,6 +100,15 @@ class AgentOrchestrator:
             # Prepare initial context
             raw_data = self.data_loader.df
             data_summary = self.data_loader.get_summary()
+            
+            # Run health checks before pipeline execution
+            logger.info("🏥 Running pre-flight health checks...")
+            health_passed = self.health_checker.run_all_checks(raw_data, data_summary)
+            
+            if not health_passed:
+                logger.error(f"❌ Critical health check failures detected! Pipeline may produce unreliable results.")
+            else:
+                logger.info(f"✅ Health checks passed")
             
             context = {
                 'user_query': user_query,
@@ -142,6 +159,12 @@ class AgentOrchestrator:
                 },
                 duration_seconds=pipeline_duration
             )
+            
+            # Log all alerts if any were raised
+            if self.alert_manager.get_alerts():
+                logger.info("\n" + "="*80)
+                self.alert_manager.log_all_alerts()
+                logger.info("="*80 + "\n")
             
             logger.info(f"Orchestration complete in {pipeline_duration:.2f}s")
             

@@ -2,109 +2,109 @@
   {
     "campaign": "m n | athleisure cooling",
     "adset": "Adset-1 Retarget",
-    "current_issue": "Audience fatigue - zero CTR, potential creative fatigue",
-    "insight_addressed": "roas_decline, audience_saturation",
+    "current_issue": "Audience fatigue, low CTR",
+    "insight_addressed": "audience_saturation",
     "creative_variations": [
       {
         "variation_id": "var_1",
         "creative_type": "UGC",
         "headline": "Real Men, Real Comfort",
-        "message": "Don't just take our word for it. Hear from men who've made the switch to athleisure cooling underwear",
+        "message": "Don't just take our word for it. Thousands of men have made the switch to our athleisure cooling undergarments. Hear their stories...",
         "cta": "Read Reviews",
-        "rationale": "Social proof to combat audience fatigue and improve CVR",
-        "expected_improvement": "20-30% CTR lift"
+        "rationale": "Fresh angle for retargeting - social proof instead of product features",
+        "expected_improvement": "30-50% CTR recovery"
       },
       {
         "variation_id": "var_2",
         "creative_type": "Video",
         "headline": "What's Holding You Back?",
-        "message": "Say goodbye to sweat and discomfort. Upgrade to athleisure cooling underwear today",
-        "cta": "Shop Now",
-        "rationale": "Emotional appeal to address pain points and create urgency",
-        "expected_improvement": "15-25% CTR lift"
+        "message": "Say goodbye to discomfort and hello to our cooling undergarments. Watch how our technology keeps you cool and dry all day long.",
+        "cta": "Learn More",
+        "rationale": "Demonstrate product benefits through video",
+        "expected_improvement": "25-40% CTR increase"
       },
       {
         "variation_id": "var_3",
         "creative_type": "Carousel",
-        "headline": "Cooling Underwear for the Modern Man",
-        "message": "Discover the benefits of athleisure cooling underwear: moisture-wicking, breathable, and comfortable",
-        "cta": "Learn More",
-        "rationale": "Highlighting key features and benefits to educate and engage the audience",
-        "expected_improvement": "10-20% CTR lift"
+        "headline": "Upgrade Your Undergarments",
+        "message": "Discover the comfort and style you deserve. Browse our collection of athleisure cooling undergarments and experience the difference for yourself.",
+        "cta": "Shop Now",
+        "rationale": "Showcase multiple products and benefits",
+        "expected_improvement": "20-35% CTR increase"
       }
     ],
-    "testing_strategy": "Launch all 3 variations simultaneously, $50/day each, rotate every 7 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $40/day each, rotate every 5 days"
   },
   {
     "campaign": "women Summer Inv-sible",
     "adset": "Adset-5 LAL1",
-    "current_issue": "Low CTR - 0.01%, potential targeting issues",
+    "current_issue": "Low CTR, low conversion rate",
     "insight_addressed": "ctr_issues",
     "creative_variations": [
       {
         "variation_id": "var_4",
         "creative_type": "Image",
-        "headline": "Invisible Comfort for the Modern Woman",
-        "message": "Experience the comfort and freedom of Summer Inv-sible underwear",
+        "headline": "Invisible Comfort, Visible Style",
+        "message": "Stay cool and confident all summer long with our invisible undergarments. Shop now and get 20% off your first order!",
         "cta": "Shop Now",
-        "rationale": "Simple, attention-grabbing creative to improve CTR",
-        "expected_improvement": "25-40% CTR lift"
+        "rationale": "Eye-catching visuals and limited-time offer",
+        "expected_improvement": "25-40% CTR increase"
       },
       {
         "variation_id": "var_5",
         "creative_type": "UGC",
         "headline": "Real Women, Real Comfort",
-        "message": "Hear from women who've experienced the comfort and confidence of Summer Inv-sible underwear",
+        "message": "Don't just take our word for it. Thousands of women have made the switch to our invisible undergarments. Hear their stories...",
         "cta": "Read Reviews",
-        "rationale": "Social proof to build trust and credibility",
-        "expected_improvement": "20-35% CTR lift"
+        "rationale": "Social proof and authenticity",
+        "expected_improvement": "30-50% CTR recovery"
       },
       {
         "variation_id": "var_6",
         "creative_type": "Video",
-        "headline": "Say Goodbye to Visible Lines",
-        "message": "Upgrade to Summer Inv-sible underwear for a seamless, comfortable fit",
+        "headline": "The Secret to Summer Comfort",
+        "message": "Say goodbye to discomfort and hello to our invisible undergarments. Watch how our technology keeps you cool and dry all day long.",
         "cta": "Learn More",
-        "rationale": "Emotional appeal to address pain points and create urgency",
-        "expected_improvement": "15-30% CTR lift"
+        "rationale": "Demonstrate product benefits through video",
+        "expected_improvement": "25-40% CTR increase"
       }
     ],
-    "testing_strategy": "Launch all 3 variations simultaneously, $30/day each, rotate every 5 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $30/day each, rotate every 5 days"
   },
   {
-    "campaign": "MEN SIGNATURE SOT",
-    "adset": "Adset-1 Retarget",
-    "current_issue": "Low CTR - 0.01%, potential audience saturation",
-    "insight_addressed": "audience_saturation",
+    "campaign": "MEN | ATHLEISURECOOLING",
+    "adset": "Adset-3 Broad",
+    "current_issue": "Low ROAS, high spend",
+    "insight_addressed": "roas_decline",
     "creative_variations": [
       {
         "variation_id": "var_7",
         "creative_type": "Carousel",
-        "headline": "Elevate Your Underwear Game",
-        "message": "Discover the comfort, quality, and style of MEN SIGNATURE SOT underwear",
+        "headline": "Upgrade Your Athleisure Game",
+        "message": "Discover the comfort and style you deserve. Browse our collection of athleisure cooling undergarments and experience the difference for yourself.",
         "cta": "Shop Now",
-        "rationale": "Highlighting key features and benefits to educate and engage the audience",
-        "expected_improvement": "20-35% CTR lift"
+        "rationale": "Showcase multiple products and benefits",
+        "expected_improvement": "20-35% CTR increase"
       },
       {
         "variation_id": "var_8",
-        "creative_type": "UGC",
-        "headline": "Real Men, Real Style",
-        "message": "Hear from men who've experienced the comfort and confidence of MEN SIGNATURE SOT underwear",
-        "cta": "Read Reviews",
-        "rationale": "Social proof to build trust and credibility",
-        "expected_improvement": "15-30% CTR lift"
+        "creative_type": "Video",
+        "headline": "The Science of Cooling",
+        "message": "Learn how our technology keeps you cool and dry all day long. Watch now and discover the secret to athleisure comfort.",
+        "cta": "Learn More",
+        "rationale": "Educate and demonstrate product benefits",
+        "expected_improvement": "25-40% CTR increase"
       },
       {
         "variation_id": "var_9",
-        "creative_type": "Video",
-        "headline": "What Sets Us Apart",
-        "message": "Learn about the quality, comfort, and style that goes into every pair of MEN SIGNATURE SOT underwear",
-        "cta": "Learn More",
-        "rationale": "Emotional appeal to address pain points and create urgency",
-        "expected_improvement": "10-25% CTR lift"
+        "creative_type": "UGC",
+        "headline": "Real Men, Real Results",
+        "message": "Don't just take our word for it. Thousands of men have made the switch to our athleisure cooling undergarments. Hear their stories...",
+        "cta": "Read Reviews",
+        "rationale": "Social proof and authenticity",
+        "expected_improvement": "30-50% CTR recovery"
       }
     ],
-    "testing_strategy": "Launch all 3 variations simultaneously, $40/day each, rotate every 7 days"
+    "testing_strategy": "Launch 3 variations simultaneously, $50/day each, rotate every 5 days"
   }
 ]

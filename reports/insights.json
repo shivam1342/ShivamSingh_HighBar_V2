@@ -2,15 +2,15 @@
   {
     "id": "insight_1",
     "category": "roas_decline",
-    "hypothesis": "ROAS decline is driven by underperforming campaigns with low or zero CVR, indicating potential creative fatigue or audience issues",
+    "hypothesis": "ROAS declined due to recent increase in spend without proportional increase in revenue",
     "evidence": [
-      "Multiple campaigns (e.g., 'Women | tudio Sports', 'Women | Studi Sports') have 0% CVR despite significant spend and impressions",
-      "Campaigns with low CVR (e.g., 'MEN SIGNATURE SOT', 'women su-mer invisible') have low ROAS, suggesting a correlation between CVR and ROAS",
-      "High spend campaigns (e.g., 'WOMEN Coton Classics', 'Men-Bold Colors Drop') with low CVR may be causing overall ROAS decline"
+      "Recent ROAS is 5.32, a -3.3% change from previous ROAS",
+      "Total spend increased by 9.29% in the last 89 days",
+      "Average ROAS for the date range is 9.63, indicating a recent decline"
     ],
     "confidence": 0.8,
-    "reasoning": "The data suggests that campaigns with low or zero CVR are contributing to the overall ROAS decline. This could be due to creative fatigue, where ad creative is no longer resonating with the target audience, or audience issues, where the target audience is not converting as expected.",
-    "recommendation": "Refresh ad creative, test new targeting options, and consider audience expansion to improve CVR and ROAS",
+    "reasoning": "The recent decline in ROAS suggests that the increase in spend is not being matched by a corresponding increase in revenue. This could be due to a variety of factors, including audience saturation or creative fatigue.",
+    "recommendation": "Review ad creative and targeting to ensure they are still effective, and consider pausing or optimizing underperforming campaigns",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -35,14 +35,15 @@
   {
     "id": "insight_2",
     "category": "ctr_issues",
-    "hypothesis": "CTR issues are contributing to underperformance in certain campaigns, potentially due to ad fatigue or targeting issues",
+    "hypothesis": "Low CTR is contributing to decreased ROAS, particularly in certain campaigns",
     "evidence": [
-      "Campaigns with 0% CTR (e.g., 'Women-Studio Spo-ts', 'WOMEN_Cot-on_Classics') have low or zero ROAS",
-      "Campaigns with low CTR (e.g., 'MEN BOL COLORS DROP', 'women Summer Inv-sible') have low ROAS, suggesting a correlation between CTR and ROAS"
+      "Average CTR for the date range is 1.31%",
+      "Multiple campaigns have 0.0 CTR, including 'Women-Studio Spo-ts' and 'WOMEN_Cot-on_Classics'",
+      "Campaign 'MEN BOL COLORS DROP' has a CTR of 0.0045%, indicating potential issues with ad relevance or targeting"
     ],
     "confidence": 0.7,
-    "reasoning": "The data suggests that campaigns with low or zero CTR are contributing to underperformance. This could be due to ad fatigue, where the target audience is no longer engaging with the ads, or targeting issues, where the target audience is not being reached effectively.",
-    "recommendation": "Test new ad creative, targeting options, and consider audience expansion to improve CTR and ROAS",
+    "reasoning": "Low CTR can indicate issues with ad creative, targeting, or bidding strategy. Campaigns with extremely low or zero CTR should be reviewed and optimized to improve performance.",
+    "recommendation": "Review ad creative and targeting for low-CTR campaigns, and consider testing new ad variations or targeting strategies",
     "validation": {
       "is_valid": true,
       "checks": {
@@ -60,21 +61,21 @@
       "quality_factors": {
         "completeness": 1.0,
         "confidence": 0.7,
-        "evidence_strength": 0.4
+        "evidence_strength": 0.6
       }
     }
   },
   {
     "id": "insight_3",
     "category": "audience_saturation",
-    "hypothesis": "Audience saturation may be contributing to underperformance in retargeting campaigns, potentially due to over-targeting the same audience",
+    "hypothesis": "Audience saturation may be contributing to decreased ROAS, particularly in retargeting campaigns",
     "evidence": [
-      "Retargeting campaigns (e.g., 'Men Pr-mium Modal', 'Men Premiu- Modal') have low or zero CTR and CVR",
-      "High spend retargeting campaigns (e.g., 'Men-Bold Colors Drop') have low ROAS, suggesting potential audience saturation"
+      "Multiple retargeting campaigns have high spend and impressions, but low or zero CTR and ROAS",
+      "Campaign 'Men Pr-mium Modal' has a high ROAS, but also a high spend and impression count, indicating potential audience saturation"
     ],
     "confidence": 0.6,
-    "reasoning": "The data suggests that retargeting campaigns may be experiencing audience saturation, where the target audience is being over-targeted, leading to decreased engagement and conversions.",
-    "recommendation": "Consider expanding targeting options, refreshing ad creative, or adjusting retargeting strategies to reduce audience saturation",
+    "reasoning": "Retargeting campaigns often have smaller audiences and may be more prone to saturation. High spend and impression counts without corresponding revenue increases can indicate that the audience is being over-targeted.",
+    "recommendation": "Consider expanding targeting to new audiences, such as lookalike audiences, or rotating ad creative to reduce fatigue",
     "validation": {
       "is_valid": true,
       "checks": {

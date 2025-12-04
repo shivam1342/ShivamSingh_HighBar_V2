@@ -3,10 +3,11 @@ Evaluator Agent - Validates insights and checks confidence levels
 """
 import logging
 import time
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 import numpy as np
 from src.utils.structured_logger import StructuredLogger
 from src.utils.threshold_manager import ThresholdManager
+from src.monitoring.alert_manager import AlertManager, AlertSeverity
 
 logger = logging.getLogger(__name__)
 
@@ -16,9 +17,15 @@ class EvaluatorAgent:
     Validates insights with quantitative checks and adaptive confidence scoring
     """
     
-    def __init__(self, config: Dict[str, Any], structured_logger: StructuredLogger = None):
+    def __init__(
+        self, 
+        config: Dict[str, Any], 
+        structured_logger: StructuredLogger = None,
+        alert_manager: Optional[AlertManager] = None
+    ):
         self.config = config
         self.logger = structured_logger or StructuredLogger()
+        self.alert_manager = alert_manager
         
         # Initialize centralized threshold manager
         self.threshold_mgr = ThresholdManager(self.config)
@@ -27,6 +34,9 @@ class EvaluatorAgent:
         thresholds = config.get("thresholds", {})
         self.base_min_evidence_count = thresholds.get("evaluator", {}).get("min_evidence_count", 2)
         self.volatile_extra_evidence = thresholds.get("evaluator", {}).get("adaptive", {}).get("volatile_extra_evidence", 1)
+        
+        # Get quality threshold for alerts
+        self.quality_threshold = self.config.get('monitoring', {}).get('alerts', {}).get('quality_threshold', 0.6)
         
     def evaluate_insights(
         self,
@@ -112,6 +122,15 @@ class EvaluatorAgent:
             
             # Calculate overall quality score
             quality_score = self._calculate_quality_score(validated_insights)
+            
+            # Check if quality score is below threshold and raise alert
+            if quality_score < self.quality_threshold and self.alert_manager:
+                self.alert_manager.add_quality_alert(
+                    quality_score=quality_score,
+                    threshold=self.quality_threshold,
+                    rejected_count=len(rejected_insights),
+                    total_count=len(insights)
+                )
             
             # Log quality metrics
             self.logger.log_metric(

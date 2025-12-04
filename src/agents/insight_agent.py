@@ -4,10 +4,11 @@ Insight Agent - Generates hypotheses explaining performance patterns
 import json
 import logging
 import time
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from src.utils.llm import LLMClient
 from src.utils.structured_logger import StructuredLogger
 from src.utils.exceptions import JSONParseError
+from src.monitoring.alert_manager import AlertManager, AlertSeverity
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +18,20 @@ class InsightAgent:
     Generates data-driven hypotheses about performance patterns
     """
     
-    def __init__(self, llm_client: LLMClient, structured_logger: StructuredLogger = None):
+    def __init__(
+        self, 
+        llm_client: LLMClient, 
+        structured_logger: StructuredLogger = None,
+        alert_manager: Optional[AlertManager] = None,
+        config: Optional[Dict[str, Any]] = None
+    ):
         self.llm = llm_client
         self.logger = structured_logger or StructuredLogger()
+        self.alert_manager = alert_manager
+        self.config = config or {}
+        
+        # Get confidence threshold from config
+        self.confidence_threshold = self.config.get('monitoring', {}).get('alerts', {}).get('confidence_threshold', 0.5)
         
     def generate_insights(
         self,
@@ -81,6 +93,10 @@ class InsightAgent:
                 insight_list = insights.get("insights", [])
                 
                 logger.info(f"Generated {len(insight_list)} insights")
+                
+                # Check for low confidence insights and raise alerts
+                if self.alert_manager:
+                    self._check_insight_confidence(insight_list)
                 
                 # Log metrics for confidence scores
                 if insight_list:
@@ -265,3 +281,35 @@ Output ONLY valid JSON with 2-4 insights. Think step by step."""
             })
         
         return insights
+    
+    def _check_insight_confidence(self, insights: List[Dict[str, Any]]) -> None:
+        """
+        Check insights for low confidence and raise alerts.
+        
+        Args:
+            insights: List of insights to check
+        """
+        for insight in insights:
+            confidence = insight.get('confidence', 0)
+            insight_id = insight.get('insight_id', insight.get('id', 'unknown'))
+            
+            if confidence < self.confidence_threshold:
+                # Determine reason for low confidence
+                evidence_count = len(insight.get('evidence', []))
+                if evidence_count < 2:
+                    reason = f"Insufficient evidence (only {evidence_count} point(s))"
+                else:
+                    reason = "Low confidence despite evidence - data may be volatile"
+                
+                # Raise alert
+                self.alert_manager.add_low_confidence_alert(
+                    insight_id=insight_id,
+                    confidence=confidence,
+                    threshold=self.confidence_threshold,
+                    reason=reason
+                )
+                
+                logger.warning(
+                    f"⚠️  Low confidence insight: '{insight_id}' "
+                    f"(confidence: {confidence:.2f}, threshold: {self.confidence_threshold})"
+                )
